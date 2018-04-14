@@ -78,30 +78,30 @@ public class UserController {
 	 * @return the user was updated
 	 *
 	 */
-	@RequestMapping(//
-			value = "/{userId}", //
-			method = RequestMethod.PUT, //
-			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public DataResult<User> updateUser(@PathVariable(value = "userId") int userId, @RequestBody User user) {
-		DataResult<User> result;
-		Optional<User> option = mUserRepository.findById(userId);
-		if (option == null) {
-			result = new DataResult<>(HttpCode.NOT_FOUND.getCode(), MessageResponese.USER_NOT_FOUND, null);
-		} else {
-			
-			User newUser = option.get();
-			
-			newUser.setName(user.getName());
-			newUser.setEmail(user.getEmail());
-			newUser.setIsActive(user.getIsActive());
-			newUser.setPassword(user.getPassword());
-			newUser.setRememberToken(user.getRememberToken());
-			newUser.setUpdatedAt(user.getUpdatedAt());
-			newUser.setCreatedAt(user.getCreatedAt());
-			
-			result = new DataResult<>(HttpCode.OK.getCode(), MessageResponese.SUCCESSED, newUser);
-		}
-		return result;
-	}
+//	@RequestMapping(//
+//			value = "/{userId}", //
+//			method = RequestMethod.PUT, //
+//			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+//	public DataResult<User> updateUser(@PathVariable(value = "userId") int userId, @RequestBody User user) {
+//		DataResult<User> result;
+//		Optional<User> option = mUserRepository.findById(userId);
+//		if (option == null) {
+//			result = new DataResult<>(HttpCode.NOT_FOUND.getCode(), MessageResponese.USER_NOT_FOUND, null);
+//		} else {
+//			
+//			User newUser = option.get();
+//			
+//			newUser.setName(user.getName());
+//			newUser.setEmail(user.getEmail());
+//			newUser.setIsActive(user.getIsActive());
+//			newUser.setPassword(user.getPassword());
+//			newUser.setRememberToken(user.getRememberToken());
+//			newUser.setUpdatedAt(user.getUpdatedAt());
+//			newUser.setCreatedAt(user.getCreatedAt());
+//			
+//			result = new DataResult<>(HttpCode.OK.getCode(), MessageResponese.SUCCESSED, newUser);
+//		}
+//		return result;
+//	}
 
 }
