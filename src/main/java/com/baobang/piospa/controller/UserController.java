@@ -25,7 +25,15 @@ public class UserController {
 
 	@Autowired
 	private UserRepository mUserRepository;
+	@RequestMapping(//
+			value = "/string",
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public String string() {
 
+
+		return "hello";
+	}
 	/**
 	 *
 	 * @return the list of users
@@ -33,7 +41,7 @@ public class UserController {
 	 */
 	@RequestMapping(//
 			method = RequestMethod.GET, //
-			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+			produces = { MediaType.APPLICATION_JSON_VALUE})
 	public DataResult<List<User>> getAll() {
 
 		List<User> users = mUserRepository.findAll();
