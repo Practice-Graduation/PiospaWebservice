@@ -26,32 +26,21 @@ public class UserController {
 	@Autowired
 	private UserRepository mUserRepository;
 
-	@RequestMapping(value = "/",
-			method = RequestMethod.GET)
-	public String getAll() {
+	/**
+	 *
+	 * @return the list of users
+	 *
+	 */
+	@RequestMapping(//
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public DataResult<List<User>> getAll() {
 
+		List<User> users = mUserRepository.findAll();
 
-		return "Hello Spring Boot and Heruko";
+		return new DataResult<List<User>>(HttpCode.OK.getCode(), MessageResponese.SUCCESSED, users);
 	}
 
-	//
-	// /**
-	// *
-	// * @return the list of users
-	// *
-	// */
-	// @RequestMapping(//
-	// method = RequestMethod.GET, //
-	// produces = { MediaType.APPLICATION_JSON_VALUE,
-	// MediaType.APPLICATION_XML_VALUE })
-	// public DataResult<List<User>> getAll() {
-	//
-	// List<User> users = mUserRepository.findAll();
-	//
-	// return new DataResult<List<User>>(HttpCode.OK.getCode(),
-	// MessageResponese.SUCCESSED, users);
-	// }
-	//
 	// /**
 	// * The method get user profile by ID from parameter
 	// *
