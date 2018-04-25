@@ -14,9 +14,7 @@ public class Ward implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String wardid;
-
-	private String districtid;
+	private int wardid;
 
 	private String location;
 
@@ -24,23 +22,20 @@ public class Ward implements Serializable {
 
 	private String type;
 
+	//bi-directional many-to-one association to District
+	@ManyToOne
+	@JoinColumn(name="districtid")
+	private District district;
+
 	public Ward() {
 	}
 
-	public String getWardid() {
+	public int getWardid() {
 		return this.wardid;
 	}
 
-	public void setWardid(String wardid) {
+	public void setWardid(int wardid) {
 		this.wardid = wardid;
-	}
-
-	public String getDistrictid() {
-		return this.districtid;
-	}
-
-	public void setDistrictid(String districtid) {
-		this.districtid = districtid;
 	}
 
 	public String getLocation() {
@@ -65,6 +60,14 @@ public class Ward implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public District getDistrict() {
+		return this.district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
 	}
 
 }

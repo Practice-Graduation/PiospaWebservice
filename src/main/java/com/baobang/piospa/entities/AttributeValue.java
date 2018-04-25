@@ -2,7 +2,11 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -16,17 +20,16 @@ public class AttributeValue implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="attribute_value_id")
 	private int attributeValueId;
-
-	@Column(name="attribute_id")
-	private int attributeId;
 
 	@Column(name="attribute_value_name")
 	private String attributeValueName;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -34,11 +37,22 @@ public class AttributeValue implements Serializable {
 	@Column(name="is_active")
 	private byte isActive;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to Attribute
+	@ManyToOne
+	@JoinColumn(name="attribute_id")
+	private Attribute attribute;
+
+	//bi-directional many-to-one association to ProductAttribute
+	@JsonIgnore
+	@OneToMany(mappedBy="attributeValue")
+	private List<ProductAttribute> productAttributes;
 
 	public AttributeValue() {
 	}
@@ -51,14 +65,6 @@ public class AttributeValue implements Serializable {
 		this.attributeValueId = attributeValueId;
 	}
 
-	public int getAttributeId() {
-		return this.attributeId;
-	}
-
-	public void setAttributeId(int attributeId) {
-		this.attributeId = attributeId;
-	}
-
 	public String getAttributeValueName() {
 		return this.attributeValueName;
 	}
@@ -67,11 +73,11 @@ public class AttributeValue implements Serializable {
 		this.attributeValueName = attributeValueName;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -91,11 +97,11 @@ public class AttributeValue implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -105,6 +111,36 @@ public class AttributeValue implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public Attribute getAttribute() {
+		return this.attribute;
+	}
+
+	public void setAttribute(Attribute attribute) {
+		this.attribute = attribute;
+	}
+
+	public List<ProductAttribute> getProductAttributes() {
+		return this.productAttributes;
+	}
+
+	public void setProductAttributes(List<ProductAttribute> productAttributes) {
+		this.productAttributes = productAttributes;
+	}
+
+	public ProductAttribute addProductAttribute(ProductAttribute productAttribute) {
+		getProductAttributes().add(productAttribute);
+		productAttribute.setAttributeValue(this);
+
+		return productAttribute;
+	}
+
+	public ProductAttribute removeProductAttribute(ProductAttribute productAttribute) {
+		getProductAttributes().remove(productAttribute);
+		productAttribute.setAttributeValue(null);
+
+		return productAttribute;
 	}
 
 }

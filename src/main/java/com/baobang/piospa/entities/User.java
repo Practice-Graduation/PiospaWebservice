@@ -2,13 +2,7 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Date;
-import java.sql.Timestamp;
 
 
 /**
@@ -22,7 +16,8 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
@@ -35,24 +30,16 @@ public class User implements Serializable {
 
 	private String name;
 
-	@JsonIgnore
 	private String password;
 
 	@Column(name="remember_token")
-	@JsonIgnore
 	private String rememberToken;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	public User() {
-	}
-
-	public User(Integer id, String email, String name) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.name = name;
 	}
 
 	public int getId() {
@@ -111,11 +98,11 @@ public class User implements Serializable {
 		this.rememberToken = rememberToken;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

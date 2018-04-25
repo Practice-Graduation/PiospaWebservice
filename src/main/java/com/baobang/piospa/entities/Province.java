@@ -3,6 +3,10 @@ package com.baobang.piospa.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.List;
+
 
 /**
  * The persistent class for the province database table.
@@ -14,7 +18,7 @@ public class Province implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String provinceid;
+	private int provinceid;
 
 	@Column(name="location_id")
 	private int locationId;
@@ -23,14 +27,19 @@ public class Province implements Serializable {
 
 	private String type;
 
+	//bi-directional many-to-one association to District
+	@OneToMany(mappedBy="province")
+	@JsonIgnore
+	private List<District> districts;
+
 	public Province() {
 	}
 
-	public String getProvinceid() {
+	public int getProvinceid() {
 		return this.provinceid;
 	}
 
-	public void setProvinceid(String provinceid) {
+	public void setProvinceid(int provinceid) {
 		this.provinceid = provinceid;
 	}
 
@@ -56,6 +65,28 @@ public class Province implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public List<District> getDistricts() {
+		return this.districts;
+	}
+
+	public void setDistricts(List<District> districts) {
+		this.districts = districts;
+	}
+
+	public District addDistrict(District district) {
+		getDistricts().add(district);
+		district.setProvince(this);
+
+		return district;
+	}
+
+	public District removeDistrict(District district) {
+		getDistricts().remove(district);
+		district.setProvince(null);
+
+		return district;
 	}
 
 }

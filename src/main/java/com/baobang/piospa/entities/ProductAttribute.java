@@ -2,7 +2,10 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
 
 
 /**
@@ -16,14 +19,13 @@ public class ProductAttribute implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="product_attribute_id")
 	private int productAttributeId;
 
-	@Column(name="attribute_value_id")
-	private int attributeValueId;
-
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -31,14 +33,22 @@ public class ProductAttribute implements Serializable {
 	@Column(name="is_active")
 	private byte isActive;
 
-	@Column(name="product_id")
-	private int productId;
-
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to Product
+	@ManyToOne
+	@JoinColumn(name="product_id")
+	private Product product;
+
+	//bi-directional many-to-one association to AttributeValue
+	@ManyToOne
+	@JoinColumn(name="attribute_value_id")
+	private AttributeValue attributeValue;
 
 	public ProductAttribute() {
 	}
@@ -51,19 +61,11 @@ public class ProductAttribute implements Serializable {
 		this.productAttributeId = productAttributeId;
 	}
 
-	public int getAttributeValueId() {
-		return this.attributeValueId;
-	}
-
-	public void setAttributeValueId(int attributeValueId) {
-		this.attributeValueId = attributeValueId;
-	}
-
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -83,19 +85,11 @@ public class ProductAttribute implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public int getProductId() {
-		return this.productId;
-	}
-
-	public void setProductId(int productId) {
-		this.productId = productId;
-	}
-
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -105,6 +99,22 @@ public class ProductAttribute implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public Product getProduct() {
+		return this.product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public AttributeValue getAttributeValue() {
+		return this.attributeValue;
+	}
+
+	public void setAttributeValue(AttributeValue attributeValue) {
+		this.attributeValue = attributeValue;
 	}
 
 }

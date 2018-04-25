@@ -3,7 +3,6 @@ package com.baobang.piospa.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
-import java.sql.Timestamp;
 
 
 /**
@@ -17,6 +16,7 @@ public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="customer_id")
 	private int customerId;
 
@@ -31,8 +31,9 @@ public class Customer implements Serializable {
 
 	private String code;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -42,9 +43,6 @@ public class Customer implements Serializable {
 
 	@Column(name="customer_avatar")
 	private String customerAvatar;
-
-	@Column(name="customer_source_id")
-	private int customerSourceId;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_last_login")
@@ -85,8 +83,9 @@ public class Customer implements Serializable {
 	@Column(name="provinces_id")
 	private int provincesId;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
@@ -95,6 +94,11 @@ public class Customer implements Serializable {
 	private int wardId;
 
 	private String zalo;
+
+	//bi-directional many-to-one association to CustomerSource
+	@ManyToOne
+	@JoinColumn(name="customer_source_id")
+	private CustomerSource customerSource;
 
 	public Customer() {
 	}
@@ -147,11 +151,11 @@ public class Customer implements Serializable {
 		this.code = code;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -177,14 +181,6 @@ public class Customer implements Serializable {
 
 	public void setCustomerAvatar(String customerAvatar) {
 		this.customerAvatar = customerAvatar;
-	}
-
-	public int getCustomerSourceId() {
-		return this.customerSourceId;
-	}
-
-	public void setCustomerSourceId(int customerSourceId) {
-		this.customerSourceId = customerSourceId;
 	}
 
 	public Date getDateLastLogin() {
@@ -307,11 +303,11 @@ public class Customer implements Serializable {
 		this.provincesId = provincesId;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -337,6 +333,14 @@ public class Customer implements Serializable {
 
 	public void setZalo(String zalo) {
 		this.zalo = zalo;
+	}
+
+	public CustomerSource getCustomerSource() {
+		return this.customerSource;
+	}
+
+	public void setCustomerSource(CustomerSource customerSource) {
+		this.customerSource = customerSource;
 	}
 
 }

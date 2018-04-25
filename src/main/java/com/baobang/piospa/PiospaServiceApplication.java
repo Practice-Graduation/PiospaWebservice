@@ -1,5 +1,6 @@
 package com.baobang.piospa;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -23,14 +24,15 @@ public class PiospaServiceApplication {
 	}
 	
 	@Bean
-	public Docket studentAPI() {
+	public Docket userAPI() {
 		return new Docket(DocumentationType.SWAGGER_2)
 			.select()
 			.apis(RequestHandlerSelectors.basePackage("com.baobang.piospa.controller"))
-			.paths(PathSelectors.regex("/users.*"))
+			.paths(PathSelectors.regex(".*"))
 			.build()
 			.apiInfo(metaData());
 	}
+	
 	
 	private ApiInfo metaData() {
 	    return new ApiInfoBuilder()

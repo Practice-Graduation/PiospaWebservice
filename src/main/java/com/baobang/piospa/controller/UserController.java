@@ -1,5 +1,6 @@
 package com.baobang.piospa.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,19 +11,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baobang.piospa.entities.User;
 import com.baobang.piospa.model.DataResult;
+import com.baobang.piospa.model.LoginForm;
 import com.baobang.piospa.repositories.UserRepository;
-import com.baobang.piospa.utils.HttpCode;
 import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(RequestPath.USER_PATH)
 public class UserController {
 
 	@Autowired
@@ -33,31 +34,18 @@ public class UserController {
 	 * @apiName getAll
 	 * @apiGroup User
 	 * 
-	 * @apiParam  none
+	 * @apiParam none
 	 * 
 	 * @apiSuccess {Integer} the status of the responese
 	 * @apiSuccess {String} the message of the responese
 	 * @apiSuccess {array} the list user of the responese
 	 * 
-	 * @apiSuccessExample Success-Response:
-	 * HTTP/1.1 200 OK
-	 * {
-	 * 		"statusCode" : 200,
-	 * 		"message"    : "OK",
-	 * 		"data"		 :[
-	 * 			{User info},
-	 * 			{User info}
-	 * 		]
-	 * }
-	 * @apiError 
+	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode" : 200,
+	 *                    "message" : "OK", "data" :[ {User info}, {User info} ] }
+	 * @apiError
 	 *
-	 * @apiErrorExample Error-Response:
-	 *     HTTP/1.1 404 Not Found
-	 *     {
-	 *       "statusCode" : 404,
-	 * 		 "message"    : "Not Found",
-	 * 		 "data"		 :[]
-	 *     }
+	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
+	 *                  "message" : "Not Found", "data" :[] }
 	 */
 	@RequestMapping(//
 			method = RequestMethod.GET, //
@@ -67,7 +55,7 @@ public class UserController {
 
 		List<User> users = mUserRepository.findAll();
 
-		return new DataResult<List<User>>(HttpCode.OK.getCode(), MessageResponese.SUCCESSED, users);
+		return new DataResult<List<User>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, users);
 	}
 
 	/**
@@ -75,91 +63,213 @@ public class UserController {
 	 * @apiName getUserById
 	 * @apiGroup User
 	 * 
-	 * @apiParam  {userId} id Users unique ID.
+	 * @apiParam {userId} id Users unique ID.
 	 * 
 	 * @apiSuccess {Integer} the status of the responese
 	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {User} the user of the responese
+	 * @apiSuccess {User} the user was got
 	 * 
-	 * @apiSuccessExample Success-Response:
-	 * HTTP/1.1 200 OK
-	 * {
-	 * 		"statusCode" : 200,
-	 * 		"message"    : "OK",
-	 * 		"data":{
-	 * 				"id":1,
-	 * 				"createdAt":"2017-03-11T01:58:25.000+0000",
-	 * 				"email":"admin@tamtm.com",
-	 * 				"isActive":1,
-	 * 				"name":"Admin",
-	 * 				"updatedAt":"2017-10-07T03:03:02.000+0000"
-	 * 		}
-	 * }
-	 * @apiError 
+	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode" : 200,
+	 *                    "message" : "OK", "data":{ "id":1,
+	 *                    "createdAt":"2017-03-11T01:58:25.000+0000",
+	 *                    "email":"admin@tamtm.com", "isActive":1, "name":"Admin",
+	 *                    "updatedAt":"2017-10-07T03:03:02.000+0000" } }
+	 * @apiError
 	 *
-	 * @apiErrorExample Error-Response:
-	 *     HTTP/1.1 404 Not Found
-	 *     {
-	 *       "statusCode" : 404,
-	 * 		 "message"    : "Not Found",
-	 * 		 "data"		 :[]
-	 *     }
+	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
+	 *                  "message" : "Not Found", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{userId}", //
 			method = RequestMethod.GET, //
-			produces = { MediaType.APPLICATION_JSON_VALUE})
+			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Get user by id")
-	public DataResult<User> getUserById(@PathVariable(value = "userId") int userId) {
+	public DataResult<User> getUserById(@PathVariable(value = "userId") int userId){
 		DataResult<User> result = new DataResult<>();
 		Optional<User> option = mUserRepository.findById(userId);
-		User user = null;
-		if (option == null) {
-			result.setMessage(MessageResponese.USER_NOT_FOUND);
-			result.setStatusCode(HttpCode.NO_CONTENT.getCode());
-		} else {
-			user = option.get();
-			result.setMessage(MessageResponese.SUCCESSED);
-			result.setStatusCode(HttpCode.OK.getCode());
-		}
+		User user = option.get();
+		result.setMessage(MessageResponese.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(user);
 		return result;
 	}
 
 	/**
+	 * @api {put} /{userId} update User information
+	 * @apiName updateUser
+	 * @apiGroup User
 	 * 
-	 * @param usedId
-	 *            the id of user
-	 * @param user
-	 *            user's info need to update
-	 * @return the user was updated
+	 * @apiParam {userId} id Users unique ID.
+	 * @apiBody {user} the info of user need to update
+	 * 
+	 * @apiSuccess {Integer} the status of the responese
+	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {User} the user was updated
+	 * 
+	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode" : 200,
+	 *                    "message" : "OK", "data":{ "id":1,
+	 *                    "createdAt":"2017-03-11T01:58:25.000+0000",
+	 *                    "email":"admin@tamtm.com", "isActive":1, "name":"Admin",
+	 *                    "updatedAt":"2017-10-07T03:03:02.000+0000" } }
+	 * @apiError
 	 *
+	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
+	 *                  "message" : "Not Found", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{userId}", //
 			method = RequestMethod.PUT, //
-			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+			produces = { MediaType.APPLICATION_JSON_VALUE})
 	@ApiOperation(value = "Update user by id")
 	public DataResult<User> updateUser(@PathVariable(value = "userId") int userId, @RequestBody User user) {
 		DataResult<User> result;
 		Optional<User> option = mUserRepository.findById(userId);
-		if (option == null) {
-			result = new DataResult<>(HttpCode.NOT_FOUND.getCode(), MessageResponese.USER_NOT_FOUND, null);
-		} else {
 
-			User newUser = option.get();
+		User newUser = option.get();
+		
+		newUser.setName(user.getName());
+		newUser.setIsActive(user.getIsActive());
+		newUser.setUpdatedAt(new Date());
 
-			newUser.setName(user.getName());
-			newUser.setEmail(user.getEmail());
-			newUser.setIsActive(user.getIsActive());
-			newUser.setPassword(user.getPassword());
-			newUser.setRememberToken(user.getRememberToken());
-			newUser.setUpdatedAt(user.getUpdatedAt());
-			newUser.setCreatedAt(user.getCreatedAt());
+		newUser = mUserRepository.save(newUser);
 
-			result = new DataResult<>(HttpCode.OK.getCode(), MessageResponese.SUCCESSED, newUser);
-		}
+		result = new DataResult<>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, newUser);
+
 		return result;
 	}
 
+	/**
+	 * @api {delete} /{userId} delete User by id
+	 * @apiName deleteUserById
+	 * @apiGroup User
+	 * 
+	 * @apiParam {userId} id Users unique ID.
+	 * 
+	 * @apiSuccess {Integer} the status of the responese
+	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {User} the user of the was deleted
+	 * 
+	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode" : 200,
+	 *                    "message" : "OK", "data":{ "id":1,
+	 *                    "createdAt":"2017-03-11T01:58:25.000+0000",
+	 *                    "email":"admin@tamtm.com", "isActive":1, "name":"Admin",
+	 *                    "updatedAt":"2017-10-07T03:03:02.000+0000" } }
+	 * @apiError
+	 *
+	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
+	 *                  "message" : "Not Found", "data" :{} }
+	 */
+	@RequestMapping(//
+			value = "/{userId}", //
+			method = RequestMethod.DELETE, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Delete user by id")
+	public DataResult<User> deleteUserById(@PathVariable(value = "userId")int userId) {
+		DataResult<User> dataResult = new DataResult<>();
+		User user = mUserRepository.findById(userId).get();
+		mUserRepository.deleteById(userId);
+		dataResult.setMessage(MessageResponese.SUCCESSED);
+		dataResult.setStatusCode(HttpStatus.OK.value());
+		dataResult.setData(user);
+		return dataResult;
+	}
+	
+	/**
+	 * @api {post} / create a new user
+	 * @apiName createUser
+	 * @apiGroup User
+	 * 
+	 * @apiBody {user} the info of user need to create
+	 * 
+	 * @apiSuccess {Integer} the status of the responese
+	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {User} the user of the was created
+	 * 
+	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode" : 200,
+	 *                    "message" : "OK", "data":{ "id":1,
+	 *                    "createdAt":"2017-03-11T01:58:25.000+0000",
+	 *                    "email":"admin@tamtm.com", "isActive":1, "name":"Admin",
+	 *                    "updatedAt":"2017-10-07T03:03:02.000+0000" } }
+	 * @apiError
+	 *
+	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
+	 *                  "message" : "User was exited", "data" :{user} }
+	 */
+	@RequestMapping(//
+			value = {"", "/"}, //
+			method = RequestMethod.POST, //
+			produces = { MediaType.APPLICATION_JSON_VALUE})
+	@ApiOperation(value = "Create a new user")
+	public DataResult<User> createUser(@RequestBody User user) {
+		DataResult<User> dataResult = new DataResult<>();
+		
+		User temp = mUserRepository.findByEmail(user.getEmail());
+		
+		if(temp == null) {
+			Date date = new Date();
+			user.setId(0);
+			user.setCreatedAt(date);
+			user.setUpdatedAt(date);
+			temp = mUserRepository.save(user);
+			dataResult.setMessage(MessageResponese.SUCCESSED);
+			dataResult.setStatusCode(HttpStatus.OK.value());
+		}else {
+			dataResult.setMessage(MessageResponese.EXITS);
+			dataResult.setStatusCode(HttpStatus.NOT_FOUND.value());
+		}
+		dataResult.setData(temp);
+		
+		return dataResult;
+	}
+
+	/**
+	 * @api {post} / login
+	 * @apiName login
+	 * @apiGroup User
+	 * 
+	 * @apiBody {loginForm} the username and password 
+	 * 
+	 * @apiSuccess {Integer} the status of the responese
+	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {User} the user of the was logined
+	 * 
+	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode" : 200,
+	 *                    "message" : "OK", "data":{ "id":1,
+	 *                    "createdAt":"2017-03-11T01:58:25.000+0000",
+	 *                    "email":"admin@tamtm.com", "isActive":1, "name":"Admin",
+	 *                    "updatedAt":"2017-10-07T03:03:02.000+0000" } }
+	 * @apiError
+	 *
+	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
+	 *                  "message" : "User name or password invalid", "data" :{user} }
+	 */
+	@RequestMapping(//
+			value = {"/login"}, //
+			method = RequestMethod.POST, //
+			produces = { MediaType.APPLICATION_JSON_VALUE})
+	@ApiOperation(value = "Login")
+	public DataResult<User> login(@RequestBody LoginForm loginForm) {
+		DataResult<User> dataResult = new DataResult<>();
+		
+		User temp = mUserRepository.findByEmail(loginForm.getUsername());
+		
+		if(temp == null) {
+			dataResult.setMessage(MessageResponese.ACCOUNT_NOT_EXSIT);
+			dataResult.setStatusCode(HttpStatus.NOT_FOUND.value());
+			
+		}else {
+			temp = mUserRepository.findByEmailAndPassword(loginForm.getUsername(), loginForm.getPassword());
+			
+			if(temp == null) {
+				dataResult.setMessage(MessageResponese.PASSWORD_INCORRECT);
+				dataResult.setStatusCode(HttpStatus.NOT_FOUND.value());
+			}else {
+				dataResult.setMessage(MessageResponese.SUCCESSED);
+				dataResult.setStatusCode(HttpStatus.OK.value());
+			}
+		}
+		dataResult.setData(temp);
+		
+		return dataResult;
+	}
 }

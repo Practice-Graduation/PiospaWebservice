@@ -3,6 +3,10 @@ package com.baobang.piospa.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.List;
+
 
 /**
  * The persistent class for the district database table.
@@ -14,24 +18,32 @@ public class District implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String districtid;
+	private int districtid;
 
 	private String location;
 
 	private String name;
 
-	private String provinceid;
-
 	private String type;
+
+	//bi-directional many-to-one association to Province
+	@ManyToOne
+	@JoinColumn(name="provinceid")
+	private Province province;
+
+	//bi-directional many-to-one association to Ward
+	@JsonIgnore
+	@OneToMany(mappedBy="district")
+	private List<Ward> wards;
 
 	public District() {
 	}
 
-	public String getDistrictid() {
+	public int getDistrictid() {
 		return this.districtid;
 	}
 
-	public void setDistrictid(String districtid) {
+	public void setDistrictid(int districtid) {
 		this.districtid = districtid;
 	}
 
@@ -51,20 +63,42 @@ public class District implements Serializable {
 		this.name = name;
 	}
 
-	public String getProvinceid() {
-		return this.provinceid;
-	}
-
-	public void setProvinceid(String provinceid) {
-		this.provinceid = provinceid;
-	}
-
 	public String getType() {
 		return this.type;
 	}
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Province getProvince() {
+		return this.province;
+	}
+
+	public void setProvince(Province province) {
+		this.province = province;
+	}
+
+	public List<Ward> getWards() {
+		return this.wards;
+	}
+
+	public void setWards(List<Ward> wards) {
+		this.wards = wards;
+	}
+
+	public Ward addWard(Ward ward) {
+		getWards().add(ward);
+		ward.setDistrict(this);
+
+		return ward;
+	}
+
+	public Ward removeWard(Ward ward) {
+		getWards().remove(ward);
+		ward.setDistrict(null);
+
+		return ward;
 	}
 
 }

@@ -2,7 +2,11 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -16,14 +20,16 @@ public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="product_id")
 	private int productId;
 
 	@Column(name="cost_price")
 	private int costPrice;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -36,27 +42,15 @@ public class Product implements Serializable {
 	private String info;
 
 	@Column(name="is_active")
-	private boolean isActive;
+	private byte isActive;
 
 	private int price;
 
 	@Column(name="product_code")
 	private String productCode;
 
-	@Column(name="product_group_id")
-	private int productGroupId;
-
-	@Column(name="product_label_id")
-	private int productLabelId;
-
 	@Column(name="product_name")
 	private String productName;
-
-	@Column(name="product_origin_id")
-	private int productOriginId;
-
-	@Column(name="product_unit_id")
-	private int productUnitId;
 
 	private int quantity;
 
@@ -67,11 +61,37 @@ public class Product implements Serializable {
 
 	private String thumbnail;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to ProductAttribute
+	@JsonIgnore
+	@OneToMany(mappedBy="product")
+	private List<ProductAttribute> productAttributes;
+
+	//bi-directional many-to-one association to ProductGroup
+	@ManyToOne
+	@JoinColumn(name="product_group_id")
+	private ProductGroup productGroup;
+
+	//bi-directional many-to-one association to ProductLabel
+	@ManyToOne
+	@JoinColumn(name="product_label_id")
+	private ProductLabel productLabel;
+
+	//bi-directional many-to-one association to ProductOrigin
+	@ManyToOne
+	@JoinColumn(name="product_origin_id")
+	private ProductOrigin productOrigin;
+
+	//bi-directional many-to-one association to ProductUnit
+	@ManyToOne
+	@JoinColumn(name="product_unit_id")
+	private ProductUnit productUnit;
 
 	public Product() {
 	}
@@ -92,11 +112,11 @@ public class Product implements Serializable {
 		this.costPrice = costPrice;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -132,11 +152,11 @@ public class Product implements Serializable {
 		this.info = info;
 	}
 
-	public boolean getIsActive() {
+	public byte getIsActive() {
 		return this.isActive;
 	}
 
-	public void setIsActive(boolean isActive) {
+	public void setIsActive(byte isActive) {
 		this.isActive = isActive;
 	}
 
@@ -156,44 +176,12 @@ public class Product implements Serializable {
 		this.productCode = productCode;
 	}
 
-	public int getProductGroupId() {
-		return this.productGroupId;
-	}
-
-	public void setProductGroupId(int productGroupId) {
-		this.productGroupId = productGroupId;
-	}
-
-	public int getProductLabelId() {
-		return this.productLabelId;
-	}
-
-	public void setProductLabelId(int productLabelId) {
-		this.productLabelId = productLabelId;
-	}
-
 	public String getProductName() {
 		return this.productName;
 	}
 
 	public void setProductName(String productName) {
 		this.productName = productName;
-	}
-
-	public int getProductOriginId() {
-		return this.productOriginId;
-	}
-
-	public void setProductOriginId(int productOriginId) {
-		this.productOriginId = productOriginId;
-	}
-
-	public int getProductUnitId() {
-		return this.productUnitId;
-	}
-
-	public void setProductUnitId(int productUnitId) {
-		this.productUnitId = productUnitId;
 	}
 
 	public int getQuantity() {
@@ -228,11 +216,11 @@ public class Product implements Serializable {
 		this.thumbnail = thumbnail;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -242,6 +230,60 @@ public class Product implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<ProductAttribute> getProductAttributes() {
+		return this.productAttributes;
+	}
+
+	public void setProductAttributes(List<ProductAttribute> productAttributes) {
+		this.productAttributes = productAttributes;
+	}
+
+	public ProductAttribute addProductAttribute(ProductAttribute productAttribute) {
+		getProductAttributes().add(productAttribute);
+		productAttribute.setProduct(this);
+
+		return productAttribute;
+	}
+
+	public ProductAttribute removeProductAttribute(ProductAttribute productAttribute) {
+		getProductAttributes().remove(productAttribute);
+		productAttribute.setProduct(null);
+
+		return productAttribute;
+	}
+
+	public ProductGroup getProductGroup() {
+		return this.productGroup;
+	}
+
+	public void setProductGroup(ProductGroup productGroup) {
+		this.productGroup = productGroup;
+	}
+
+	public ProductLabel getProductLabel() {
+		return this.productLabel;
+	}
+
+	public void setProductLabel(ProductLabel productLabel) {
+		this.productLabel = productLabel;
+	}
+
+	public ProductOrigin getProductOrigin() {
+		return this.productOrigin;
+	}
+
+	public void setProductOrigin(ProductOrigin productOrigin) {
+		this.productOrigin = productOrigin;
+	}
+
+	public ProductUnit getProductUnit() {
+		return this.productUnit;
+	}
+
+	public void setProductUnit(ProductUnit productUnit) {
+		this.productUnit = productUnit;
 	}
 
 }

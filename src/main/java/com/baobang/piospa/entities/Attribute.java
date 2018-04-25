@@ -2,8 +2,11 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
-import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -16,6 +19,7 @@ public class Attribute implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="attribute_id")
 	private int attributeId;
 
@@ -30,13 +34,19 @@ public class Attribute implements Serializable {
 	private int createdBy;
 
 	@Column(name="is_active")
-	private boolean isActive;
+	private byte isActive;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to AttributeValue
+	@JsonIgnore
+	@OneToMany(mappedBy="attribute")
+	private List<AttributeValue> attributeValues;
 
 	public Attribute() {
 	}
@@ -73,19 +83,19 @@ public class Attribute implements Serializable {
 		this.createdBy = createdBy;
 	}
 
-	public boolean getIsActive() {
+	public byte getIsActive() {
 		return this.isActive;
 	}
 
-	public void setIsActive(boolean isActive) {
+	public void setIsActive(byte isActive) {
 		this.isActive = isActive;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -95,6 +105,28 @@ public class Attribute implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<AttributeValue> getAttributeValues() {
+		return this.attributeValues;
+	}
+
+	public void setAttributeValues(List<AttributeValue> attributeValues) {
+		this.attributeValues = attributeValues;
+	}
+
+	public AttributeValue addAttributeValue(AttributeValue attributeValue) {
+		getAttributeValues().add(attributeValue);
+		attributeValue.setAttribute(this);
+
+		return attributeValue;
+	}
+
+	public AttributeValue removeAttributeValue(AttributeValue attributeValue) {
+		getAttributeValues().remove(attributeValue);
+		attributeValue.setAttribute(null);
+
+		return attributeValue;
 	}
 
 }
