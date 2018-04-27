@@ -39,6 +39,7 @@ public class PiospaServiceApplication {
 	        .title("PioSpa RESTfull API")
 	        .description("Using Spring Boot and Springfox for Swagger")
 	        .contact(new Contact("Nguyễn Bảo Bằng", "", "baobangb5@gmail.com"))
+	        .version("1.0.0")
 	        .build();
 	}
 }
