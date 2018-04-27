@@ -56,6 +56,11 @@ public class CustomerSource implements Serializable {
 	@OneToMany(mappedBy="customerSource")
 	private List<Customer> customers;
 
+	//bi-directional many-to-one association to Order
+	@JsonIgnore
+	@OneToMany(mappedBy="customerSource")
+	private List<Order> orders;
+
 	public CustomerSource() {
 	}
 
@@ -152,5 +157,27 @@ public class CustomerSource implements Serializable {
 
 		return customer;
 	}
+
+	public List<Order> getOrders() {
+		return this.orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+//	public Order addOrder(Order order) {
+//		getOrders().add(order);
+//		order.setCustomerSource(this);
+//
+//		return order;
+//	}
+//
+//	public Order removeOrder(Order order) {
+//		getOrders().remove(order);
+//		order.setCustomerSource(null);
+//
+//		return order;
+//	}
 
 }

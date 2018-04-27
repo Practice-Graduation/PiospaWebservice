@@ -18,6 +18,7 @@ public class Province implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int provinceid;
 
 	@Column(name="location_id")
@@ -28,8 +29,8 @@ public class Province implements Serializable {
 	private String type;
 
 	//bi-directional many-to-one association to District
-	@OneToMany(mappedBy="province")
 	@JsonIgnore
+	@OneToMany(mappedBy="province")
 	private List<District> districts;
 
 	public Province() {

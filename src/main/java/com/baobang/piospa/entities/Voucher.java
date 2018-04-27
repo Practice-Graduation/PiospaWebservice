@@ -17,6 +17,7 @@ public class Voucher implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="voucher_id")
 	private int voucherId;
 

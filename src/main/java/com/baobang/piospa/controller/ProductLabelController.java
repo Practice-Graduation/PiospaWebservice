@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baobang.piospa.entities.ProductLabel;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductLabelRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -39,32 +39,10 @@ public class ProductLabelController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {array} the list product label of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list product label of the response
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK  {
-	 * 					 "data": [ {
-	 *                   	 "createdAt": "2018-04-18T08:08:02.828Z",
-	 *                       "createdBy": 0,
-	 *                    	 "isActive": 0,
-	 *                    	 "productLabelCode": "string",
-	 *                    	 "productLabelDescription": "string", 
-	 *                       "productLabelId": 0,
-	 *                   	 "productLabelName": "string", 
-	 *                       "updatedAt": "2018-04-18T08:08:02.828Z", "updatedBy": 0
-	 *                    } ],
-	 *               	  "message": "string",
-	 *                    "statusCode": 0 
-	 *                }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found
-	 * 					 { 
-	 * 						 "statusCode" : 404,
-	 *                 		 "message" : "Not Found",
-	 *                 		 "data" : [] 
-	 *                 	 }
 	 */
 	@RequestMapping(//
 			method = RequestMethod.GET, //
@@ -74,7 +52,7 @@ public class ProductLabelController {
 
 		List<ProductLabel> productLabels = mLabelRepository.findAll();
 
-		return new DataResult<List<ProductLabel>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, productLabels);
+		return new DataResult<List<ProductLabel>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, productLabels);
 	}
 
 	/**
@@ -84,34 +62,10 @@ public class ProductLabelController {
 	 * 
 	 * @apiParam {productLabelId} id Product Label unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {User} the Product Label was got
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {ProductLabel} the Product Label was got
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK  {
-	 * 					 "data": [ {
-	 *                   	 "createdAt": "2018-04-18T08:08:02.828Z",
-	 *                   	 "createdBy": 0,
-	 *                    	 "isActive": 0,
-	 *                    	 "productLabelCode": "string",
-	 *                    	 "productLabelDescription": "string",
-	 *                    	 "productLabelId": 0,
-	 *                   	 "productLabelName": "string",
-	 *                   	 "updatedAt":
-	 *                   	 "2018-04-18T08:08:02.828Z",
-	 *                   	 "updatedBy": 0
-	 *                    } ],
-	 *               	  "message": "string",
-	 *                    "statusCode": 0 
-	 *                }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found
-	 * 			 { 
-	 * 					"statusCode" : 404,
-	 *                  "message" : "Not Found",
-	 *                   "data" :{}
-	 *           }
 	 */
 	@RequestMapping(//
 			value = "/{productLabelId}", //
@@ -122,7 +76,7 @@ public class ProductLabelController {
 		DataResult<ProductLabel> result = new DataResult<>();
 		Optional<ProductLabel> option = mLabelRepository.findById(productLabelId);
 		ProductLabel label = option.get();
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(label);
 		return result;
@@ -135,34 +89,10 @@ public class ProductLabelController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductLabel} the new Product Label was created
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK  {
-	 * 					 "data": [ {
-	 *                   	 "createdAt": "2018-04-18T08:08:02.828Z",
-	 *                   	 "createdBy": 0,
-	 *                    	 "isActive": 0,
-	 *                    	 "productLabelCode": "string",
-	 *                    	 "productLabelDescription": "string",
-	 *                    	 "productLabelId": 0,
-	 *                   	 "productLabelName": "string",
-	 *                   	 "updatedAt":
-	 *                   	 "2018-04-18T08:08:02.828Z",
-	 *                   	 "updatedBy": 0
-	 *                    } ],
-	 *               	  "message": "string",
-	 *                    "statusCode": 0 
-	 *                }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found
-	 * 			 { 
-	 * 					"statusCode" : 404,
-	 *                  "message" : "Product Laebl was exited",
-	 *                   "data" :{}
-	 *           }
 	 */
 	@RequestMapping(//
 			value = {"", "/"}, //
@@ -182,10 +112,10 @@ public class ProductLabelController {
 			label = mLabelRepository.save(productLabel);
 			
 
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		}else {
-			result.setMessage(MessageResponese.EXITS);
+			result.setMessage(MessageResponse.EXITS);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		}
 		
@@ -201,34 +131,10 @@ public class ProductLabelController {
 	 * @apiParam {productLabelId} id Product Label unique ID.
 	 * @apiBody {productLabel} the info of user need to update
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductLabel} the new Product Label was updated
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK  {
-	 * 					 "data": [ {
-	 *                   	 "createdAt": "2018-04-18T08:08:02.828Z",
-	 *                   	 "createdBy": 0,
-	 *                    	 "isActive": 0,
-	 *                    	 "productLabelCode": "string",
-	 *                    	 "productLabelDescription": "string",
-	 *                    	 "productLabelId": 0,
-	 *                   	 "productLabelName": "string",
-	 *                   	 "updatedAt":
-	 *                   	 "2018-04-18T08:08:02.828Z",
-	 *                   	 "updatedBy": 0
-	 *                    } ],
-	 *               	  "message": "string",
-	 *                    "statusCode": 0 
-	 *                }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found
-	 * 			 { 
-	 * 					"statusCode" : 404,
-	 *                  "message" : "Product Label was exited",
-	 *                   "data" :{}
-	 *           }
 	 */
 	@RequestMapping(//
 			value = "/{productLabelId}", //
@@ -249,7 +155,7 @@ public class ProductLabelController {
 
 		newProductLabel = mLabelRepository.save(newProductLabel);
 
-		result = new DataResult<>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, newProductLabel);
+		result = new DataResult<>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, newProductLabel);
 
 		return result;
 	}
@@ -261,34 +167,10 @@ public class ProductLabelController {
 	 * 
 	 * @apiParam {productLabelId} id Product Label unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductLabel} the  Product Label was deleted
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK  {
-	 * 					 "data": [ {
-	 *                   	 "createdAt": "2018-04-18T08:08:02.828Z",
-	 *                   	 "createdBy": 0,
-	 *                    	 "isActive": 0,
-	 *                    	 "productLabelCode": "string",
-	 *                    	 "productLabelDescription": "string",
-	 *                    	 "productLabelId": 0,
-	 *                   	 "productLabelName": "string",
-	 *                   	 "updatedAt":
-	 *                   	 "2018-04-18T08:08:02.828Z",
-	 *                   	 "updatedBy": 0
-	 *                    } ],
-	 *               	  "message": "string",
-	 *                    "statusCode": 0 
-	 *                }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found
-	 * 			 { 
-	 * 					"statusCode" : 404,
-	 *                  "message" : "Product Label was not found",
-	 *                   "data" :{}
-	 *           }
 	 */
 	@RequestMapping(//
 			value = "/{productLabelId}", //
@@ -299,7 +181,7 @@ public class ProductLabelController {
 		DataResult<ProductLabel> dataResult = new DataResult<>();
 		ProductLabel productLabel = mLabelRepository.findById(productLabelId).get();
 		mLabelRepository.deleteById(productLabelId);
-		dataResult.setMessage(MessageResponese.SUCCESSED);
+		dataResult.setMessage(MessageResponse.SUCCESSED);
 		dataResult.setStatusCode(HttpStatus.OK.value());
 		dataResult.setData(productLabel);
 		return dataResult;

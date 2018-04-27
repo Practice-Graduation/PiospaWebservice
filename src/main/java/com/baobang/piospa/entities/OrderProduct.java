@@ -2,7 +2,7 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 
 /**
@@ -16,11 +16,13 @@ public class OrderProduct implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="order_product_id")
 	private int orderProductId;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -32,24 +34,29 @@ public class OrderProduct implements Serializable {
 
 	private int number;
 
-	@Column(name="order_id")
-	private int orderId;
-
 	private int price;
-
-	@Column(name="product_id")
-	private int productId;
 
 	private int total;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
 
 	@Column(name="voucher_id")
 	private int voucherId;
+
+	//bi-directional many-to-one association to Order
+	@ManyToOne
+	@JoinColumn(name="order_id")
+	private Order order;
+
+	//bi-directional many-to-one association to Product
+	@ManyToOne
+	@JoinColumn(name="product_id")
+	private Product product;
 
 	public OrderProduct() {
 	}
@@ -62,11 +69,11 @@ public class OrderProduct implements Serializable {
 		this.orderProductId = orderProductId;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -102,28 +109,12 @@ public class OrderProduct implements Serializable {
 		this.number = number;
 	}
 
-	public int getOrderId() {
-		return this.orderId;
-	}
-
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
-	}
-
 	public int getPrice() {
 		return this.price;
 	}
 
 	public void setPrice(int price) {
 		this.price = price;
-	}
-
-	public int getProductId() {
-		return this.productId;
-	}
-
-	public void setProductId(int productId) {
-		this.productId = productId;
 	}
 
 	public int getTotal() {
@@ -134,11 +125,11 @@ public class OrderProduct implements Serializable {
 		this.total = total;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -156,6 +147,26 @@ public class OrderProduct implements Serializable {
 
 	public void setVoucherId(int voucherId) {
 		this.voucherId = voucherId;
+	}
+
+	public Order getOrder() {
+		return this.order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public Product getProduct() {
+		return this.product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	public void caculateTotal() {
+		total =  price * number - discount;
 	}
 
 }

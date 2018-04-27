@@ -14,7 +14,7 @@ import com.baobang.piospa.entities.District;
 import com.baobang.piospa.entities.Province;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProvinceRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -38,8 +38,8 @@ public class ProvinceController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {array} the list Province
 	 * 
 	 */
@@ -51,7 +51,7 @@ public class ProvinceController {
 
 		List<Province> provinces = mProvinceRepository.findAll();
 
-		return new DataResult<List<Province>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, provinces);
+		return new DataResult<List<Province>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, provinces);
 	}
 
 	/**
@@ -61,8 +61,8 @@ public class ProvinceController {
 	 * 
 	 * @apiParam {ProvinceId} id Province unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductOrigin} the Province was got
 	 * 
 	 */
@@ -75,10 +75,10 @@ public class ProvinceController {
 		DataResult<Province> result = new DataResult<>();
 		Province province = mProvinceRepository.findById(ProvinceId).get();
 		if (province == null) {
-			result.setMessage(MessageResponese.NOT_FOUND);
+			result.setMessage(MessageResponse.NOT_FOUND);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		} else {
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		}
 
@@ -93,8 +93,8 @@ public class ProvinceController {
 	 * 
 	 * @apiParam {ProvinceId} id Province unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductOrigin} the Province was got
 	 * 
 	 */
@@ -108,11 +108,11 @@ public class ProvinceController {
 		List<District> districts = null;
 		Province province = mProvinceRepository.findById(ProvinceId).get();
 		if (province == null) {
-			result.setMessage(MessageResponese.NOT_FOUND);
+			result.setMessage(MessageResponse.NOT_FOUND);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		} else {
 			districts = province.getDistricts();
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		}
 

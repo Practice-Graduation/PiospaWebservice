@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baobang.piospa.entities.ProductGroup;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductGroupRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -40,21 +40,10 @@ public class ProductGroupController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {array} the list product group of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list product group of the response
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T09:28:51.022Z", "createdBy": 0,
-	 *                    "isActive": 0, "productGroupCode": "string",
-	 *                    "productGroupDescription": "string", "productGroupId": 0,
-	 *                    "productGroupName": "string", "updatedAt":
-	 *                    "2018-04-18T09:28:51.022Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Not Found", "data" : [] }
 	 */
 	@RequestMapping(//
 			method = RequestMethod.GET, //
@@ -64,7 +53,7 @@ public class ProductGroupController {
 
 		List<ProductGroup> productGroups = mGroupRepository.findAll();
 
-		return new DataResult<List<ProductGroup>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, productGroups);
+		return new DataResult<List<ProductGroup>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, productGroups);
 	}
 
 	/**
@@ -74,21 +63,10 @@ public class ProductGroupController {
 	 * 
 	 * @apiParam {productGroupId} id Product Group unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {User} the Product Group was got
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {ProductGroup} the Product Group was got
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T08:08:02.828Z", "createdBy": 0,
-	 *                    "isActive": 0, "productGroupCode": "string",
-	 *                    "productGroupDescription": "string", "productGroupId": 0,
-	 *                    "productGroupName": "string", "updatedAt":
-	 *                    "2018-04-18T08:08:02.828Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Not Found", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productGroupId}", //
@@ -99,7 +77,7 @@ public class ProductGroupController {
 		DataResult<ProductGroup> result = new DataResult<>();
 		Optional<ProductGroup> option = mGroupRepository.findById(productGroupId);
 		ProductGroup group = option.get();
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(group);
 		return result;
@@ -112,21 +90,10 @@ public class ProductGroupController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductGroup} the new Product Group was created
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode": 200,
-	 *                    "message": "Success!", "data": { "productGroupId": 1,
-	 *                    "createdAt": "2018-04-18T09:26:21.686+0000", "createdBy":
-	 *                    1, "isActive": 0, "productGroupCode": "123",
-	 *                    "productGroupDescription": "This is a Product Group
-	 *                    description", "productGroupName": "Group 1", "updatedAt":
-	 *                    "2018-04-18T09:26:21.686+0000", "updatedBy": 1 } }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product Laebl was exited", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = { "", "/" }, //
@@ -145,10 +112,10 @@ public class ProductGroupController {
 			productGroup.setUpdatedAt(date);
 			group = mGroupRepository.save(productGroup);
 
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		} else {
-			result.setMessage(MessageResponese.EXITS);
+			result.setMessage(MessageResponse.EXITS);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		}
 
@@ -164,21 +131,10 @@ public class ProductGroupController {
 	 * @apiParam {productGroupId} id Product Group unique ID.
 	 * @apiBody {productGroup} the info of user need to update
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductGroup} the new Product Group was updated
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode": 200,
-	 *                    "message": "Success!", "data": { "productGroupId": 1,
-	 *                    "createdAt": "2018-04-18T09:26:21.686+0000", "createdBy":
-	 *                    1, "isActive": 0, "productGroupCode": "123",
-	 *                    "productGroupDescription": "This is a Product Group
-	 *                    description", "productGroupName": "Group 1", "updatedAt":
-	 *                    "2018-04-18T09:26:21.686+0000", "updatedBy": 1 } }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product Group was exited", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productGroupId}", //
@@ -201,7 +157,7 @@ public class ProductGroupController {
 
 		group = mGroupRepository.save(group);
 
-		result = new DataResult<>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, group);
+		result = new DataResult<>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, group);
 
 		return result;
 	}
@@ -213,21 +169,10 @@ public class ProductGroupController {
 	 * 
 	 * @apiParam {productGroupId} id Product Group unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductGroup} the Product Group was deleted
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T08:08:02.828Z", "createdBy": 0,
-	 *                    "isActive": 0, "productGroupCode": "string",
-	 *                    "productGroupDescription": "string", "productGroupId": 0,
-	 *                    "productGroupName": "string", "updatedAt":
-	 *                    "2018-04-18T08:08:02.828Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product Group was not found", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productGroupId}", //
@@ -238,7 +183,7 @@ public class ProductGroupController {
 		DataResult<ProductGroup> dataResult = new DataResult<>();
 		ProductGroup productGroup = mGroupRepository.findById(productGroupId).get();
 		mGroupRepository.deleteById(productGroupId);
-		dataResult.setMessage(MessageResponese.SUCCESSED);
+		dataResult.setMessage(MessageResponse.SUCCESSED);
 		dataResult.setStatusCode(HttpStatus.OK.value());
 		dataResult.setData(productGroup);
 		return dataResult;

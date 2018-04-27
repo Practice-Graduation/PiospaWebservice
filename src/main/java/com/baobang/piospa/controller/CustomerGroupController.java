@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baobang.piospa.entities.CustomerGroup;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.CustomerGroupRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -39,8 +39,8 @@ public class CustomerGroupController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {array} the list CustomerGroup
 	 * 
 	 */
@@ -52,7 +52,7 @@ public class CustomerGroupController {
 
 		List<CustomerGroup> customerGroups = mCustomerGroupRepository.findAll();
 
-		return new DataResult<List<CustomerGroup>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, customerGroups);
+		return new DataResult<List<CustomerGroup>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, customerGroups);
 	}
 
 	/**
@@ -62,8 +62,8 @@ public class CustomerGroupController {
 	 * 
 	 * @apiParam {CustomerGroupId} id CustomerGroup unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductOrigin} the CustomerGroup was got
 	 * 
 	 */
@@ -76,7 +76,7 @@ public class CustomerGroupController {
 			@PathVariable(value = "customerGroupId") int customerGroupId) {
 		DataResult<CustomerGroup> result = new DataResult<>();
 		CustomerGroup customerGroup = mCustomerGroupRepository.findById(customerGroupId).get();
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(customerGroup);
 		return result;
@@ -89,8 +89,8 @@ public class CustomerGroupController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {CustomerGroup} the customer Group was created
 	 * 
 	 */
@@ -105,10 +105,10 @@ public class CustomerGroupController {
 
 		if (group == null) {
 			group = mCustomerGroupRepository.save(customerGroup);
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		} else {
-			result.setMessage(MessageResponese.EXITS);
+			result.setMessage(MessageResponse.EXITS);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		}
 		result.setData(group);
@@ -122,8 +122,8 @@ public class CustomerGroupController {
 	 * 
 	 * @apiParam {CustomerGroupId} id CustomerGroup unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {CustomerGroup} the customer Group was created
 	 * 
 	 */
@@ -147,7 +147,7 @@ public class CustomerGroupController {
 		group.setUpdatedAt(new Date());
 		
 		group = mCustomerGroupRepository.save(group);
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 
 		result.setData(group);
@@ -161,8 +161,8 @@ public class CustomerGroupController {
 	 * 
 	 * @apiParam {CustomerGroupId} id CustomerGroup unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {CustomerGroup} the customer Group was created
 	 * 
 	 */
@@ -178,7 +178,7 @@ public class CustomerGroupController {
 		CustomerGroup group = mCustomerGroupRepository.findById(customerGroupId).get();
 
 		mCustomerGroupRepository.delete(group);
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 
 		result.setData(group);

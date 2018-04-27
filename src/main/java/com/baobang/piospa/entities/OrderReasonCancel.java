@@ -2,25 +2,31 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
- * The persistent class for the order_reasion_cancel database table.
+ * The persistent class for the order_reason_cancel database table.
  * 
  */
 @Entity
-@Table(name="order_reasion_cancel")
-@NamedQuery(name="OrderReasionCancel.findAll", query="SELECT o FROM OrderReasionCancel o")
-public class OrderReasionCancel implements Serializable {
+@Table(name="order_reason_cancel")
+@NamedQuery(name="OrderReasonCancel.findAll", query="SELECT o FROM OrderReasonCancel o")
+public class OrderReasonCancel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="order_reason_cancel_id")
 	private int orderReasonCancelId;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -34,13 +40,19 @@ public class OrderReasionCancel implements Serializable {
 	@Column(name="order_reason_cancel_name")
 	private String orderReasonCancelName;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
 
-	public OrderReasionCancel() {
+	//bi-directional many-to-one association to Order
+	@JsonIgnore
+	@OneToMany(mappedBy="orderReasonCancel")
+	private List<Order> orders;
+
+	public OrderReasonCancel() {
 	}
 
 	public int getOrderReasonCancelId() {
@@ -51,11 +63,11 @@ public class OrderReasionCancel implements Serializable {
 		this.orderReasonCancelId = orderReasonCancelId;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -91,11 +103,11 @@ public class OrderReasionCancel implements Serializable {
 		this.orderReasonCancelName = orderReasonCancelName;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -105,6 +117,28 @@ public class OrderReasionCancel implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<Order> getOrders() {
+		return this.orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public Order addOrder(Order order) {
+		getOrders().add(order);
+		order.setOrderReasonCancel(this);
+
+		return order;
+	}
+
+	public Order removeOrder(Order order) {
+		getOrders().remove(order);
+		order.setOrderReasonCancel(null);
+
+		return order;
 	}
 
 }

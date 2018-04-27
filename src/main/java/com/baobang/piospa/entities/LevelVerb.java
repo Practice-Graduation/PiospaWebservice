@@ -16,6 +16,7 @@ public class LevelVerb implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="member_level_verb_id")
 	private int memberLevelVerbId;
 

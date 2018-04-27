@@ -5,7 +5,7 @@ package com.baobang.piospa.utils;
  * @Created Apr 14, 2018
  * 
  */
-public interface MessageResponese {
+public interface MessageResponse {
 
 	public static final String SUCCESSED = "Success!";
 	public static final String NOT_FOUND = "Not Found";

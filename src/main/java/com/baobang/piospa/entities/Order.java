@@ -2,8 +2,12 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.ArrayList;
 import java.util.Date;
-import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -17,6 +21,7 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="order_id")
 	private int orderId;
 
@@ -27,17 +32,12 @@ public class Order implements Serializable {
 
 	private String code;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
-
-	@Column(name="customer_id")
-	private int customerId;
-
-	@Column(name="customer_source_id")
-	private int customerSourceId;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="date_delivery")
@@ -55,21 +55,6 @@ public class Order implements Serializable {
 
 	private String note;
 
-	@Column(name="order_delivery_status_id")
-	private int orderDeliveryStatusId;
-
-	@Column(name="order_delivery_type_id")
-	private int orderDeliveryTypeId;
-
-	@Column(name="order_payment_type_id")
-	private int orderPaymentTypeId;
-
-	@Column(name="order_reasion_cancel_id")
-	private int orderReasionCancelId;
-
-	@Column(name="order_status_id")
-	private int orderStatusId;
-
 	@Column(name="staff_id")
 	private int staffId;
 
@@ -81,8 +66,9 @@ public class Order implements Serializable {
 
 	private int total;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
@@ -90,7 +76,48 @@ public class Order implements Serializable {
 	@Column(name="voucher_id")
 	private int voucherId;
 
+	//bi-directional many-to-one association to OrderProduct
+	@JsonIgnore
+	@OneToMany(mappedBy="order")
+	private List<OrderProduct> orderProducts;
+
+	//bi-directional many-to-one association to CustomerSource
+	@ManyToOne
+	@JoinColumn(name="customer_source_id")
+	private CustomerSource customerSource;
+
+	//bi-directional many-to-one association to Customer
+	@ManyToOne
+	@JoinColumn(name="customer_id")
+	private Customer customer;
+
+	//bi-directional many-to-one association to OrderDeliveryStatus
+	@ManyToOne
+	@JoinColumn(name="order_delivery_status_id")
+	private OrderDeliveryStatus orderDeliveryStatus;
+
+	//bi-directional many-to-one association to OrderDeliveryType
+	@ManyToOne
+	@JoinColumn(name="order_delivery_type_id")
+	private OrderDeliveryType orderDeliveryType;
+
+	//bi-directional many-to-one association to OrderPaymentType
+	@ManyToOne
+	@JoinColumn(name="order_payment_type_id")
+	private OrderPaymentType orderPaymentType;
+
+	//bi-directional many-to-one association to OrderReasonCancel
+	@ManyToOne
+	@JoinColumn(name="order_reasion_cancel_id")
+	private OrderReasonCancel orderReasonCancel;
+
+	//bi-directional many-to-one association to OrderStatus
+	@ManyToOne
+	@JoinColumn(name="order_status_id")
+	private OrderStatus orderStatus;
+
 	public Order() {
+		orderProducts = new ArrayList<>();
 	}
 
 	public int getOrderId() {
@@ -125,11 +152,11 @@ public class Order implements Serializable {
 		this.code = code;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -139,22 +166,6 @@ public class Order implements Serializable {
 
 	public void setCreatedBy(int createdBy) {
 		this.createdBy = createdBy;
-	}
-
-	public int getCustomerId() {
-		return this.customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
-	public int getCustomerSourceId() {
-		return this.customerSourceId;
-	}
-
-	public void setCustomerSourceId(int customerSourceId) {
-		this.customerSourceId = customerSourceId;
 	}
 
 	public Date getDateDelivery() {
@@ -205,46 +216,6 @@ public class Order implements Serializable {
 		this.note = note;
 	}
 
-	public int getOrderDeliveryStatusId() {
-		return this.orderDeliveryStatusId;
-	}
-
-	public void setOrderDeliveryStatusId(int orderDeliveryStatusId) {
-		this.orderDeliveryStatusId = orderDeliveryStatusId;
-	}
-
-	public int getOrderDeliveryTypeId() {
-		return this.orderDeliveryTypeId;
-	}
-
-	public void setOrderDeliveryTypeId(int orderDeliveryTypeId) {
-		this.orderDeliveryTypeId = orderDeliveryTypeId;
-	}
-
-	public int getOrderPaymentTypeId() {
-		return this.orderPaymentTypeId;
-	}
-
-	public void setOrderPaymentTypeId(int orderPaymentTypeId) {
-		this.orderPaymentTypeId = orderPaymentTypeId;
-	}
-
-	public int getOrderReasionCancelId() {
-		return this.orderReasionCancelId;
-	}
-
-	public void setOrderReasionCancelId(int orderReasionCancelId) {
-		this.orderReasionCancelId = orderReasionCancelId;
-	}
-
-	public int getOrderStatusId() {
-		return this.orderStatusId;
-	}
-
-	public void setOrderStatusId(int orderStatusId) {
-		this.orderStatusId = orderStatusId;
-	}
-
 	public int getStaffId() {
 		return this.staffId;
 	}
@@ -277,11 +248,11 @@ public class Order implements Serializable {
 		this.total = total;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -301,4 +272,89 @@ public class Order implements Serializable {
 		this.voucherId = voucherId;
 	}
 
+	public List<OrderProduct> getOrderProducts() {
+		return this.orderProducts;
+	}
+
+	public void setOrderProducts(List<OrderProduct> orderProducts) {
+		this.orderProducts = orderProducts;
+	}
+
+	public OrderProduct addOrderProduct(OrderProduct orderProduct) {
+		getOrderProducts().add(orderProduct);
+		orderProduct.setOrder(this);
+
+		return orderProduct;
+	}
+
+	public OrderProduct removeOrderProduct(OrderProduct orderProduct) {
+		getOrderProducts().remove(orderProduct);
+		orderProduct.setOrder(null);
+
+		return orderProduct;
+	}
+
+	public CustomerSource getCustomerSource() {
+		return this.customerSource;
+	}
+
+	public void setCustomerSource(CustomerSource customerSource) {
+		this.customerSource = customerSource;
+	}
+
+	public Customer getCustomer() {
+		return this.customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public OrderDeliveryStatus getOrderDeliveryStatus() {
+		return this.orderDeliveryStatus;
+	}
+
+	public void setOrderDeliveryStatus(OrderDeliveryStatus orderDeliveryStatus) {
+		this.orderDeliveryStatus = orderDeliveryStatus;
+	}
+
+	public OrderDeliveryType getOrderDeliveryType() {
+		return this.orderDeliveryType;
+	}
+
+	public void setOrderDeliveryType(OrderDeliveryType orderDeliveryType) {
+		this.orderDeliveryType = orderDeliveryType;
+	}
+
+	public OrderPaymentType getOrderPaymentType() {
+		return this.orderPaymentType;
+	}
+
+	public void setOrderPaymentType(OrderPaymentType orderPaymentType) {
+		this.orderPaymentType = orderPaymentType;
+	}
+
+	public OrderReasonCancel getOrderReasonCancel() {
+		return this.orderReasonCancel;
+	}
+
+	public void setOrderReasonCancel(OrderReasonCancel orderReasonCancel) {
+		this.orderReasonCancel = orderReasonCancel;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return this.orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+	public void caculate() {
+		int total = 0;
+		for(OrderProduct orderProduct : orderProducts) {
+			total += orderProduct.getTotal();
+		}
+		this.total = total;
+		subTotal = this.total - discount + deliveryCost;
+	}
 }

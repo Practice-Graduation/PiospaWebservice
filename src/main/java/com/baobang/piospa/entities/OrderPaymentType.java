@@ -2,7 +2,11 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -16,11 +20,13 @@ public class OrderPaymentType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="order_payment_type_id")
 	private int orderPaymentTypeId;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -34,11 +40,17 @@ public class OrderPaymentType implements Serializable {
 	@Column(name="order_payment_type_name")
 	private String orderPaymentTypeName;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to Order
+	@JsonIgnore
+	@OneToMany(mappedBy="orderPaymentType")
+	private List<Order> orders;
 
 	public OrderPaymentType() {
 	}
@@ -51,11 +63,11 @@ public class OrderPaymentType implements Serializable {
 		this.orderPaymentTypeId = orderPaymentTypeId;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -91,11 +103,11 @@ public class OrderPaymentType implements Serializable {
 		this.orderPaymentTypeName = orderPaymentTypeName;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -105,6 +117,28 @@ public class OrderPaymentType implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<Order> getOrders() {
+		return this.orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public Order addOrder(Order order) {
+		getOrders().add(order);
+		order.setOrderPaymentType(this);
+
+		return order;
+	}
+
+	public Order removeOrder(Order order) {
+		getOrders().remove(order);
+		order.setOrderPaymentType(null);
+
+		return order;
 	}
 
 }

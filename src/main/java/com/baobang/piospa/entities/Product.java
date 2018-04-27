@@ -68,6 +68,11 @@ public class Product implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
+	//bi-directional many-to-one association to OrderProduct
+	@JsonIgnore
+	@OneToMany(mappedBy="product")
+	private List<OrderProduct> orderProducts;
+
 	//bi-directional many-to-one association to ProductAttribute
 	@JsonIgnore
 	@OneToMany(mappedBy="product")
@@ -230,6 +235,28 @@ public class Product implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<OrderProduct> getOrderProducts() {
+		return this.orderProducts;
+	}
+
+	public void setOrderProducts(List<OrderProduct> orderProducts) {
+		this.orderProducts = orderProducts;
+	}
+
+	public OrderProduct addOrderProduct(OrderProduct orderProduct) {
+		getOrderProducts().add(orderProduct);
+		orderProduct.setProduct(this);
+
+		return orderProduct;
+	}
+
+	public OrderProduct removeOrderProduct(OrderProduct orderProduct) {
+		getOrderProducts().remove(orderProduct);
+		orderProduct.setProduct(null);
+
+		return orderProduct;
 	}
 
 	public List<ProductAttribute> getProductAttributes() {

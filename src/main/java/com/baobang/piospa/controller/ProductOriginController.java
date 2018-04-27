@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baobang.piospa.entities.ProductOrigin;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductOriginRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -39,21 +39,10 @@ public class ProductOriginController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {array} the list product Origin of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list product Origin of the response
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T09:28:51.022Z", "createdBy": 0,
-	 *                    "isActive": 0, "productOriginCode": "string",
-	 *                    "productOriginDescription": "string", "productOriginId": 0,
-	 *                    "productOriginName": "string", "updatedAt":
-	 *                    "2018-04-18T09:28:51.022Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "null", "data" : null }
 	 */
 	@RequestMapping(//
 			method = RequestMethod.GET, //
@@ -63,7 +52,7 @@ public class ProductOriginController {
 
 		List<ProductOrigin> productOrigins = mOriginRepository.findAll();
 
-		return new DataResult<List<ProductOrigin>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, productOrigins);
+		return new DataResult<List<ProductOrigin>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, productOrigins);
 	}
 
 	/**
@@ -73,21 +62,10 @@ public class ProductOriginController {
 	 * 
 	 * @apiParam {productOriginId} id Product Origin unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductOrigin} the Product Origin was got
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T08:08:02.828Z", "createdBy": 0,
-	 *                    "isActive": 0, "productOriginCode": "string",
-	 *                    "productOriginDescription": "string", "productOriginId": 0,
-	 *                    "productOriginName": "string", "updatedAt":
-	 *                    "2018-04-18T08:08:02.828Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Not Found", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productOriginId}", //
@@ -98,7 +76,7 @@ public class ProductOriginController {
 		DataResult<ProductOrigin> result = new DataResult<>();
 		Optional<ProductOrigin> option = mOriginRepository.findById(productOriginId);
 		ProductOrigin Origin = option.get();
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(Origin);
 		return result;
@@ -111,21 +89,10 @@ public class ProductOriginController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductOrigin} the new Product Origin was created
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode": 200,
-	 *                    "message": "Success!", "data": { "productOriginId": 1,
-	 *                    "createdAt": "2018-04-18T09:26:21.686+0000", "createdBy":
-	 *                    1, "isActive": 0, "productOriginCode": "123",
-	 *                    "productOriginDescription": "This is a Product Origin
-	 *                    description", "productOriginName": "Origin 1", "updatedAt":
-	 *                    "2018-04-18T09:26:21.686+0000", "updatedBy": 1 } }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product Laebl was exited", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = { "", "/" }, //
@@ -142,10 +109,10 @@ public class ProductOriginController {
 			productOrigin.setCreatedAt(date);
 			productOrigin.setUpdatedAt(date);
 			productOrigin = mOriginRepository.save(productOrigin);
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		}else {
-			result.setMessage(MessageResponese.EXITS);
+			result.setMessage(MessageResponse.EXITS);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		}
 		result.setData(productOrigin);
@@ -161,21 +128,10 @@ public class ProductOriginController {
 	 * @apiParam {productOriginId} id Product Origin unique ID.
 	 * @apiBody {productOrigin} the info of Product Origin need to update
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductOrigin} the new Product Origin was updated
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode": 200,
-	 *                    "message": "Success!", "data": { "productOriginId": 1,
-	 *                    "createdAt": "2018-04-18T09:26:21.686+0000", "createdBy":
-	 *                    1, "isActive": 0, "productOriginCode": "123",
-	 *                    "productOriginDescription": "This is a Product Origin
-	 *                    description", "productOriginName": "Origin 1", "updatedAt":
-	 *                    "2018-04-18T09:26:21.686+0000", "updatedBy": 1 } }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product Origin was exited", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productOriginId}", //
@@ -198,7 +154,7 @@ public class ProductOriginController {
 
 		Origin = mOriginRepository.save(Origin);
 
-		result = new DataResult<>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, Origin);
+		result = new DataResult<>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, Origin);
 
 		return result;
 	}
@@ -210,21 +166,10 @@ public class ProductOriginController {
 	 * 
 	 * @apiParam {productOriginId} id Product Origin unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductOrigin} the Product Origin was deleted
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T08:08:02.828Z", "createdBy": 0,
-	 *                    "isActive": 0, "productOriginCode": "string",
-	 *                    "productOriginDescription": "string", "productOriginId": 0,
-	 *                    "productOriginName": "string", "updatedAt":
-	 *                    "2018-04-18T08:08:02.828Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product Origin was not found", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productOriginId}", //
@@ -235,7 +180,7 @@ public class ProductOriginController {
 		DataResult<ProductOrigin> dataResult = new DataResult<>();
 		ProductOrigin productOrigin = mOriginRepository.findById(productOriginId).get();
 		mOriginRepository.deleteById(productOriginId);
-		dataResult.setMessage(MessageResponese.SUCCESSED);
+		dataResult.setMessage(MessageResponse.SUCCESSED);
 		dataResult.setStatusCode(HttpStatus.OK.value());
 		dataResult.setData(productOrigin);
 		return dataResult;

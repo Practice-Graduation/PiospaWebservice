@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baobang.piospa.entities.CustomerSource;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.CustomerSourceRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -38,8 +38,8 @@ public class CustomerSourceController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {array} the list CustomerSource
 	 * 
 	 */
@@ -51,7 +51,7 @@ public class CustomerSourceController {
 
 		List<CustomerSource> CustomerSources = mCustomerSourceRepository.findAll();
 
-		return new DataResult<List<CustomerSource>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, CustomerSources);
+		return new DataResult<List<CustomerSource>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, CustomerSources);
 	}
 
 	/**
@@ -61,8 +61,8 @@ public class CustomerSourceController {
 	 * 
 	 * @apiParam {CustomerSourceId} id CustomerSource unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductOrigin} the CustomerSource was got
 	 * 
 	 */
@@ -75,7 +75,7 @@ public class CustomerSourceController {
 			@PathVariable(value = "customerSourceId") int customerSourceId) {
 		DataResult<CustomerSource> result = new DataResult<>();
 		CustomerSource CustomerSource = mCustomerSourceRepository.findById(customerSourceId).get();
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(CustomerSource);
 		return result;
@@ -88,8 +88,8 @@ public class CustomerSourceController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {CustomerSource} the customer source was created
 	 * 
 	 */
@@ -104,10 +104,10 @@ public class CustomerSourceController {
 
 		if (source == null) {
 			source = mCustomerSourceRepository.save(customerSource);
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		} else {
-			result.setMessage(MessageResponese.EXITS);
+			result.setMessage(MessageResponse.EXITS);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		}
 		result.setData(source);
@@ -121,8 +121,8 @@ public class CustomerSourceController {
 	 * 
 	 * @apiParam {CustomerSourceId} id CustomerSource unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {CustomerSource} the customer source was created
 	 * 
 	 */
@@ -145,7 +145,7 @@ public class CustomerSourceController {
 		source.setUpdatedAt(new Date());
 		
 		source = mCustomerSourceRepository.save(source);
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 
 		result.setData(source);
@@ -159,8 +159,8 @@ public class CustomerSourceController {
 	 * 
 	 * @apiParam {CustomerSourceId} id CustomerSource unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {CustomerSource} the customer source was created
 	 * 
 	 */
@@ -176,7 +176,7 @@ public class CustomerSourceController {
 		CustomerSource source = mCustomerSourceRepository.findById(customerSourceId).get();
 
 		mCustomerSourceRepository.delete(source);
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 
 		result.setData(source);

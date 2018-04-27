@@ -2,7 +2,11 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -16,11 +20,13 @@ public class OrderDeliveryStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="order_delivery_status_id")
 	private int orderDeliveryStatusId;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -37,11 +43,18 @@ public class OrderDeliveryStatus implements Serializable {
 	@Column(name="order_delivery_status_name")
 	private String orderDeliveryStatusName;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to Order
+
+	@JsonIgnore
+	@OneToMany(mappedBy="orderDeliveryStatus")
+	private List<Order> orders;
 
 	public OrderDeliveryStatus() {
 	}
@@ -54,11 +67,11 @@ public class OrderDeliveryStatus implements Serializable {
 		this.orderDeliveryStatusId = orderDeliveryStatusId;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -102,11 +115,11 @@ public class OrderDeliveryStatus implements Serializable {
 		this.orderDeliveryStatusName = orderDeliveryStatusName;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -117,5 +130,27 @@ public class OrderDeliveryStatus implements Serializable {
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+
+	public List<Order> getOrders() {
+		return this.orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+//	public Order addOrder(Order order) {
+//		getOrders().add(order);
+//		order.setOrderDeliveryStatus(this);
+//
+//		return order;
+//	}
+//
+//	public Order removeOrder(Order order) {
+//		getOrders().remove(order);
+//		order.setOrderDeliveryStatus(null);
+//
+//		return order;
+//	}
 
 }

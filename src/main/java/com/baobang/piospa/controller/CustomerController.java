@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baobang.piospa.entities.Customer;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.CustomerRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -40,8 +40,8 @@ public class CustomerController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {array} the list Customer
 	 * 
 	 */
@@ -53,7 +53,7 @@ public class CustomerController {
 
 		List<Customer> customers = mCustomerRepository.findAll();
 
-		return new DataResult<List<Customer>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, customers);
+		return new DataResult<List<Customer>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, customers);
 	}
 
 	/**
@@ -63,8 +63,8 @@ public class CustomerController {
 	 * 
 	 * @apiParam {CustomerId} id Customer unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductOrigin} the Customer was got
 	 * 
 	 */
@@ -77,7 +77,7 @@ public class CustomerController {
 			@PathVariable(value = "customerId") int customerId) {
 		DataResult<Customer> result = new DataResult<>();
 		Customer customer = mCustomerRepository.findById(customerId).get();
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(customer);
 		return result;
@@ -90,8 +90,8 @@ public class CustomerController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {Customer} the customer  was created
 	 * 
 	 */
@@ -106,10 +106,10 @@ public class CustomerController {
 
 		if (temp == null) {
 			temp = mCustomerRepository.save(customer);
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		} else {
-			result.setMessage(MessageResponese.EXITS);
+			result.setMessage(MessageResponse.EXITS);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		}
 		result.setData(temp);
@@ -123,8 +123,8 @@ public class CustomerController {
 	 * 
 	 * @apiParam {CustomerId} id Customer unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {Customer} the customer  was created
 	 * 
 	 */
@@ -167,7 +167,7 @@ public class CustomerController {
 		temp.setUpdatedAt(new Date());
 		
 		temp = mCustomerRepository.save(temp);
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 
 		result.setData(temp);
@@ -181,8 +181,8 @@ public class CustomerController {
 	 * 
 	 * @apiParam {CustomerId} id Customer unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {Customer} the customer  was created
 	 * 
 	 */
@@ -198,7 +198,7 @@ public class CustomerController {
 		Customer customer = mCustomerRepository.findById(customerId).get();
 
 		mCustomerRepository.delete(customer);
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 
 		result.setData(customer);

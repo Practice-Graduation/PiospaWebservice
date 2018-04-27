@@ -2,8 +2,11 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
-import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -17,6 +20,7 @@ public class StaffTitle implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="staff_title_id")
 	private int staffTitleId;
 
@@ -40,11 +44,17 @@ public class StaffTitle implements Serializable {
 	@Column(name="staff_title_name")
 	private String staffTitleName;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to Staff
+	@JsonIgnore
+	@OneToMany(mappedBy="staffTitle")
+	private List<Staff> staffs;
 
 	public StaffTitle() {
 	}
@@ -105,11 +115,11 @@ public class StaffTitle implements Serializable {
 		this.staffTitleName = staffTitleName;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -119,6 +129,28 @@ public class StaffTitle implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<Staff> getStaffs() {
+		return this.staffs;
+	}
+
+	public void setStaffs(List<Staff> staffs) {
+		this.staffs = staffs;
+	}
+
+	public Staff addStaff(Staff staff) {
+		getStaffs().add(staff);
+		staff.setStaffTitle(this);
+
+		return staff;
+	}
+
+	public Staff removeStaff(Staff staff) {
+		getStaffs().remove(staff);
+		staff.setStaffTitle(null);
+
+		return staff;
 	}
 
 }

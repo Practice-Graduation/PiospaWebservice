@@ -51,7 +51,7 @@ public class AttributeValue implements Serializable {
 
 	//bi-directional many-to-one association to ProductAttribute
 	@JsonIgnore
-	@OneToMany(mappedBy="attributeValue")
+	@OneToMany(mappedBy="attributeValueBean")
 	private List<ProductAttribute> productAttributes;
 
 	public AttributeValue() {
@@ -131,14 +131,14 @@ public class AttributeValue implements Serializable {
 
 	public ProductAttribute addProductAttribute(ProductAttribute productAttribute) {
 		getProductAttributes().add(productAttribute);
-		productAttribute.setAttributeValue(this);
+		productAttribute.setAttributeValueBean(this);
 
 		return productAttribute;
 	}
 
 	public ProductAttribute removeProductAttribute(ProductAttribute productAttribute) {
 		getProductAttributes().remove(productAttribute);
-		productAttribute.setAttributeValue(null);
+		productAttribute.setAttributeValueBean(null);
 
 		return productAttribute;
 	}

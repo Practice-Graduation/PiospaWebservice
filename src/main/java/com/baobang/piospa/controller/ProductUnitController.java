@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baobang.piospa.entities.ProductUnit;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductUnitRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -39,21 +39,10 @@ public class ProductUnitController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {array} the list product unit of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list product unit of the response
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T09:28:51.022Z", "createdBy": 0,
-	 *                    "isActive": 0, "productUnitCode": "string",
-	 *                    "productUnitDescription": "string", "productUnitId": 0,
-	 *                    "productUnitName": "string", "updatedAt":
-	 *                    "2018-04-18T09:28:51.022Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "null", "data" : null }
 	 */
 	@RequestMapping(//
 			method = RequestMethod.GET, //
@@ -63,7 +52,7 @@ public class ProductUnitController {
 
 		List<ProductUnit> productUnits = mUnitRepository.findAll();
 
-		return new DataResult<List<ProductUnit>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, productUnits);
+		return new DataResult<List<ProductUnit>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, productUnits);
 	}
 
 	/**
@@ -73,21 +62,10 @@ public class ProductUnitController {
 	 * 
 	 * @apiParam {productUnitId} id Product Unit unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {Productunit} the Product Unit was got
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {ProductUnit} the Product Unit was got
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T08:08:02.828Z", "createdBy": 0,
-	 *                    "isActive": 0, "productUnitCode": "string",
-	 *                    "productUnitDescription": "string", "productUnitId": 0,
-	 *                    "productUnitName": "string", "updatedAt":
-	 *                    "2018-04-18T08:08:02.828Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Not Found", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productUnitId}", //
@@ -98,7 +76,7 @@ public class ProductUnitController {
 		DataResult<ProductUnit> result = new DataResult<>();
 		Optional<ProductUnit> option = mUnitRepository.findById(productUnitId);
 		ProductUnit Unit = option.get();
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(Unit);
 		return result;
@@ -111,21 +89,10 @@ public class ProductUnitController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductUnit} the new Product Unit was created
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode": 200,
-	 *                    "message": "Success!", "data": { "productUnitId": 1,
-	 *                    "createdAt": "2018-04-18T09:26:21.686+0000", "createdBy":
-	 *                    1, "isActive": 0, "productUnitCode": "123",
-	 *                    "productUnitDescription": "This is a Product Unit
-	 *                    description", "productUnitName": "Unit 1", "updatedAt":
-	 *                    "2018-04-18T09:26:21.686+0000", "updatedBy": 1 } }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product Laebl was exited", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = { "", "/" }, //
@@ -142,7 +109,7 @@ public class ProductUnitController {
 		productUnit.setUpdatedAt(date);
 		productUnit = mUnitRepository.save(productUnit);
 
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(productUnit);
 		
@@ -157,21 +124,10 @@ public class ProductUnitController {
 	 * @apiParam {productUnitId} id Product Unit unique ID.
 	 * @apiBody {productUnit} the info of Product Unit need to update
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductUnit} the new Product Unit was updated
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode": 200,
-	 *                    "message": "Success!", "data": { "productUnitId": 1,
-	 *                    "createdAt": "2018-04-18T09:26:21.686+0000", "createdBy":
-	 *                    1, "isActive": 0, "productUnitCode": "123",
-	 *                    "productUnitDescription": "This is a Product Unit
-	 *                    description", "productUnitName": "Unit 1", "updatedAt":
-	 *                    "2018-04-18T09:26:21.686+0000", "updatedBy": 1 } }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product Unit was exited", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productUnitId}", //
@@ -194,7 +150,7 @@ public class ProductUnitController {
 
 		Unit = mUnitRepository.save(Unit);
 
-		result = new DataResult<>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, Unit);
+		result = new DataResult<>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, Unit);
 
 		return result;
 	}
@@ -206,21 +162,10 @@ public class ProductUnitController {
 	 * 
 	 * @apiParam {productUnitId} id Product Unit unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {ProductUnit} the Product Unit was deleted
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T08:08:02.828Z", "createdBy": 0,
-	 *                    "isActive": 0, "productUnitCode": "string",
-	 *                    "productUnitDescription": "string", "productUnitId": 0,
-	 *                    "productUnitName": "string", "updatedAt":
-	 *                    "2018-04-18T08:08:02.828Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product Unit was not found", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productUnitId}", //
@@ -231,7 +176,7 @@ public class ProductUnitController {
 		DataResult<ProductUnit> dataResult = new DataResult<>();
 		ProductUnit productUnit = mUnitRepository.findById(productUnitId).get();
 		mUnitRepository.deleteById(productUnitId);
-		dataResult.setMessage(MessageResponese.SUCCESSED);
+		dataResult.setMessage(MessageResponse.SUCCESSED);
 		dataResult.setStatusCode(HttpStatus.OK.value());
 		dataResult.setData(productUnit);
 		return dataResult;

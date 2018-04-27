@@ -2,9 +2,6 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 
 
@@ -23,6 +20,10 @@ public class ProductAttribute implements Serializable {
 	@Column(name="product_attribute_id")
 	private int productAttributeId;
 
+	@Lob
+	@Column(name="attribute_value")
+	private byte[] attributeValue;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
 	private Date createdAt;
@@ -40,15 +41,15 @@ public class ProductAttribute implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
+	//bi-directional many-to-one association to AttributeValue
+	@ManyToOne
+	@JoinColumn(name="attribute_value_id")
+	private AttributeValue attributeValueBean;
+
 	//bi-directional many-to-one association to Product
 	@ManyToOne
 	@JoinColumn(name="product_id")
 	private Product product;
-
-	//bi-directional many-to-one association to AttributeValue
-	@ManyToOne
-	@JoinColumn(name="attribute_value_id")
-	private AttributeValue attributeValue;
 
 	public ProductAttribute() {
 	}
@@ -59,6 +60,14 @@ public class ProductAttribute implements Serializable {
 
 	public void setProductAttributeId(int productAttributeId) {
 		this.productAttributeId = productAttributeId;
+	}
+
+	public byte[] getAttributeValue() {
+		return this.attributeValue;
+	}
+
+	public void setAttributeValue(byte[] attributeValue) {
+		this.attributeValue = attributeValue;
 	}
 
 	public Date getCreatedAt() {
@@ -101,20 +110,20 @@ public class ProductAttribute implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
+	public AttributeValue getAttributeValueBean() {
+		return this.attributeValueBean;
+	}
+
+	public void setAttributeValueBean(AttributeValue attributeValueBean) {
+		this.attributeValueBean = attributeValueBean;
+	}
+
 	public Product getProduct() {
 		return this.product;
 	}
 
 	public void setProduct(Product product) {
 		this.product = product;
-	}
-
-	public AttributeValue getAttributeValue() {
-		return this.attributeValue;
-	}
-
-	public void setAttributeValue(AttributeValue attributeValue) {
-		this.attributeValue = attributeValue;
 	}
 
 }

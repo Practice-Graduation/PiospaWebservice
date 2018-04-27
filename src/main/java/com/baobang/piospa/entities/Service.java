@@ -16,6 +16,7 @@ public class Service implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="service_id")
 	private int serviceId;
 

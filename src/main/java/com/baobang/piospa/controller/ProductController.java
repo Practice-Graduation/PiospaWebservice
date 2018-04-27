@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -39,21 +39,10 @@ public class ProductController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {array} the list product  of the responese
-	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T09:28:51.022Z", "createdBy": 0,
-	 *                    "isActive": 0, "productCode": "string",
-	 *                    "productDescription": "string", "productId": 0,
-	 *                    "productName": "string", "updatedAt":
-	 *                    "2018-04-18T09:28:51.022Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list product  of the response
 	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "null", "data" : null }
 	 */
 	@RequestMapping(//
 			method = RequestMethod.GET, //
@@ -63,7 +52,7 @@ public class ProductController {
 		
 		List<Product> products = mProductRepository.findAll();
 
-		return new DataResult<List<Product>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, products);
+		return new DataResult<List<Product>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, products);
 	}
 
 	/**
@@ -73,21 +62,10 @@ public class ProductController {
 	 * 
 	 * @apiParam {productId} id Product  unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {Product} the Product  was got
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T08:08:02.828Z", "createdBy": 0,
-	 *                    "isActive": 0, "productCode": "string",
-	 *                    "productDescription": "string", "productId": 0,
-	 *                    "productName": "string", "updatedAt":
-	 *                    "2018-04-18T08:08:02.828Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Not Found", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productId}", //
@@ -96,14 +74,19 @@ public class ProductController {
 	@ApiOperation(value = "Get product  by id")
 	public DataResult<Product> getProductById(@PathVariable(value = "productId") int productId) {
 		DataResult<Product> result = new DataResult<>();
-		Optional<Product> option = mProductRepository.findById(productId);
-		Product product  = option.get();
-		result.setMessage(MessageResponese.SUCCESSED);
+		Product product  = getProduct(productId);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(product);
 		return result;
 	}
-
+	
+	public Product getProduct(int productId) {
+		Optional<Product> option = mProductRepository.findById(productId);
+		Product product  = option.get();
+		return product;
+	}
+	
 	/**
 	 * @api {post} / Create a new Product 
 	 * @apiName createProduct
@@ -111,21 +94,10 @@ public class ProductController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {Product} the new Product  was created
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode": 200,
-	 *                    "message": "Success!", "data": { "productId": 1,
-	 *                    "createdAt": "2018-04-18T09:26:21.686+0000", "createdBy":
-	 *                    1, "isActive": 0, "productCode": "123",
-	 *                    "productDescription": "This is a Product 
-	 *                    description", "productName": " 1", "updatedAt":
-	 *                    "2018-04-18T09:26:21.686+0000", "updatedBy": 1 } }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product Laebl was exited", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = { "", "/" }, //
@@ -144,10 +116,10 @@ public class ProductController {
 			product.setUpdatedAt(date);
 			temp = mProductRepository.save(product);
 
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		}else {
-			result.setMessage(MessageResponese.EXITS);
+			result.setMessage(MessageResponse.EXITS);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		}
 		
@@ -156,6 +128,7 @@ public class ProductController {
 		
 		return result;
 	}
+	
 
 	/**
 	 * @api {put}/{productId} update Product  by id
@@ -165,21 +138,10 @@ public class ProductController {
 	 * @apiParam {productId} id Product  unique ID.
 	 * @apiBody {product} the info of Product  need to update
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {Product} the new Product  was updated
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "statusCode": 200,
-	 *                    "message": "Success!", "data": { "productId": 1,
-	 *                    "createdAt": "2018-04-18T09:26:21.686+0000", "createdBy":
-	 *                    1, "isActive": 0, "productCode": "123",
-	 *                    "productDescription": "This is a Product 
-	 *                    description", "productName": " 1", "updatedAt":
-	 *                    "2018-04-18T09:26:21.686+0000", "updatedBy": 1 } }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product  was exited", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productId}", //
@@ -196,7 +158,7 @@ public class ProductController {
 
 		product = mProductRepository.save(product);
 
-		result = new DataResult<>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, product);
+		result = new DataResult<>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, product);
 
 		return result;
 	}
@@ -208,21 +170,10 @@ public class ProductController {
 	 * 
 	 * @apiParam {productId} id Product  unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {Product} the Product  was deleted
 	 * 
-	 * @apiSuccessExample Success-Response: HTTP/1.1 200 OK { "data": [ {
-	 *                    "createdAt": "2018-04-18T08:08:02.828Z", "createdBy": 0,
-	 *                    "isActive": 0, "productCode": "string",
-	 *                    "productDescription": "string", "productId": 0,
-	 *                    "productName": "string", "updatedAt":
-	 *                    "2018-04-18T08:08:02.828Z", "updatedBy": 0 } ], "message":
-	 *                    "string", "statusCode": 0 }
-	 * @apiError
-	 *
-	 * @apiErrorExample Error-Response: HTTP/1.1 404 Not Found { "statusCode" : 404,
-	 *                  "message" : "Product  was not found", "data" :{} }
 	 */
 	@RequestMapping(//
 			value = "/{productId}", //
@@ -233,7 +184,7 @@ public class ProductController {
 		DataResult<Product> dataResult = new DataResult<>();
 		Product product = mProductRepository.findById(productId).get();
 		mProductRepository.deleteById(productId);
-		dataResult.setMessage(MessageResponese.SUCCESSED);
+		dataResult.setMessage(MessageResponse.SUCCESSED);
 		dataResult.setStatusCode(HttpStatus.OK.value());
 		dataResult.setData(product);
 		return dataResult;

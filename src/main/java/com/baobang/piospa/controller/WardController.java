@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baobang.piospa.entities.Ward;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.WardRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -39,8 +39,8 @@ public class WardController{
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {array} the list ward
 	 * 
 	 */
@@ -52,7 +52,7 @@ public class WardController{
 
 		List<Ward> wards = mWardRepository.findAll();
 
-		return new DataResult<List<Ward>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, wards);
+		return new DataResult<List<Ward>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, wards);
 	}
 
 	/**
@@ -62,9 +62,9 @@ public class WardController{
 	 * 
 	 * @apiParam {wardId} id Ward unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {ProductOrigin} the Ward was got
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {Ward} the Ward was got
 	 * 
 	 */
 	@RequestMapping(//
@@ -76,10 +76,10 @@ public class WardController{
 		DataResult<Ward> result = new DataResult<>();
 		Ward ward = mWardRepository.findById(wardId).get();
 		if (ward == null) {
-			result.setMessage(MessageResponese.NOT_FOUND);
+			result.setMessage(MessageResponse.NOT_FOUND);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		} else {
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		}
 

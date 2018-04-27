@@ -14,7 +14,7 @@ import com.baobang.piospa.entities.District;
 import com.baobang.piospa.entities.Ward;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.DistrictRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -37,8 +37,8 @@ public class DistrictController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {array} the list District
 	 * 
 	 */
@@ -50,7 +50,7 @@ public class DistrictController {
 
 		List<District> districts = mDistrictRepository.findAll();
 
-		return new DataResult<List<District>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, districts);
+		return new DataResult<List<District>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, districts);
 	}
 
 	/**
@@ -60,8 +60,8 @@ public class DistrictController {
 	 * 
 	 * @apiParam {districtId} id district unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {District} the district was got
 	 * 
 	 */
@@ -74,10 +74,10 @@ public class DistrictController {
 		DataResult<District> result = new DataResult<>();
 		District district = mDistrictRepository.findById(districtId).get();
 		if (district == null) {
-			result.setMessage(MessageResponese.NOT_FOUND);
+			result.setMessage(MessageResponse.NOT_FOUND);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		} else {
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		}
 
@@ -92,8 +92,8 @@ public class DistrictController {
 	 * 
 	 * @apiParam {districtId} id district unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {array[District]} the district was got
 	 * 
 	 */
@@ -107,11 +107,11 @@ public class DistrictController {
 		District district = mDistrictRepository.findById(districtId).get();
 		List<Ward> wards = null;
 		if (district == null) {
-			result.setMessage(MessageResponese.NOT_FOUND);
+			result.setMessage(MessageResponse.NOT_FOUND);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		} else {
 			wards = district.getWards();
-			result.setMessage(MessageResponese.SUCCESSED);
+			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		}
 

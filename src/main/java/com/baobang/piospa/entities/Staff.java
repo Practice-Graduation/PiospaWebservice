@@ -3,7 +3,6 @@ package com.baobang.piospa.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
-import java.sql.Timestamp;
 
 
 /**
@@ -17,6 +16,7 @@ public class Staff implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="staff_id")
 	private int staffId;
 
@@ -24,8 +24,9 @@ public class Staff implements Serializable {
 
 	private String code;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -49,20 +50,25 @@ public class Staff implements Serializable {
 	@Column(name="staff_avatar")
 	private String staffAvatar;
 
-	@Column(name="staff_department_id")
-	private int staffDepartmentId;
-
-	@Column(name="staff_title_id")
-	private int staffTitleId;
-
 	@Column(name="store_id")
 	private int storeId;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to StaffDepartment
+	@ManyToOne
+	@JoinColumn(name="staff_department_id")
+	private StaffDepartment staffDepartment;
+
+	//bi-directional many-to-one association to StaffTitle
+	@ManyToOne
+	@JoinColumn(name="staff_title_id")
+	private StaffTitle staffTitle;
 
 	public Staff() {
 	}
@@ -91,11 +97,11 @@ public class Staff implements Serializable {
 		this.code = code;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -163,22 +169,6 @@ public class Staff implements Serializable {
 		this.staffAvatar = staffAvatar;
 	}
 
-	public int getStaffDepartmentId() {
-		return this.staffDepartmentId;
-	}
-
-	public void setStaffDepartmentId(int staffDepartmentId) {
-		this.staffDepartmentId = staffDepartmentId;
-	}
-
-	public int getStaffTitleId() {
-		return this.staffTitleId;
-	}
-
-	public void setStaffTitleId(int staffTitleId) {
-		this.staffTitleId = staffTitleId;
-	}
-
 	public int getStoreId() {
 		return this.storeId;
 	}
@@ -187,11 +177,11 @@ public class Staff implements Serializable {
 		this.storeId = storeId;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -201,6 +191,22 @@ public class Staff implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public StaffDepartment getStaffDepartment() {
+		return this.staffDepartment;
+	}
+
+	public void setStaffDepartment(StaffDepartment staffDepartment) {
+		this.staffDepartment = staffDepartment;
+	}
+
+	public StaffTitle getStaffTitle() {
+		return this.staffTitle;
+	}
+
+	public void setStaffTitle(StaffTitle staffTitle) {
+		this.staffTitle = staffTitle;
 	}
 
 }

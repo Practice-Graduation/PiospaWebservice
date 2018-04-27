@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baobang.piospa.entities.AttributeValue;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.AttributeValueRepository;
-import com.baobang.piospa.utils.MessageResponese;
+import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
@@ -40,9 +40,9 @@ public class AttributeValueController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {array} the list product attributeValue of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list product attribute Value of the response
 	 * 
 	 */
 	@RequestMapping(//
@@ -53,7 +53,7 @@ public class AttributeValueController {
 
 		List<AttributeValue> AttributeValues = mAttributeValueRepository.findAll();
 
-		return new DataResult<List<AttributeValue>>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, AttributeValues);
+		return new DataResult<List<AttributeValue>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, AttributeValues);
 	}
 
 	/**
@@ -61,11 +61,11 @@ public class AttributeValueController {
 	 * @apiName getAttributeValueById
 	 * @apiGroup Product
 	 * 
-	 * @apiParam {AttributeValueId} id Product attributeValue unique ID.
+	 * @apiParam {attributeValueId} id Product attributeValue unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
-	 * @apiSuccess {User} the Product attributeValue was got
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {AttributeValue} the Product attribute Value was got
 	 * 
 	 */
 	@RequestMapping(//
@@ -77,7 +77,7 @@ public class AttributeValueController {
 		DataResult<AttributeValue> result = new DataResult<>();
 		Optional<AttributeValue> option = mAttributeValueRepository.findById(attributeValueId);
 		AttributeValue attributeValue = option.get();
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(attributeValue);
 		return result;
@@ -90,8 +90,8 @@ public class AttributeValueController {
 	 * 
 	 * @apiParam none
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {AttributeValue} the new Product attributeValue was created
 	 * 
 	 */
@@ -108,7 +108,7 @@ public class AttributeValueController {
 		attributeValue.setCreatedAt(date);
 		attributeValue.setUpdatedAt(date);
 		attributeValue = mAttributeValueRepository.save(attributeValue);
-		result.setMessage(MessageResponese.SUCCESSED);
+		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(attributeValue);
 		return result;
@@ -122,8 +122,8 @@ public class AttributeValueController {
 	 * @apiParam {AttributeValueId} id Product attributeValue unique ID.
 	 * @apiBody {AttributeValue} the info of user need to update
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {AttributeValue} the new Product attributeValue was updated
 	 * 
 	 */
@@ -147,7 +147,7 @@ public class AttributeValueController {
 
 		newAttributeValue = mAttributeValueRepository.save(newAttributeValue);
 
-		result = new DataResult<>(HttpStatus.OK.value(), MessageResponese.SUCCESSED, newAttributeValue);
+		result = new DataResult<>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, newAttributeValue);
 
 		return result;
 	}
@@ -159,8 +159,8 @@ public class AttributeValueController {
 	 * 
 	 * @apiParam {AttributeValueId} id Product attributeValue unique ID.
 	 * 
-	 * @apiSuccess {Integer} the status of the responese
-	 * @apiSuccess {String} the message of the responese
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
 	 * @apiSuccess {AttributeValue} the Product attributeValue was deleted
 	 * 
 	 * 
@@ -174,7 +174,7 @@ public class AttributeValueController {
 		DataResult<AttributeValue> dataResult = new DataResult<>();
 		AttributeValue attributeValue = mAttributeValueRepository.findById(attributeValueId).get();
 		mAttributeValueRepository.deleteById(attributeValueId);
-		dataResult.setMessage(MessageResponese.SUCCESSED);
+		dataResult.setMessage(MessageResponse.SUCCESSED);
 		dataResult.setStatusCode(HttpStatus.OK.value());
 		dataResult.setData(attributeValue);
 		return dataResult;
