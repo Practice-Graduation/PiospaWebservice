@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.entities.ProductGroup;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductGroupRepository;
@@ -80,6 +81,33 @@ public class ProductGroupController {
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(group);
+		return result;
+	}
+	
+	/**
+	 * @api {get} /{productGroupId}/products Request Product information
+	 * @apiName getProductByGroupId
+	 * @apiGroup Product
+	 * 
+	 * @apiParam {productGroupId} id Product Group unique ID.
+	 * 
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array[Product]} the Products of Group was got
+	 * 
+	 */
+	@RequestMapping(//
+			value = "/{productGroupId}/products", //
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Get products by group id")
+	public DataResult<List<Product>> getProductByGroupId(@PathVariable(value = "productGroupId") int productGroupId) {
+		DataResult<List<Product>> result = new DataResult<>();
+		Optional<ProductGroup> option = mGroupRepository.findById(productGroupId);
+		ProductGroup group = option.get();
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
+		result.setData(group.getProducts());
 		return result;
 	}
 
