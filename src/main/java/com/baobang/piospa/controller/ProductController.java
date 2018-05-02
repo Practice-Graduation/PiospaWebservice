@@ -72,9 +72,9 @@ public class ProductController {
 			method = RequestMethod.GET, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Get products by group id")
-	public DataResult<List<Product>> getProductByGroupId(@PathVariable(value = "productId") int productId) {
+	public DataResult<List<Product>> getProductByGroupId(@PathVariable(value = "groupId") int groupId) {
 		
-		List<Product> products = mProductRepository.findByGroupId(productId);
+		List<Product> products = mProductRepository.findByGroupId(groupId);
 		if(products == null || products.size() == 0) {
 			return new DataResult<List<Product>>(HttpStatus.NOT_FOUND.value(), MessageResponse.NOT_FOUND, products);
 		}
