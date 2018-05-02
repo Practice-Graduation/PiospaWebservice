@@ -54,6 +54,34 @@ public class ProductController {
 
 		return new DataResult<List<Product>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, products);
 	}
+	
+	/**
+	 * @api {get} / Request Product  information
+	 * @apiName getProductByGroupId
+	 * @api Product
+	 * 
+	 * @apiParam none
+	 * 
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list product  of the response
+	 *
+	 */
+	@RequestMapping(//
+			value = "/group/{groupId}", //
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Get products by group id")
+	public DataResult<List<Product>> getProductByGroupId(@PathVariable(value = "productId") int productId) {
+		
+		List<Product> products = mProductRepository.findByGroupId(productId);
+		if(products == null || products.size() == 0) {
+			return new DataResult<List<Product>>(HttpStatus.NOT_FOUND.value(), MessageResponse.NOT_FOUND, products);
+		}
+
+		return new DataResult<List<Product>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, products);
+	}
+	
 
 	/**
 	 * @api {get} /{productId} Request Product  information
