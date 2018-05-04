@@ -2,8 +2,11 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
-import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -34,11 +37,17 @@ public class ServiceType implements Serializable {
 	@Column(name="service_type_name")
 	private String serviceTypeName;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to ServicePrice
+	@JsonIgnore
+	@OneToMany(mappedBy="serviceType")
+	private List<ServicePrice> servicePrices;
 
 	public ServiceType() {
 	}
@@ -83,11 +92,11 @@ public class ServiceType implements Serializable {
 		this.serviceTypeName = serviceTypeName;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -97,6 +106,28 @@ public class ServiceType implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<ServicePrice> getServicePrices() {
+		return this.servicePrices;
+	}
+
+	public void setServicePrices(List<ServicePrice> servicePrices) {
+		this.servicePrices = servicePrices;
+	}
+
+	public ServicePrice addServicePrice(ServicePrice servicePrice) {
+		getServicePrices().add(servicePrice);
+		servicePrice.setServiceType(this);
+
+		return servicePrice;
+	}
+
+	public ServicePrice removeServicePrice(ServicePrice servicePrice) {
+		getServicePrices().remove(servicePrice);
+		servicePrice.setServiceType(null);
+
+		return servicePrice;
 	}
 
 }

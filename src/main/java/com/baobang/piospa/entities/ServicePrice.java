@@ -2,7 +2,12 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -22,9 +27,10 @@ public class ServicePrice implements Serializable {
 
 	@Column(name="all_price")
 	private String allPrice;
-
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -35,23 +41,37 @@ public class ServicePrice implements Serializable {
 	@Column(name="retail_price")
 	private String retailPrice;
 
-	@Column(name="service_group_id")
-	private int serviceGroupId;
-
-	@Column(name="service_id")
-	private int serviceId;
-
-	@Column(name="service_package_id")
-	private int servicePackageId;
-
-	@Column(name="service_type_id")
-	private int serviceTypeId;
-
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to Booking
+	@JsonIgnore
+	@OneToMany(mappedBy="servicePrice")
+	private List<Booking> bookings;
+
+	//bi-directional many-to-one association to ServiceGroup
+	@ManyToOne
+	@JoinColumn(name="service_group_id")
+	private ServiceGroup serviceGroup;
+
+	//bi-directional many-to-one association to ServicePackage
+	@ManyToOne
+	@JoinColumn(name="service_package_id")
+	private ServicePackage servicePackage;
+
+	//bi-directional many-to-one association to Service
+	@ManyToOne
+	@JoinColumn(name="service_id")
+	private Service service;
+
+	//bi-directional many-to-one association to ServiceType
+	@ManyToOne
+	@JoinColumn(name="service_type_id")
+	private ServiceType serviceType;
 
 	public ServicePrice() {
 	}
@@ -72,11 +92,11 @@ public class ServicePrice implements Serializable {
 		this.allPrice = allPrice;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -104,43 +124,11 @@ public class ServicePrice implements Serializable {
 		this.retailPrice = retailPrice;
 	}
 
-	public int getServiceGroupId() {
-		return this.serviceGroupId;
-	}
-
-	public void setServiceGroupId(int serviceGroupId) {
-		this.serviceGroupId = serviceGroupId;
-	}
-
-	public int getServiceId() {
-		return this.serviceId;
-	}
-
-	public void setServiceId(int serviceId) {
-		this.serviceId = serviceId;
-	}
-
-	public int getServicePackageId() {
-		return this.servicePackageId;
-	}
-
-	public void setServicePackageId(int servicePackageId) {
-		this.servicePackageId = servicePackageId;
-	}
-
-	public int getServiceTypeId() {
-		return this.serviceTypeId;
-	}
-
-	public void setServiceTypeId(int serviceTypeId) {
-		this.serviceTypeId = serviceTypeId;
-	}
-
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -150,6 +138,60 @@ public class ServicePrice implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<Booking> getBookings() {
+		return this.bookings;
+	}
+
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
+	public Booking addBooking(Booking booking) {
+		getBookings().add(booking);
+		booking.setServicePrice(this);
+
+		return booking;
+	}
+
+	public Booking removeBooking(Booking booking) {
+		getBookings().remove(booking);
+		booking.setServicePrice(null);
+
+		return booking;
+	}
+
+	public ServiceGroup getServiceGroup() {
+		return this.serviceGroup;
+	}
+
+	public void setServiceGroup(ServiceGroup serviceGroup) {
+		this.serviceGroup = serviceGroup;
+	}
+
+	public ServicePackage getServicePackage() {
+		return this.servicePackage;
+	}
+
+	public void setServicePackage(ServicePackage servicePackage) {
+		this.servicePackage = servicePackage;
+	}
+
+	public Service getService() {
+		return this.service;
+	}
+
+	public void setService(Service service) {
+		this.service = service;
+	}
+
+	public ServiceType getServiceType() {
+		return this.serviceType;
+	}
+
+	public void setServiceType(ServiceType serviceType) {
+		this.serviceType = serviceType;
 	}
 
 }
