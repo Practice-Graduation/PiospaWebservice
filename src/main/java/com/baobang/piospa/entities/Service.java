@@ -2,7 +2,11 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -20,8 +24,9 @@ public class Service implements Serializable {
 	@Column(name="service_id")
 	private int serviceId;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -42,14 +47,22 @@ public class Service implements Serializable {
 	@Column(name="service_name")
 	private String serviceName;
 
-	@Column(name="service_time_id")
-	private int serviceTimeId;
-
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to ServicePrice
+	@JsonIgnore
+	@OneToMany(mappedBy="service")
+	private List<ServicePrice> servicePrices;
+
+	//bi-directional many-to-one association to ServiceTime
+	@ManyToOne
+	@JoinColumn(name="service_time_id")
+	private ServiceTime serviceTime;
 
 	public Service() {
 	}
@@ -62,11 +75,11 @@ public class Service implements Serializable {
 		this.serviceId = serviceId;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -126,19 +139,11 @@ public class Service implements Serializable {
 		this.serviceName = serviceName;
 	}
 
-	public int getServiceTimeId() {
-		return this.serviceTimeId;
-	}
-
-	public void setServiceTimeId(int serviceTimeId) {
-		this.serviceTimeId = serviceTimeId;
-	}
-
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -148,6 +153,36 @@ public class Service implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<ServicePrice> getServicePrices() {
+		return this.servicePrices;
+	}
+
+	public void setServicePrices(List<ServicePrice> servicePrices) {
+		this.servicePrices = servicePrices;
+	}
+
+	public ServicePrice addServicePrice(ServicePrice servicePrice) {
+		getServicePrices().add(servicePrice);
+		servicePrice.setService(this);
+
+		return servicePrice;
+	}
+
+	public ServicePrice removeServicePrice(ServicePrice servicePrice) {
+		getServicePrices().remove(servicePrice);
+		servicePrice.setService(null);
+
+		return servicePrice;
+	}
+
+	public ServiceTime getServiceTime() {
+		return this.serviceTime;
+	}
+
+	public void setServiceTime(ServiceTime serviceTime) {
+		this.serviceTime = serviceTime;
 	}
 
 }

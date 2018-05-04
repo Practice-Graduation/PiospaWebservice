@@ -2,7 +2,11 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -20,8 +24,9 @@ public class ServiceTime implements Serializable {
 	@Column(name="service_time_id")
 	private int serviceTimeId;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -31,11 +36,17 @@ public class ServiceTime implements Serializable {
 
 	private String time;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
+
+	//bi-directional many-to-one association to Service
+	@JsonIgnore
+	@OneToMany(mappedBy="serviceTime")
+	private List<Service> services;
 
 	public ServiceTime() {
 	}
@@ -48,11 +59,11 @@ public class ServiceTime implements Serializable {
 		this.serviceTimeId = serviceTimeId;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -80,11 +91,11 @@ public class ServiceTime implements Serializable {
 		this.time = time;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -94,6 +105,28 @@ public class ServiceTime implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<Service> getServices() {
+		return this.services;
+	}
+
+	public void setServices(List<Service> services) {
+		this.services = services;
+	}
+
+	public Service addService(Service service) {
+		getServices().add(service);
+		service.setServiceTime(this);
+
+		return service;
+	}
+
+	public Service removeService(Service service) {
+		getServices().remove(service);
+		service.setServiceTime(null);
+
+		return service;
 	}
 
 }

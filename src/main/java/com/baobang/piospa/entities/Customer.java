@@ -109,6 +109,11 @@ public class Customer implements Serializable {
 	@OneToMany(mappedBy="customer")
 	private List<Order> orders;
 
+	//bi-directional many-to-one association to Booking
+	@JsonIgnore
+	@OneToMany(mappedBy="customer")
+	private List<Booking> bookings;
+
 	public Customer() {
 	}
 
@@ -360,18 +365,40 @@ public class Customer implements Serializable {
 		this.orders = orders;
 	}
 
-//	public Order addOrder(Order order) {
-//		getOrders().add(order);
-//		order.setCustomer(this);
-//
-//		return order;
-//	}
-//
-//	public Order removeOrder(Order order) {
-//		getOrders().remove(order);
-//		order.setCustomer(null);
-//
-//		return order;
-//	}
+	public Order addOrder(Order order) {
+		getOrders().add(order);
+		order.setCustomer(this);
+
+		return order;
+	}
+
+	public Order removeOrder(Order order) {
+		getOrders().remove(order);
+		order.setCustomer(null);
+
+		return order;
+	}
+
+	public List<Booking> getBookings() {
+		return this.bookings;
+	}
+
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
+	public Booking addBooking(Booking booking) {
+		getBookings().add(booking);
+		booking.setCustomer(this);
+
+		return booking;
+	}
+
+	public Booking removeBooking(Booking booking) {
+		getBookings().remove(booking);
+		booking.setCustomer(null);
+
+		return booking;
+	}
 
 }
