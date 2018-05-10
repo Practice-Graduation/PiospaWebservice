@@ -49,12 +49,12 @@ public class OrderProduct implements Serializable {
 	private int voucherId;
 
 	//bi-directional many-to-one association to Order
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="order_id")
 	private Order order;
 
 	//bi-directional many-to-one association to Product
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="product_id")
 	private Product product;
 

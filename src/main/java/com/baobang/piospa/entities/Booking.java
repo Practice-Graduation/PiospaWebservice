@@ -2,6 +2,9 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -57,30 +60,31 @@ public class Booking implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="voucher_id")
 	private int voucherId;
 
 	//bi-directional many-to-one association to Customer
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 
 	//bi-directional many-to-one association to Order
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="order_id")
 	private Order order;
 
 	//bi-directional many-to-one association to BookingDetail
+	@JsonIgnore
 	@OneToMany(mappedBy="booking")
 	private List<BookingDetail> bookingDetails;
 
 	//bi-directional many-to-many association to ServicePrice
+	@JsonIgnore
 	@ManyToMany(mappedBy="bookings1")
 	private List<ServicePrice> servicePrices1;
 
 	//bi-directional many-to-many association to ServicePrice
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
 		name="booking_detail"

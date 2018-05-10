@@ -2,6 +2,9 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +45,7 @@ public class ServiceGroup implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to Service
+	@JsonIgnore
 	@OneToMany(mappedBy="serviceGroup")
 	private List<Service> services;
 

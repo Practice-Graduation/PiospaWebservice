@@ -2,6 +2,9 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +48,7 @@ public class ProductUnit implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to Product
+	@JsonIgnore
 	@OneToMany(mappedBy="productUnit")
 	private List<Product> products;
 

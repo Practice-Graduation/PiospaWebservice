@@ -2,6 +2,9 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -73,45 +76,47 @@ public class Order implements Serializable {
 	private int voucherId;
 
 	//bi-directional many-to-one association to Booking
+	@JsonIgnore
 	@OneToMany(mappedBy="order")
 	private List<Booking> bookings;
 
 	//bi-directional many-to-one association to OrderProduct
+	@JsonIgnore
 	@OneToMany(mappedBy="order")
 	private List<OrderProduct> orderProducts;
 
 	//bi-directional many-to-one association to CustomerSource
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="customer_source_id")
 	private CustomerSource customerSource;
 
 	//bi-directional many-to-one association to Customer
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 
 	//bi-directional many-to-one association to OrderDeliveryStatus
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="order_delivery_status_id")
 	private OrderDeliveryStatus orderDeliveryStatus;
 
 	//bi-directional many-to-one association to OrderDeliveryType
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="order_delivery_type_id")
 	private OrderDeliveryType orderDeliveryType;
 
 	//bi-directional many-to-one association to OrderPaymentType
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="order_payment_type_id")
 	private OrderPaymentType orderPaymentType;
 
 	//bi-directional many-to-one association to OrderReasonCancel
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="order_reasion_cancel_id")
 	private OrderReasonCancel orderReasonCancel;
 
 	//bi-directional many-to-one association to OrderStatus
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="order_status_id")
 	private OrderStatus orderStatus;
 

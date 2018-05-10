@@ -42,12 +42,12 @@ public class ProductAttribute implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to AttributeValue
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="attribute_value_id")
 	private AttributeValue attributeValueBean;
 
 	//bi-directional many-to-one association to Product
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="product_id")
 	private Product product;
 

@@ -38,17 +38,17 @@ public class ServicePackageDetail implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to ServicePackage
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="service_package_id")
 	private ServicePackage servicePackage;
 
 	//bi-directional many-to-one association to ServiceTime
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="service_time_id")
 	private ServiceTime serviceTime;
 
 	//bi-directional many-to-one association to Service
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="service_id")
 	private Service service;
 

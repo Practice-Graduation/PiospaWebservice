@@ -35,7 +35,7 @@ public class ServiceController {
 	/**
 	 * @api {get} / Request Service information
 	 * @apiName getAll
-	 * @api Service
+	 * @apiGroup Service
 	 * 
 	 * @apiParam none
 	 * 
@@ -58,7 +58,7 @@ public class ServiceController {
 	/**
 	 * @api {get} /{serviceId} Request Service information
 	 * @apiName getServiceById
-	 * @api Service
+	 * @apiGroup Service
 	 * 
 	 * @apiParam {ServiceId} id Service unique ID.
 	 * 
@@ -85,7 +85,7 @@ public class ServiceController {
 	/**
 	 * @api {post} / Create a new Service
 	 * @apiName createService
-	 * @api Service
+	 * @apiGroup Service
 	 * 
 	 * @apiParam none
 	 * 
@@ -122,7 +122,7 @@ public class ServiceController {
 	/**
 	 * @api {put}/{serviceId} update Service by id
 	 * @apiName updateService
-	 * @api Service
+	 * @apiGroup Service
 	 * 
 	 * @apiParam {ServiceId} id Service unique ID.
 	 * @apiBody {Service} the info of user need to update
@@ -165,7 +165,7 @@ public class ServiceController {
 	/**
 	 * @api {delete}/{serviceId} delete Service by id
 	 * @apiName deleteService
-	 * @api Service
+	 * @apiGroup Service
 	 * 
 	 * @apiParam {serviceId} id Service unique ID.
 	 * 

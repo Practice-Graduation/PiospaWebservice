@@ -2,6 +2,9 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -41,10 +44,12 @@ public class ServiceTime implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to ServicePackageDetail
+	@JsonIgnore
 	@OneToMany(mappedBy="serviceTime")
 	private List<ServicePackageDetail> servicePackageDetails;
 
 	//bi-directional many-to-one association to Service
+	@JsonIgnore
 	@OneToMany(mappedBy="serviceTime")
 	private List<Service> services;
 

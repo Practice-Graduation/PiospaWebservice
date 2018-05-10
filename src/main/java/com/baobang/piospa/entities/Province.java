@@ -2,6 +2,9 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -26,6 +29,7 @@ public class Province implements Serializable {
 	private String type;
 
 	//bi-directional many-to-one association to District
+	@JsonIgnore
 	@OneToMany(mappedBy="province")
 	private List<District> districts;
 

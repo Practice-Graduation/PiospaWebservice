@@ -2,6 +2,9 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -45,10 +48,12 @@ public class ServicePrice implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to BookingDetail
+	@JsonIgnore
 	@OneToMany(mappedBy="servicePrice")
 	private List<BookingDetail> bookingDetails;
 
 	//bi-directional many-to-many association to Booking
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(
 		name="booking_detail"
@@ -62,21 +67,18 @@ public class ServicePrice implements Serializable {
 	private List<Booking> bookings1;
 
 	//bi-directional many-to-one association to ServicePackage
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="service_package_id")
 	private ServicePackage servicePackage;
 
-	//bi-directional many-to-one association to ServiceType
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="service_type_id")
-	private ServiceType serviceType;
-
+	
 	//bi-directional many-to-one association to Service
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="service_id")
 	private Service service;
 
 	//bi-directional many-to-many association to Booking
+	@JsonIgnore
 	@ManyToMany(mappedBy="servicePrices2")
 	private List<Booking> bookings2;
 
@@ -183,14 +185,6 @@ public class ServicePrice implements Serializable {
 
 	public void setServicePackage(ServicePackage servicePackage) {
 		this.servicePackage = servicePackage;
-	}
-
-	public ServiceType getServiceType() {
-		return this.serviceType;
-	}
-
-	public void setServiceType(ServiceType serviceType) {
-		this.serviceType = serviceType;
 	}
 
 	public Service getService() {

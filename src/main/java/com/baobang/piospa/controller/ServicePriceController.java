@@ -56,36 +56,6 @@ public class ServicePriceController {
 	}
 	
 	/**
-	 * @api {get} / Request Service Price information
-	 * @apiName getAll
-	 * @apiPrice Service
-	 * 
-	 * @apiParam none
-	 * 
-	 * @apiSuccess {Integer} the status of the response
-	 * @apiSuccess {String} the message of the response
-	 * @apiSuccess {array} the list Service Price of the response
-	 * 
-	 */
-	@RequestMapping(//
-			value = "/group/{serviceGroupId}" ,//
-			method = RequestMethod.GET, //
-			produces = { MediaType.APPLICATION_JSON_VALUE })
-	@ApiOperation(value = "Get all Service Prices")
-	public DataResult<List<ServicePrice>> getServicePriceByGroup(@PathVariable(value = "serviceGroupId") int serviceGroupId) {
-
-		List<ServicePrice> servicePrices = mServicePriceRepository.findByServiceGroup(serviceGroupId);
-		if(servicePrices == null || servicePrices.size() == 0) {
-
-			return new DataResult<List<ServicePrice>>(HttpStatus.NOT_FOUND.value(), MessageResponse.NOT_FOUND, servicePrices);
-		}else {
-
-			return new DataResult<List<ServicePrice>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, servicePrices);
-		}
-
-	}
-
-	/**
 	 *  
 	 * @api {get} /{servicePriceId} Request Service Price information
 	 * @apiName getServicePriceById
@@ -130,7 +100,7 @@ public class ServicePriceController {
 			method = RequestMethod.POST, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Create a new Service Price")
-	public DataResult<ServicePrice> CreateServicePrice(@RequestBody ServicePrice servicePrice) {
+	public DataResult<ServicePrice> createServicePrice(@RequestBody ServicePrice servicePrice) {
 		DataResult<ServicePrice> result = new DataResult<>();
 
 		Date date = new Date();
@@ -170,7 +140,6 @@ public class ServicePriceController {
 		ServicePrice price = option.get();
 
 		price.setService(servicePrice.getService());
-		price.setServiceType(servicePrice.getServiceType());
 		price.setServicePackage(servicePrice.getServicePackage());
 		price.setRetailPrice(servicePrice.getRetailPrice());
 		price.setAllPrice(servicePrice.getAllPrice());

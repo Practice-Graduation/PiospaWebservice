@@ -2,6 +2,9 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -97,15 +100,18 @@ public class Customer implements Serializable {
 	private String zalo;
 
 	//bi-directional many-to-one association to Booking
+	@JsonIgnore
 	@OneToMany(mappedBy="customer")
 	private List<Booking> bookings;
 
 	//bi-directional many-to-one association to CustomerSource
-	@ManyToOne(fetch=FetchType.LAZY)
+	@JsonIgnore
+	@ManyToOne
 	@JoinColumn(name="customer_source_id")
 	private CustomerSource customerSource;
 
 	//bi-directional many-to-one association to Order
+	@JsonIgnore
 	@OneToMany(mappedBy="customer")
 	private List<Order> orders;
 

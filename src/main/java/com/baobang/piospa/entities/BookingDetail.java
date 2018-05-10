@@ -20,12 +20,12 @@ public class BookingDetail implements Serializable {
 	private int bookingDetailId;
 
 	//bi-directional many-to-one association to Booking
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="booking_id")
 	private Booking booking;
 
 	//bi-directional many-to-one association to ServicePrice
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="service_price_id")
 	private ServicePrice servicePrice;
 

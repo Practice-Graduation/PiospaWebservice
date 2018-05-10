@@ -61,12 +61,12 @@ public class Staff implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to StaffDepartment
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="staff_department_id")
 	private StaffDepartment staffDepartment;
 
 	//bi-directional many-to-one association to StaffTitle
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="staff_title_id")
 	private StaffTitle staffTitle;
 
