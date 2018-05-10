@@ -24,7 +24,7 @@ public class Ward implements Serializable {
 	private String type;
 
 	//bi-directional many-to-one association to District
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="districtid")
 	private District district;
 

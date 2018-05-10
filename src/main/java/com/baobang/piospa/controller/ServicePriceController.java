@@ -170,7 +170,6 @@ public class ServicePriceController {
 		ServicePrice price = option.get();
 
 		price.setService(servicePrice.getService());
-		price.setServiceGroup(servicePrice.getServiceGroup());
 		price.setServiceType(servicePrice.getServiceType());
 		price.setServicePackage(servicePrice.getServicePackage());
 		price.setRetailPrice(servicePrice.getRetailPrice());

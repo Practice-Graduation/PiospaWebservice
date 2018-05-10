@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baobang.piospa.entities.Service;
-import com.baobang.piospa.entities.ServiceTime;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ServiceRepository;
 import com.baobang.piospa.utils.MessageResponse;
@@ -146,6 +145,7 @@ public class ServiceController {
 		Service temp = option.get();
 
 		temp.setServiceName(service.getServiceName());
+		temp.setServiceGroup(service.getServiceGroup());
 		temp.setServiceTime(service.getServiceTime());
 		temp.setDescription(service.getDescription());
 		temp.setImage(service.getImage());

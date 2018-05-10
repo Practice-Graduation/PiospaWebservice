@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.baobang.piospa.model.DataResult;
 
 /**
@@ -14,7 +13,7 @@ import com.baobang.piospa.model.DataResult;
   */
 @ControllerAdvice
 @RestController
-public class ExceptionControllerAdvice{
+public class ExceptionControllerAdvice {
  
 	@ExceptionHandler(Exception.class)
 	public DataResult<Object> exceptionHandler(Exception ex) {
@@ -23,4 +22,5 @@ public class ExceptionControllerAdvice{
 				ex.getMessage(),
 				null);
 	}
+	
 }

@@ -2,9 +2,6 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +49,6 @@ public class StaffTitle implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to Staff
-	@JsonIgnore
 	@OneToMany(mappedBy="staffTitle")
 	private List<Staff> staffs;
 

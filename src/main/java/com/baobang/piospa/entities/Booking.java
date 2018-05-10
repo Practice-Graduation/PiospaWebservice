@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
-import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -23,8 +23,9 @@ public class Booking implements Serializable {
 
 	private String code;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
-	private Timestamp createdAt;
+	private Date createdAt;
 
 	@Column(name="created_by")
 	private int createdBy;
@@ -37,6 +38,9 @@ public class Booking implements Serializable {
 	private int number;
 
 	private int price;
+
+	@Column(name="tax_id")
+	private int taxId;
 
 	@Column(name="time_end")
 	private Time timeEnd;
@@ -53,23 +57,41 @@ public class Booking implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="voucher_id")
 	private int voucherId;
 
-	//bi-directional many-to-one association to ServicePrice
-	@ManyToOne
-	@JoinColumn(name="service_price_id")
-	private ServicePrice servicePrice;
-
 	//bi-directional many-to-one association to Customer
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 
 	//bi-directional many-to-one association to Order
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="order_id")
 	private Order order;
+
+	//bi-directional many-to-one association to BookingDetail
+	@OneToMany(mappedBy="booking")
+	private List<BookingDetail> bookingDetails;
+
+	//bi-directional many-to-many association to ServicePrice
+	@ManyToMany(mappedBy="bookings1")
+	private List<ServicePrice> servicePrices1;
+
+	//bi-directional many-to-many association to ServicePrice
+	@ManyToMany
+	@JoinTable(
+		name="booking_detail"
+		, joinColumns={
+			@JoinColumn(name="booking_id")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="service_price_id")
+			}
+		)
+	private List<ServicePrice> servicePrices2;
 
 	public Booking() {
 	}
@@ -90,11 +112,11 @@ public class Booking implements Serializable {
 		this.code = code;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -136,6 +158,14 @@ public class Booking implements Serializable {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+
+	public int getTaxId() {
+		return this.taxId;
+	}
+
+	public void setTaxId(int taxId) {
+		this.taxId = taxId;
 	}
 
 	public Time getTimeEnd() {
@@ -186,14 +216,6 @@ public class Booking implements Serializable {
 		this.voucherId = voucherId;
 	}
 
-	public ServicePrice getServicePrice() {
-		return this.servicePrice;
-	}
-
-	public void setServicePrice(ServicePrice servicePrice) {
-		this.servicePrice = servicePrice;
-	}
-
 	public Customer getCustomer() {
 		return this.customer;
 	}
@@ -208,6 +230,44 @@ public class Booking implements Serializable {
 
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+
+	public List<BookingDetail> getBookingDetails() {
+		return this.bookingDetails;
+	}
+
+	public void setBookingDetails(List<BookingDetail> bookingDetails) {
+		this.bookingDetails = bookingDetails;
+	}
+
+	public BookingDetail addBookingDetail(BookingDetail bookingDetail) {
+		getBookingDetails().add(bookingDetail);
+		bookingDetail.setBooking(this);
+
+		return bookingDetail;
+	}
+
+	public BookingDetail removeBookingDetail(BookingDetail bookingDetail) {
+		getBookingDetails().remove(bookingDetail);
+		bookingDetail.setBooking(null);
+
+		return bookingDetail;
+	}
+
+	public List<ServicePrice> getServicePrices1() {
+		return this.servicePrices1;
+	}
+
+	public void setServicePrices1(List<ServicePrice> servicePrices1) {
+		this.servicePrices1 = servicePrices1;
+	}
+
+	public List<ServicePrice> getServicePrices2() {
+		return this.servicePrices2;
+	}
+
+	public void setServicePrices2(List<ServicePrice> servicePrices2) {
+		this.servicePrices2 = servicePrices2;
 	}
 
 }

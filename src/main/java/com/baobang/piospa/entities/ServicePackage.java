@@ -2,9 +2,6 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +28,9 @@ public class ServicePackage implements Serializable {
 	@Column(name="created_by")
 	private int createdBy;
 
+	@Lob
+	private String image;
+
 	@Column(name="is_active")
 	private byte isActive;
 
@@ -44,8 +44,24 @@ public class ServicePackage implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
+	//bi-directional many-to-many association to Service
+	@ManyToMany
+	@JoinTable(
+		name="service_package_detail"
+		, joinColumns={
+			@JoinColumn(name="service_package_id")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="service_id")
+			}
+		)
+	private List<Service> services;
+
+	//bi-directional many-to-one association to ServicePackageDetail
+	@OneToMany(mappedBy="servicePackage")
+	private List<ServicePackageDetail> servicePackageDetails;
+
 	//bi-directional many-to-one association to ServicePrice
-	@JsonIgnore
 	@OneToMany(mappedBy="servicePackage")
 	private List<ServicePrice> servicePrices;
 
@@ -74,6 +90,14 @@ public class ServicePackage implements Serializable {
 
 	public void setCreatedBy(int createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public String getImage() {
+		return this.image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public byte getIsActive() {
@@ -106,6 +130,36 @@ public class ServicePackage implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public List<Service> getServices() {
+		return this.services;
+	}
+
+	public void setServices(List<Service> services) {
+		this.services = services;
+	}
+
+	public List<ServicePackageDetail> getServicePackageDetails() {
+		return this.servicePackageDetails;
+	}
+
+	public void setServicePackageDetails(List<ServicePackageDetail> servicePackageDetails) {
+		this.servicePackageDetails = servicePackageDetails;
+	}
+
+	public ServicePackageDetail addServicePackageDetail(ServicePackageDetail servicePackageDetail) {
+		getServicePackageDetails().add(servicePackageDetail);
+		servicePackageDetail.setServicePackage(this);
+
+		return servicePackageDetail;
+	}
+
+	public ServicePackageDetail removeServicePackageDetail(ServicePackageDetail servicePackageDetail) {
+		getServicePackageDetails().remove(servicePackageDetail);
+		servicePackageDetail.setServicePackage(null);
+
+		return servicePackageDetail;
 	}
 
 	public List<ServicePrice> getServicePrices() {

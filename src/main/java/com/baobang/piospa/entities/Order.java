@@ -2,10 +2,6 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -76,48 +72,50 @@ public class Order implements Serializable {
 	@Column(name="voucher_id")
 	private int voucherId;
 
+	//bi-directional many-to-one association to Booking
+	@OneToMany(mappedBy="order")
+	private List<Booking> bookings;
+
 	//bi-directional many-to-one association to OrderProduct
-	@JsonIgnore
 	@OneToMany(mappedBy="order")
 	private List<OrderProduct> orderProducts;
 
 	//bi-directional many-to-one association to CustomerSource
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="customer_source_id")
 	private CustomerSource customerSource;
 
 	//bi-directional many-to-one association to Customer
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 
 	//bi-directional many-to-one association to OrderDeliveryStatus
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="order_delivery_status_id")
 	private OrderDeliveryStatus orderDeliveryStatus;
 
 	//bi-directional many-to-one association to OrderDeliveryType
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="order_delivery_type_id")
 	private OrderDeliveryType orderDeliveryType;
 
 	//bi-directional many-to-one association to OrderPaymentType
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="order_payment_type_id")
 	private OrderPaymentType orderPaymentType;
 
 	//bi-directional many-to-one association to OrderReasonCancel
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="order_reasion_cancel_id")
 	private OrderReasonCancel orderReasonCancel;
 
 	//bi-directional many-to-one association to OrderStatus
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="order_status_id")
 	private OrderStatus orderStatus;
 
 	public Order() {
-		orderProducts = new ArrayList<>();
 	}
 
 	public int getOrderId() {
@@ -272,6 +270,28 @@ public class Order implements Serializable {
 		this.voucherId = voucherId;
 	}
 
+	public List<Booking> getBookings() {
+		return this.bookings;
+	}
+
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
+	public Booking addBooking(Booking booking) {
+		getBookings().add(booking);
+		booking.setOrder(this);
+
+		return booking;
+	}
+
+	public Booking removeBooking(Booking booking) {
+		getBookings().remove(booking);
+		booking.setOrder(null);
+
+		return booking;
+	}
+
 	public List<OrderProduct> getOrderProducts() {
 		return this.orderProducts;
 	}
@@ -350,11 +370,6 @@ public class Order implements Serializable {
 		this.orderStatus = orderStatus;
 	}
 	public void caculate() {
-		int total = 0;
-		for(OrderProduct orderProduct : orderProducts) {
-			total += orderProduct.getTotal();
-		}
-		this.total = total;
-		subTotal = this.total - discount + deliveryCost;
+		
 	}
 }

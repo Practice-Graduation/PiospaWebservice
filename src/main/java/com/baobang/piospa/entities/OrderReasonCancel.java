@@ -2,9 +2,6 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +45,6 @@ public class OrderReasonCancel implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to Order
-	@JsonIgnore
 	@OneToMany(mappedBy="orderReasonCancel")
 	private List<Order> orders;
 

@@ -2,9 +2,6 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 import java.util.List;
 
@@ -45,12 +42,11 @@ public class AttributeValue implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to Attribute
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="attribute_id")
 	private Attribute attribute;
 
 	//bi-directional many-to-one association to ProductAttribute
-	@JsonIgnore
 	@OneToMany(mappedBy="attributeValueBean")
 	private List<ProductAttribute> productAttributes;
 

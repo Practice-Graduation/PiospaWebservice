@@ -2,11 +2,7 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
-import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -27,7 +23,7 @@ public class ServicePrice implements Serializable {
 
 	@Column(name="all_price")
 	private String allPrice;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
 	private Date createdAt;
@@ -48,30 +44,41 @@ public class ServicePrice implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
-	//bi-directional many-to-one association to Booking
-	@JsonIgnore
+	//bi-directional many-to-one association to BookingDetail
 	@OneToMany(mappedBy="servicePrice")
-	private List<Booking> bookings;
+	private List<BookingDetail> bookingDetails;
 
-	//bi-directional many-to-one association to ServiceGroup
-	@ManyToOne
-	@JoinColumn(name="service_group_id")
-	private ServiceGroup serviceGroup;
+	//bi-directional many-to-many association to Booking
+	@ManyToMany
+	@JoinTable(
+		name="booking_detail"
+		, joinColumns={
+			@JoinColumn(name="service_price_id")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="booking_id")
+			}
+		)
+	private List<Booking> bookings1;
 
 	//bi-directional many-to-one association to ServicePackage
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="service_package_id")
 	private ServicePackage servicePackage;
 
+	//bi-directional many-to-one association to ServiceType
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="service_type_id")
+	private ServiceType serviceType;
+
 	//bi-directional many-to-one association to Service
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="service_id")
 	private Service service;
 
-	//bi-directional many-to-one association to ServiceType
-	@ManyToOne
-	@JoinColumn(name="service_type_id")
-	private ServiceType serviceType;
+	//bi-directional many-to-many association to Booking
+	@ManyToMany(mappedBy="servicePrices2")
+	private List<Booking> bookings2;
 
 	public ServicePrice() {
 	}
@@ -140,34 +147,34 @@ public class ServicePrice implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public List<Booking> getBookings() {
-		return this.bookings;
+	public List<BookingDetail> getBookingDetails() {
+		return this.bookingDetails;
 	}
 
-	public void setBookings(List<Booking> bookings) {
-		this.bookings = bookings;
+	public void setBookingDetails(List<BookingDetail> bookingDetails) {
+		this.bookingDetails = bookingDetails;
 	}
 
-	public Booking addBooking(Booking booking) {
-		getBookings().add(booking);
-		booking.setServicePrice(this);
+	public BookingDetail addBookingDetail(BookingDetail bookingDetail) {
+		getBookingDetails().add(bookingDetail);
+		bookingDetail.setServicePrice(this);
 
-		return booking;
+		return bookingDetail;
 	}
 
-	public Booking removeBooking(Booking booking) {
-		getBookings().remove(booking);
-		booking.setServicePrice(null);
+	public BookingDetail removeBookingDetail(BookingDetail bookingDetail) {
+		getBookingDetails().remove(bookingDetail);
+		bookingDetail.setServicePrice(null);
 
-		return booking;
+		return bookingDetail;
 	}
 
-	public ServiceGroup getServiceGroup() {
-		return this.serviceGroup;
+	public List<Booking> getBookings1() {
+		return this.bookings1;
 	}
 
-	public void setServiceGroup(ServiceGroup serviceGroup) {
-		this.serviceGroup = serviceGroup;
+	public void setBookings1(List<Booking> bookings1) {
+		this.bookings1 = bookings1;
 	}
 
 	public ServicePackage getServicePackage() {
@@ -178,6 +185,14 @@ public class ServicePrice implements Serializable {
 		this.servicePackage = servicePackage;
 	}
 
+	public ServiceType getServiceType() {
+		return this.serviceType;
+	}
+
+	public void setServiceType(ServiceType serviceType) {
+		this.serviceType = serviceType;
+	}
+
 	public Service getService() {
 		return this.service;
 	}
@@ -186,12 +201,12 @@ public class ServicePrice implements Serializable {
 		this.service = service;
 	}
 
-	public ServiceType getServiceType() {
-		return this.serviceType;
+	public List<Booking> getBookings2() {
+		return this.bookings2;
 	}
 
-	public void setServiceType(ServiceType serviceType) {
-		this.serviceType = serviceType;
+	public void setBookings2(List<Booking> bookings2) {
+		this.bookings2 = bookings2;
 	}
 
 }

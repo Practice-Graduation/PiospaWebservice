@@ -2,9 +2,6 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 import java.util.List;
 
@@ -69,32 +66,30 @@ public class Product implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to OrderProduct
-	@JsonIgnore
 	@OneToMany(mappedBy="product")
 	private List<OrderProduct> orderProducts;
 
 	//bi-directional many-to-one association to ProductAttribute
-	@JsonIgnore
 	@OneToMany(mappedBy="product")
 	private List<ProductAttribute> productAttributes;
 
 	//bi-directional many-to-one association to ProductGroup
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="product_group_id")
 	private ProductGroup productGroup;
 
 	//bi-directional many-to-one association to ProductLabel
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="product_label_id")
 	private ProductLabel productLabel;
 
 	//bi-directional many-to-one association to ProductOrigin
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="product_origin_id")
 	private ProductOrigin productOrigin;
 
 	//bi-directional many-to-one association to ProductUnit
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="product_unit_id")
 	private ProductUnit productUnit;
 
