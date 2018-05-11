@@ -5,7 +5,6 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +75,11 @@ public class Order implements Serializable {
 	@Column(name="voucher_id")
 	private int voucherId;
 
+	//bi-directional many-to-one association to Booking
+	@JsonIgnore
+	@OneToMany(mappedBy="order")
+	private List<Booking> bookings;
+
 	//bi-directional many-to-one association to OrderProduct
 	@JsonIgnore
 	@OneToMany(mappedBy="order")
@@ -117,7 +121,6 @@ public class Order implements Serializable {
 	private OrderStatus orderStatus;
 
 	public Order() {
-		orderProducts = new ArrayList<>();
 	}
 
 	public int getOrderId() {
@@ -272,6 +275,28 @@ public class Order implements Serializable {
 		this.voucherId = voucherId;
 	}
 
+	public List<Booking> getBookings() {
+		return this.bookings;
+	}
+
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
+	public Booking addBooking(Booking booking) {
+		getBookings().add(booking);
+		booking.setOrder(this);
+
+		return booking;
+	}
+
+	public Booking removeBooking(Booking booking) {
+		getBookings().remove(booking);
+		booking.setOrder(null);
+
+		return booking;
+	}
+
 	public List<OrderProduct> getOrderProducts() {
 		return this.orderProducts;
 	}
@@ -350,11 +375,6 @@ public class Order implements Serializable {
 		this.orderStatus = orderStatus;
 	}
 	public void caculate() {
-		int total = 0;
-		for(OrderProduct orderProduct : orderProducts) {
-			total += orderProduct.getTotal();
-		}
-		this.total = total;
-		subTotal = this.total - discount + deliveryCost;
+		
 	}
 }

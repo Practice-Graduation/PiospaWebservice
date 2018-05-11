@@ -54,10 +54,25 @@ public class Service implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
+	//bi-directional many-to-many association to ServicePackage
+	@JsonIgnore
+	@ManyToMany(mappedBy="services")
+	private List<ServicePackage> servicePackages;
+
+	//bi-directional many-to-one association to ServicePackageDetail
+	@JsonIgnore
+	@OneToMany(mappedBy="service")
+	private List<ServicePackageDetail> servicePackageDetails;
+
 	//bi-directional many-to-one association to ServicePrice
 	@JsonIgnore
 	@OneToMany(mappedBy="service")
 	private List<ServicePrice> servicePrices;
+
+	//bi-directional many-to-one association to ServiceGroup
+	@ManyToOne
+	@JoinColumn(name="service_group_id")
+	private ServiceGroup serviceGroup;
 
 	//bi-directional many-to-one association to ServiceTime
 	@ManyToOne
@@ -155,6 +170,36 @@ public class Service implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
+	public List<ServicePackage> getServicePackages() {
+		return this.servicePackages;
+	}
+
+	public void setServicePackages(List<ServicePackage> servicePackages) {
+		this.servicePackages = servicePackages;
+	}
+
+	public List<ServicePackageDetail> getServicePackageDetails() {
+		return this.servicePackageDetails;
+	}
+
+	public void setServicePackageDetails(List<ServicePackageDetail> servicePackageDetails) {
+		this.servicePackageDetails = servicePackageDetails;
+	}
+
+	public ServicePackageDetail addServicePackageDetail(ServicePackageDetail servicePackageDetail) {
+		getServicePackageDetails().add(servicePackageDetail);
+		servicePackageDetail.setService(this);
+
+		return servicePackageDetail;
+	}
+
+	public ServicePackageDetail removeServicePackageDetail(ServicePackageDetail servicePackageDetail) {
+		getServicePackageDetails().remove(servicePackageDetail);
+		servicePackageDetail.setService(null);
+
+		return servicePackageDetail;
+	}
+
 	public List<ServicePrice> getServicePrices() {
 		return this.servicePrices;
 	}
@@ -177,6 +222,14 @@ public class Service implements Serializable {
 		return servicePrice;
 	}
 
+	public ServiceGroup getServiceGroup() {
+		return this.serviceGroup;
+	}
+
+	public void setServiceGroup(ServiceGroup serviceGroup) {
+		this.serviceGroup = serviceGroup;
+	}
+
 	public ServiceTime getServiceTime() {
 		return this.serviceTime;
 	}
@@ -184,5 +237,4 @@ public class Service implements Serializable {
 	public void setServiceTime(ServiceTime serviceTime) {
 		this.serviceTime = serviceTime;
 	}
-
 }

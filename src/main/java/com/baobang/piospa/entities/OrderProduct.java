@@ -164,9 +164,5 @@ public class OrderProduct implements Serializable {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	
-	public void caculateTotal() {
-		total =  price * number - discount;
-	}
 
 }

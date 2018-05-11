@@ -9,6 +9,7 @@ public interface MessageResponse {
 
 	public static final String SUCCESSED = "Success!";
 	public static final String NOT_FOUND = "Not Found";
+	public static final String NOT_CONTENT = "Not Content";
 	public static final String BAD_REQUEST = "Bad Request";
 	public static final String EXITS = "Value was exited";
 	

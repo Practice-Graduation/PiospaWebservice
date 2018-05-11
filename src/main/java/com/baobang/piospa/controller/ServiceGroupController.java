@@ -100,7 +100,7 @@ public class ServiceGroupController {
 			method = RequestMethod.POST, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Create a new Service group")
-	public DataResult<ServiceGroup> CreateServiceGroup(@RequestBody ServiceGroup serviceGroup) {
+	public DataResult<ServiceGroup> createServiceGroup(@RequestBody ServiceGroup serviceGroup) {
 		DataResult<ServiceGroup> result = new DataResult<>();
 
 		ServiceGroup sGroup = mServiceGroupRepository.findByName(serviceGroup.getServiceGroupName());

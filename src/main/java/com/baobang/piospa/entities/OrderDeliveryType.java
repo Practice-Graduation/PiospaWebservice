@@ -127,18 +127,18 @@ public class OrderDeliveryType implements Serializable {
 		this.orders = orders;
 	}
 
-//	public Order addOrder(Order order) {
-//		getOrders().add(order);
-//		order.setOrderDeliveryType(this);
-//
-//		return order;
-//	}
-//
-//	public Order removeOrder(Order order) {
-//		getOrders().remove(order);
-//		order.setOrderDeliveryType(null);
-//
-//		return order;
-//	}
+	public Order addOrder(Order order) {
+		getOrders().add(order);
+		order.setOrderDeliveryType(this);
+
+		return order;
+	}
+
+	public Order removeOrder(Order order) {
+		getOrders().remove(order);
+		order.setOrderDeliveryType(null);
+
+		return order;
+	}
 
 }

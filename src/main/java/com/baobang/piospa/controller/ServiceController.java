@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baobang.piospa.entities.Service;
-import com.baobang.piospa.entities.ServiceTime;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ServiceRepository;
 import com.baobang.piospa.utils.MessageResponse;
@@ -36,7 +35,7 @@ public class ServiceController {
 	/**
 	 * @api {get} / Request Service information
 	 * @apiName getAll
-	 * @api Service
+	 * @apiGroup Service
 	 * 
 	 * @apiParam none
 	 * 
@@ -59,7 +58,7 @@ public class ServiceController {
 	/**
 	 * @api {get} /{serviceId} Request Service information
 	 * @apiName getServiceById
-	 * @api Service
+	 * @apiGroup Service
 	 * 
 	 * @apiParam {ServiceId} id Service unique ID.
 	 * 
@@ -86,7 +85,7 @@ public class ServiceController {
 	/**
 	 * @api {post} / Create a new Service
 	 * @apiName createService
-	 * @api Service
+	 * @apiGroup Service
 	 * 
 	 * @apiParam none
 	 * 
@@ -123,7 +122,7 @@ public class ServiceController {
 	/**
 	 * @api {put}/{serviceId} update Service by id
 	 * @apiName updateService
-	 * @api Service
+	 * @apiGroup Service
 	 * 
 	 * @apiParam {ServiceId} id Service unique ID.
 	 * @apiBody {Service} the info of user need to update
@@ -146,6 +145,7 @@ public class ServiceController {
 		Service temp = option.get();
 
 		temp.setServiceName(service.getServiceName());
+		temp.setServiceGroup(service.getServiceGroup());
 		temp.setServiceTime(service.getServiceTime());
 		temp.setDescription(service.getDescription());
 		temp.setImage(service.getImage());
@@ -165,7 +165,7 @@ public class ServiceController {
 	/**
 	 * @api {delete}/{serviceId} delete Service by id
 	 * @apiName deleteService
-	 * @api Service
+	 * @apiGroup Service
 	 * 
 	 * @apiParam {serviceId} id Service unique ID.
 	 * 

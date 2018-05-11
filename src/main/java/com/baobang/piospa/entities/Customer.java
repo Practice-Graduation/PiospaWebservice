@@ -99,7 +99,13 @@ public class Customer implements Serializable {
 
 	private String zalo;
 
+	//bi-directional many-to-one association to Booking
+	@JsonIgnore
+	@OneToMany(mappedBy="customer")
+	private List<Booking> bookings;
+
 	//bi-directional many-to-one association to CustomerSource
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="customer_source_id")
 	private CustomerSource customerSource;
@@ -108,11 +114,6 @@ public class Customer implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy="customer")
 	private List<Order> orders;
-
-	//bi-directional many-to-one association to Booking
-	@JsonIgnore
-	@OneToMany(mappedBy="customer")
-	private List<Booking> bookings;
 
 	public Customer() {
 	}
@@ -349,6 +350,28 @@ public class Customer implements Serializable {
 		this.zalo = zalo;
 	}
 
+	public List<Booking> getBookings() {
+		return this.bookings;
+	}
+
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
+	public Booking addBooking(Booking booking) {
+		getBookings().add(booking);
+		booking.setCustomer(this);
+
+		return booking;
+	}
+
+	public Booking removeBooking(Booking booking) {
+		getBookings().remove(booking);
+		booking.setCustomer(null);
+
+		return booking;
+	}
+
 	public CustomerSource getCustomerSource() {
 		return this.customerSource;
 	}
@@ -377,28 +400,6 @@ public class Customer implements Serializable {
 		order.setCustomer(null);
 
 		return order;
-	}
-
-	public List<Booking> getBookings() {
-		return this.bookings;
-	}
-
-	public void setBookings(List<Booking> bookings) {
-		this.bookings = bookings;
-	}
-
-	public Booking addBooking(Booking booking) {
-		getBookings().add(booking);
-		booking.setCustomer(this);
-
-		return booking;
-	}
-
-	public Booking removeBooking(Booking booking) {
-		getBookings().remove(booking);
-		booking.setCustomer(null);
-
-		return booking;
 	}
 
 }

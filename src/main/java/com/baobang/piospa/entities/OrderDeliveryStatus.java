@@ -51,7 +51,6 @@ public class OrderDeliveryStatus implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to Order
-
 	@JsonIgnore
 	@OneToMany(mappedBy="orderDeliveryStatus")
 	private List<Order> orders;
@@ -139,18 +138,18 @@ public class OrderDeliveryStatus implements Serializable {
 		this.orders = orders;
 	}
 
-//	public Order addOrder(Order order) {
-//		getOrders().add(order);
-//		order.setOrderDeliveryStatus(this);
-//
-//		return order;
-//	}
-//
-//	public Order removeOrder(Order order) {
-//		getOrders().remove(order);
-//		order.setOrderDeliveryStatus(null);
-//
-//		return order;
-//	}
+	public Order addOrder(Order order) {
+		getOrders().add(order);
+		order.setOrderDeliveryStatus(this);
+
+		return order;
+	}
+
+	public Order removeOrder(Order order) {
+		getOrders().remove(order);
+		order.setOrderDeliveryStatus(null);
+
+		return order;
+	}
 
 }

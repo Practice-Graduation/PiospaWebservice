@@ -166,18 +166,18 @@ public class CustomerSource implements Serializable {
 		this.orders = orders;
 	}
 
-//	public Order addOrder(Order order) {
-//		getOrders().add(order);
-//		order.setCustomerSource(this);
-//
-//		return order;
-//	}
-//
-//	public Order removeOrder(Order order) {
-//		getOrders().remove(order);
-//		order.setCustomerSource(null);
-//
-//		return order;
-//	}
+	public Order addOrder(Order order) {
+		getOrders().add(order);
+		order.setCustomerSource(this);
+
+		return order;
+	}
+
+	public Order removeOrder(Order order) {
+		getOrders().remove(order);
+		order.setCustomerSource(null);
+
+		return order;
+	}
 
 }

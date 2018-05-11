@@ -6,72 +6,77 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
-import java.sql.Timestamp;
 import java.util.List;
-
 
 /**
  * The persistent class for the service_price database table.
  * 
  */
 @Entity
-@Table(name="service_price")
-@NamedQuery(name="ServicePrice.findAll", query="SELECT s FROM ServicePrice s")
+@Table(name = "service_price")
+@NamedQuery(name = "ServicePrice.findAll", query = "SELECT s FROM ServicePrice s")
 public class ServicePrice implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="service_price_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "service_price_id")
 	private int servicePriceId;
 
-	@Column(name="all_price")
-	private String allPrice;
-	
+	@Column(name = "all_price")
+	private int allPrice;
+
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
+	@Column(name = "created_at")
 	private Date createdAt;
 
-	@Column(name="created_by")
+	@Column(name = "created_by")
 	private int createdBy;
 
-	@Column(name="is_active")
+	@Column(name = "is_active")
 	private byte isActive;
 
-	@Column(name="retail_price")
-	private String retailPrice;
+	@Column(name = "retail_price")
+	private int retailPrice;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
+	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@Column(name="updated_by")
+	@Column(name = "updated_by")
 	private int updatedBy;
 
-	//bi-directional many-to-one association to Booking
+	// bi-directional many-to-one association to ServiceType
+	@ManyToOne
+	@JoinColumn(name = "service_type_id")
+	private ServiceType serviceType;
+
+	// bi-directional many-to-one association to BookingDetail
 	@JsonIgnore
-	@OneToMany(mappedBy="servicePrice")
-	private List<Booking> bookings;
+	@OneToMany(mappedBy = "servicePrice")
+	private List<BookingDetail> bookingDetails;
 
-	//bi-directional many-to-one association to ServiceGroup
-	@ManyToOne
-	@JoinColumn(name="service_group_id")
-	private ServiceGroup serviceGroup;
+	// bi-directional many-to-many association to Booking
+	@JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "booking_detail", joinColumns = { @JoinColumn(name = "service_price_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "booking_id") })
+	private List<Booking> bookings1;
 
-	//bi-directional many-to-one association to ServicePackage
+	// bi-directional many-to-one association to ServicePackage
 	@ManyToOne
-	@JoinColumn(name="service_package_id")
+	@JoinColumn(name = "service_package_id")
 	private ServicePackage servicePackage;
 
-	//bi-directional many-to-one association to Service
+	// bi-directional many-to-one association to Service
 	@ManyToOne
-	@JoinColumn(name="service_id")
+	@JoinColumn(name = "service_id")
 	private Service service;
 
-	//bi-directional many-to-one association to ServiceType
-	@ManyToOne
-	@JoinColumn(name="service_type_id")
-	private ServiceType serviceType;
+	// bi-directional many-to-many association to Booking
+	@JsonIgnore
+	@ManyToMany(mappedBy = "servicePrices2")
+	private List<Booking> bookings2;
 
 	public ServicePrice() {
 	}
@@ -84,11 +89,11 @@ public class ServicePrice implements Serializable {
 		this.servicePriceId = servicePriceId;
 	}
 
-	public String getAllPrice() {
+	public int getAllPrice() {
 		return this.allPrice;
 	}
 
-	public void setAllPrice(String allPrice) {
+	public void setAllPrice(int allPrice) {
 		this.allPrice = allPrice;
 	}
 
@@ -116,11 +121,11 @@ public class ServicePrice implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public String getRetailPrice() {
+	public int getRetailPrice() {
 		return this.retailPrice;
 	}
 
-	public void setRetailPrice(String retailPrice) {
+	public void setRetailPrice(int retailPrice) {
 		this.retailPrice = retailPrice;
 	}
 
@@ -140,34 +145,34 @@ public class ServicePrice implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public List<Booking> getBookings() {
-		return this.bookings;
+	public List<BookingDetail> getBookingDetails() {
+		return this.bookingDetails;
 	}
 
-	public void setBookings(List<Booking> bookings) {
-		this.bookings = bookings;
+	public void setBookingDetails(List<BookingDetail> bookingDetails) {
+		this.bookingDetails = bookingDetails;
 	}
 
-	public Booking addBooking(Booking booking) {
-		getBookings().add(booking);
-		booking.setServicePrice(this);
+	public BookingDetail addBookingDetail(BookingDetail bookingDetail) {
+		getBookingDetails().add(bookingDetail);
+		bookingDetail.setServicePrice(this);
 
-		return booking;
+		return bookingDetail;
 	}
 
-	public Booking removeBooking(Booking booking) {
-		getBookings().remove(booking);
-		booking.setServicePrice(null);
+	public BookingDetail removeBookingDetail(BookingDetail bookingDetail) {
+		getBookingDetails().remove(bookingDetail);
+		bookingDetail.setServicePrice(null);
 
-		return booking;
+		return bookingDetail;
 	}
 
-	public ServiceGroup getServiceGroup() {
-		return this.serviceGroup;
+	public List<Booking> getBookings1() {
+		return this.bookings1;
 	}
 
-	public void setServiceGroup(ServiceGroup serviceGroup) {
-		this.serviceGroup = serviceGroup;
+	public void setBookings1(List<Booking> bookings1) {
+		this.bookings1 = bookings1;
 	}
 
 	public ServicePackage getServicePackage() {
@@ -186,6 +191,14 @@ public class ServicePrice implements Serializable {
 		this.service = service;
 	}
 
+	public List<Booking> getBookings2() {
+		return this.bookings2;
+	}
+
+	public void setBookings2(List<Booking> bookings2) {
+		this.bookings2 = bookings2;
+	}
+	
 	public ServiceType getServiceType() {
 		return this.serviceType;
 	}
