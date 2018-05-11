@@ -10,19 +10,19 @@ import java.util.List;
 
 
 /**
- * The persistent class for the service_group database table.
+ * The persistent class for the service_type database table.
  * 
  */
 @Entity
-@Table(name="service_group")
-@NamedQuery(name="ServiceGroup.findAll", query="SELECT s FROM ServiceGroup s")
-public class ServiceGroup implements Serializable {
+@Table(name="service_type")
+@NamedQuery(name="ServiceType.findAll", query="SELECT s FROM ServiceType s")
+public class ServiceType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="service_group_id")
-	private int serviceGroupId;
+	@Column(name="service_type_id")
+	private int serviceTypeId;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
@@ -34,8 +34,8 @@ public class ServiceGroup implements Serializable {
 	@Column(name="is_active")
 	private byte isActive;
 
-	@Column(name="service_group_name")
-	private String serviceGroupName;
+	@Column(name="service_type_name")
+	private String serviceTypeName;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
@@ -44,20 +44,20 @@ public class ServiceGroup implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
-	//bi-directional many-to-one association to Service
+	//bi-directional many-to-one association to ServicePrice
 	@JsonIgnore
-	@OneToMany(mappedBy="serviceGroup")
-	private List<Service> services;
+	@OneToMany(mappedBy="serviceType")
+	private List<ServicePrice> servicePrices;
 
-	public ServiceGroup() {
+	public ServiceType() {
 	}
 
-	public int getServiceGroupId() {
-		return this.serviceGroupId;
+	public int getServiceTypeId() {
+		return this.serviceTypeId;
 	}
 
-	public void setServiceGroupId(int serviceGroupId) {
-		this.serviceGroupId = serviceGroupId;
+	public void setServiceTypeId(int serviceTypeId) {
+		this.serviceTypeId = serviceTypeId;
 	}
 
 	public Date getCreatedAt() {
@@ -84,12 +84,12 @@ public class ServiceGroup implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public String getServiceGroupName() {
-		return this.serviceGroupName;
+	public String getServiceTypeName() {
+		return this.serviceTypeName;
 	}
 
-	public void setServiceGroupName(String serviceGroupName) {
-		this.serviceGroupName = serviceGroupName;
+	public void setServiceTypeName(String serviceTypeName) {
+		this.serviceTypeName = serviceTypeName;
 	}
 
 	public Date getUpdatedAt() {
@@ -108,26 +108,26 @@ public class ServiceGroup implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public List<Service> getServices() {
-		return this.services;
+	public List<ServicePrice> getServicePrices() {
+		return this.servicePrices;
 	}
 
-	public void setServices(List<Service> services) {
-		this.services = services;
+	public void setServicePrices(List<ServicePrice> servicePrices) {
+		this.servicePrices = servicePrices;
 	}
 
-	public Service addService(Service service) {
-		getServices().add(service);
-		service.setServiceGroup(this);
+	public ServicePrice addServicePrice(ServicePrice servicePrice) {
+		getServicePrices().add(servicePrice);
+		servicePrice.setServiceType(this);
 
-		return service;
+		return servicePrice;
 	}
 
-	public Service removeService(Service service) {
-		getServices().remove(service);
-		service.setServiceGroup(null);
+	public ServicePrice removeServicePrice(ServicePrice servicePrice) {
+		getServicePrices().remove(servicePrice);
+		servicePrice.setServiceType(null);
 
-		return service;
+		return servicePrice;
 	}
-	
+
 }

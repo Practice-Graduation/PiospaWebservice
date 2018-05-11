@@ -8,78 +8,74 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the service_price database table.
  * 
  */
 @Entity
-@Table(name="service_price")
-@NamedQuery(name="ServicePrice.findAll", query="SELECT s FROM ServicePrice s")
+@Table(name = "service_price")
+@NamedQuery(name = "ServicePrice.findAll", query = "SELECT s FROM ServicePrice s")
 public class ServicePrice implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="service_price_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "service_price_id")
 	private int servicePriceId;
 
-	@Column(name="all_price")
-	private String allPrice;
+	@Column(name = "all_price")
+	private int allPrice;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
+	@Column(name = "created_at")
 	private Date createdAt;
 
-	@Column(name="created_by")
+	@Column(name = "created_by")
 	private int createdBy;
 
-	@Column(name="is_active")
+	@Column(name = "is_active")
 	private byte isActive;
 
-	@Column(name="retail_price")
-	private String retailPrice;
+	@Column(name = "retail_price")
+	private int retailPrice;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
+	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@Column(name="updated_by")
+	@Column(name = "updated_by")
 	private int updatedBy;
 
-	//bi-directional many-to-one association to BookingDetail
+	// bi-directional many-to-one association to ServiceType
+	@ManyToOne
+	@JoinColumn(name = "service_type_id")
+	private ServiceType serviceType;
+
+	// bi-directional many-to-one association to BookingDetail
 	@JsonIgnore
-	@OneToMany(mappedBy="servicePrice")
+	@OneToMany(mappedBy = "servicePrice")
 	private List<BookingDetail> bookingDetails;
 
-	//bi-directional many-to-many association to Booking
+	// bi-directional many-to-many association to Booking
 	@JsonIgnore
 	@ManyToMany
-	@JoinTable(
-		name="booking_detail"
-		, joinColumns={
-			@JoinColumn(name="service_price_id")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="booking_id")
-			}
-		)
+	@JoinTable(name = "booking_detail", joinColumns = { @JoinColumn(name = "service_price_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "booking_id") })
 	private List<Booking> bookings1;
 
-	//bi-directional many-to-one association to ServicePackage
+	// bi-directional many-to-one association to ServicePackage
 	@ManyToOne
-	@JoinColumn(name="service_package_id")
+	@JoinColumn(name = "service_package_id")
 	private ServicePackage servicePackage;
 
-	
-	//bi-directional many-to-one association to Service
+	// bi-directional many-to-one association to Service
 	@ManyToOne
-	@JoinColumn(name="service_id")
+	@JoinColumn(name = "service_id")
 	private Service service;
 
-	//bi-directional many-to-many association to Booking
+	// bi-directional many-to-many association to Booking
 	@JsonIgnore
-	@ManyToMany(mappedBy="servicePrices2")
+	@ManyToMany(mappedBy = "servicePrices2")
 	private List<Booking> bookings2;
 
 	public ServicePrice() {
@@ -93,11 +89,11 @@ public class ServicePrice implements Serializable {
 		this.servicePriceId = servicePriceId;
 	}
 
-	public String getAllPrice() {
+	public int getAllPrice() {
 		return this.allPrice;
 	}
 
-	public void setAllPrice(String allPrice) {
+	public void setAllPrice(int allPrice) {
 		this.allPrice = allPrice;
 	}
 
@@ -125,11 +121,11 @@ public class ServicePrice implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public String getRetailPrice() {
+	public int getRetailPrice() {
 		return this.retailPrice;
 	}
 
-	public void setRetailPrice(String retailPrice) {
+	public void setRetailPrice(int retailPrice) {
 		this.retailPrice = retailPrice;
 	}
 
@@ -201,6 +197,14 @@ public class ServicePrice implements Serializable {
 
 	public void setBookings2(List<Booking> bookings2) {
 		this.bookings2 = bookings2;
+	}
+	
+	public ServiceType getServiceType() {
+		return this.serviceType;
+	}
+
+	public void setServiceType(ServiceType serviceType) {
+		this.serviceType = serviceType;
 	}
 
 }

@@ -27,6 +27,8 @@ public class ServicePackageDetail implements Serializable {
 	@Column(name="created_by")
 	private int createdBy;
 
+	private int price;
+	
 	@Column(name="is_active")
 	private byte isActive;
 
@@ -54,6 +56,20 @@ public class ServicePackageDetail implements Serializable {
 
 	public ServicePackageDetail() {
 	}
+	
+	
+
+	public int getPrice() {
+		return price;
+	}
+
+
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+
 
 	public int getServicePackageDetailId() {
 		return this.servicePackageDetailId;

@@ -1,5 +1,6 @@
 package com.baobang.piospa.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -13,24 +14,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baobang.piospa.entities.Service;
 import com.baobang.piospa.entities.ServicePrice;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ServicePriceRepository;
+import com.baobang.piospa.repositories.ServiceRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
 
 /**
-  * @author BaoBang
-  * @Created May 4, 2018
-  * 
-  */
+ * @author BaoBang
+ * @Created May 4, 2018
+ * 
+ */
 @RestController
 @RequestMapping(RequestPath.SERVICE_PRICE_PATH)
 public class ServicePriceController {
 	@Autowired
 	ServicePriceRepository mServicePriceRepository;
+	@Autowired
+	ServiceRepository mServiceRepository;
 
 	/**
 	 * @api {get} / Request Service Price information
@@ -54,14 +59,46 @@ public class ServicePriceController {
 
 		return new DataResult<List<ServicePrice>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, servicePrices);
 	}
-	
+
 	/**
-	 *  
+	 * @api {get} /group/{groupId} Request Service Price information
+	 * @apiName getServicePriceByGroupId
+	 * @apiPrice Service
+	 * 
+	 * @apiParam none
+	 * 
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list Service Price of the response
+	 * 
+	 */
+	@RequestMapping(//
+			value = "/group/{groupId}", //
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Get Service Prices By Group Id")
+	public DataResult<List<ServicePrice>> getServicePriceByGroupId(@PathVariable(value = "groupId") int groupId) {
+
+		List<ServicePrice> servicePrices = new ArrayList<ServicePrice>();
+		
+		List<Service> services = mServiceRepository.getServiceByGroupId(groupId);
+		
+		for(Service s : services) {
+			System.err.println(s.getServicePrices().size() + "-id" + s.getServiceId());
+			if(s.getServicePrices().size() > 0)
+			servicePrices.add(s.getServicePrices().get(0));
+		}
+		return new DataResult<List<ServicePrice>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, servicePrices);
+	}
+
+	/**
+	 * 
 	 * @api {get} /{servicePriceId} Request Service Price information
 	 * @apiName getServicePriceById
 	 * @apiPrice Service
 	 * 
-	 * @param {ServicePriceId} id Service Price unique ID.
+	 * @param {ServicePriceId}
+	 *            id Service Price unique ID.
 	 * 
 	 * @apiSuccess {Integer} the status of the response
 	 * @apiSuccess {String} the message of the response
@@ -109,7 +146,7 @@ public class ServicePriceController {
 		servicePrice = mServicePriceRepository.save(servicePrice);
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
-		
+
 		result.setData(servicePrice);
 		return result;
 	}

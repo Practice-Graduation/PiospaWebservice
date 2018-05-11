@@ -237,5 +237,4 @@ public class Service implements Serializable {
 	public void setServiceTime(ServiceTime serviceTime) {
 		this.serviceTime = serviceTime;
 	}
-
 }
