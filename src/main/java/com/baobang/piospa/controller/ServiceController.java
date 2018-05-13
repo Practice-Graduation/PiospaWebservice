@@ -145,7 +145,6 @@ public class ServiceController {
 		Service temp = option.get();
 
 		temp.setServiceName(service.getServiceName());
-		temp.setServiceGroup(service.getServiceGroup());
 		temp.setServiceTime(service.getServiceTime());
 		temp.setDescription(service.getDescription());
 		temp.setImage(service.getImage());

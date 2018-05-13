@@ -31,7 +31,6 @@ public class ServicePackage implements Serializable {
 	@Column(name="created_by")
 	private int createdBy;
 
-	@Lob
 	private String image;
 
 	@Column(name="is_active")

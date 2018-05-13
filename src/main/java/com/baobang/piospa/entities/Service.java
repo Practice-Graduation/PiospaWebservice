@@ -33,7 +33,6 @@ public class Service implements Serializable {
 
 	private String description;
 
-	@Lob
 	private String detail;
 
 	private String image;
@@ -68,11 +67,6 @@ public class Service implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy="service")
 	private List<ServicePrice> servicePrices;
-
-	//bi-directional many-to-one association to ServiceGroup
-	@ManyToOne
-	@JoinColumn(name="service_group_id")
-	private ServiceGroup serviceGroup;
 
 	//bi-directional many-to-one association to ServiceTime
 	@ManyToOne
@@ -222,14 +216,6 @@ public class Service implements Serializable {
 		return servicePrice;
 	}
 
-	public ServiceGroup getServiceGroup() {
-		return this.serviceGroup;
-	}
-
-	public void setServiceGroup(ServiceGroup serviceGroup) {
-		this.serviceGroup = serviceGroup;
-	}
-
 	public ServiceTime getServiceTime() {
 		return this.serviceTime;
 	}
@@ -237,4 +223,5 @@ public class Service implements Serializable {
 	public void setServiceTime(ServiceTime serviceTime) {
 		this.serviceTime = serviceTime;
 	}
+
 }

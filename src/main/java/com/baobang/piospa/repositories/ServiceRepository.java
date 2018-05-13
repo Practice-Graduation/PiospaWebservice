@@ -18,6 +18,4 @@ import com.baobang.piospa.entities.Service;
 public interface ServiceRepository extends JpaRepository<Service, Integer>{
 	@Query("select s from Service s where s.serviceCode = :serviceCode")
 	public Service findByCode(@Param("serviceCode") String serviceCode);
-	@Query("select s from Service s where s.serviceGroup.serviceGroupId = :serviceGroupId")
-	public List<Service> getServiceByGroupId(@Param("serviceGroupId") int serviceGroupId);
 }

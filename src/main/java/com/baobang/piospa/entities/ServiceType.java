@@ -24,6 +24,8 @@ public class ServiceType implements Serializable {
 	@Column(name="service_type_id")
 	private int serviceTypeId;
 
+	private String code;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
 	private Date createdAt;
@@ -58,6 +60,14 @@ public class ServiceType implements Serializable {
 
 	public void setServiceTypeId(int serviceTypeId) {
 		this.serviceTypeId = serviceTypeId;
+	}
+
+	public String getCode() {
+		return this.code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public Date getCreatedAt() {

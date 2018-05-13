@@ -1,6 +1,5 @@
 package com.baobang.piospa.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baobang.piospa.entities.Service;
+import com.baobang.piospa.entities.ServiceGroup;
 import com.baobang.piospa.entities.ServicePrice;
 import com.baobang.piospa.model.DataResult;
+import com.baobang.piospa.repositories.ServiceGroupRepository;
 import com.baobang.piospa.repositories.ServicePriceRepository;
-import com.baobang.piospa.repositories.ServiceRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 
@@ -35,7 +34,7 @@ public class ServicePriceController {
 	@Autowired
 	ServicePriceRepository mServicePriceRepository;
 	@Autowired
-	ServiceRepository mServiceRepository;
+	ServiceGroupRepository mServiceGroupRepository;
 
 	/**
 	 * @api {get} / Request Service Price information
@@ -75,21 +74,17 @@ public class ServicePriceController {
 	@RequestMapping(//
 			value = "/group/{groupId}", //
 			method = RequestMethod.GET, //
-			produces = { MediaType.APPLICATION_JSON_VALUE })
+			produces = { MediaType.APPLICATION_JSON_VALUE})
 	@ApiOperation(value = "Get Service Prices By Group Id")
 	public DataResult<List<ServicePrice>> getServicePriceByGroupId(@PathVariable(value = "groupId") int groupId) {
 
-		List<ServicePrice> servicePrices = new ArrayList<ServicePrice>();
 		
-		List<Service> services = mServiceRepository.getServiceByGroupId(groupId);
+		List<ServicePrice> servicePrices = mServicePriceRepository.getServiceByGroupId(groupId);
 		
-		for(Service s : services) {
-			System.err.println(s.getServicePrices().size() + "-id" + s.getServiceId());
-			if(s.getServicePrices().size() > 0)
-			servicePrices.add(s.getServicePrices().get(0));
-		}
+		System.err.println( "-" + servicePrices.size());
 		return new DataResult<List<ServicePrice>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, servicePrices);
 	}
+	
 
 	/**
 	 * 
@@ -177,6 +172,7 @@ public class ServicePriceController {
 		ServicePrice price = option.get();
 
 		price.setService(servicePrice.getService());
+		price.setServiceGroup(servicePrice.getServiceGroup());
 		price.setServicePackage(servicePrice.getServicePackage());
 		price.setRetailPrice(servicePrice.getRetailPrice());
 		price.setAllPrice(servicePrice.getAllPrice());

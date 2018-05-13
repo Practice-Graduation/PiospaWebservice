@@ -44,10 +44,10 @@ public class ServiceGroup implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
-	//bi-directional many-to-one association to Service
+	//bi-directional many-to-one association to ServicePrice
 	@JsonIgnore
-	@OneToMany(mappedBy="serviceGroup")
-	private List<Service> services;
+	@OneToMany(mappedBy="serviceGroup", fetch = FetchType.EAGER)
+	private List<ServicePrice> servicePrices;
 
 	public ServiceGroup() {
 	}
@@ -108,26 +108,26 @@ public class ServiceGroup implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public List<Service> getServices() {
-		return this.services;
+	public List<ServicePrice> getServicePrices() {
+		return this.servicePrices;
 	}
 
-	public void setServices(List<Service> services) {
-		this.services = services;
+	public void setServicePrices(List<ServicePrice> servicePrices) {
+		this.servicePrices = servicePrices;
 	}
 
-	public Service addService(Service service) {
-		getServices().add(service);
-		service.setServiceGroup(this);
+	public ServicePrice addServicePrice(ServicePrice servicePrice) {
+		getServicePrices().add(servicePrice);
+		servicePrice.setServiceGroup(this);
 
-		return service;
+		return servicePrice;
 	}
 
-	public Service removeService(Service service) {
-		getServices().remove(service);
-		service.setServiceGroup(null);
+	public ServicePrice removeServicePrice(ServicePrice servicePrice) {
+		getServicePrices().remove(servicePrice);
+		servicePrice.setServiceGroup(null);
 
-		return service;
+		return servicePrice;
 	}
-	
+
 }
