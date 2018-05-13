@@ -4,7 +4,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
-import java.sql.Timestamp;
 
 
 /**
@@ -36,8 +35,9 @@ public class BookingDetail implements Serializable {
 	@Column(name="time_start")
 	private Time timeStart;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	@Column(name="updated_by")
 	private int updatedBy;
@@ -100,11 +100,11 @@ public class BookingDetail implements Serializable {
 		this.timeStart = timeStart;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public  Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt( Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

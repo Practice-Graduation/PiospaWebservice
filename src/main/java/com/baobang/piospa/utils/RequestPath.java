@@ -50,4 +50,8 @@ public interface RequestPath {
 	public static final String SERVICE_PRICE_PATH = SERVICE_PATH + "/price";
 	public static final String SERVICE_TIME_PATH = SERVICE_PATH + "/time";
 	public static final String SERVICE_TYPE_PATH = SERVICE_PATH + "/type";
+	
+	// ------------------------BOOKING-------------------------------------
+	public static final String BOOKING_PATH = "/booking";
+	public static final String BOOKING_DETAIL_PATH = "/detail";
 }

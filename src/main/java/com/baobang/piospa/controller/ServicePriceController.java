@@ -79,10 +79,9 @@ public class ServicePriceController {
 	public DataResult<List<ServicePrice>> getServicePriceByGroupId(@PathVariable(value = "groupId") int groupId) {
 
 		
-		List<ServicePrice> servicePrices = mServicePriceRepository.getServiceByGroupId(groupId);
+		ServiceGroup group = mServiceGroupRepository.findById(groupId).get();
 		
-		System.err.println( "-" + servicePrices.size());
-		return new DataResult<List<ServicePrice>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, servicePrices);
+		return new DataResult<List<ServicePrice>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, group.getServicePrices());
 	}
 	
 
