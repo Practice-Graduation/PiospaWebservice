@@ -54,4 +54,7 @@ public interface RequestPath {
 	// ------------------------BOOKING-------------------------------------
 	public static final String BOOKING_PATH = "/booking";
 	public static final String BOOKING_DETAIL_PATH = "/detail";
+
+ 	// ------------------------ROOM-------------------------------------
+	public static final String ROOM_PATH = "/room";
 }

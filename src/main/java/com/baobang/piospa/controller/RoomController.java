@@ -23,7 +23,8 @@ import com.baobang.piospa.repositories.RoomRepository;
 import com.baobang.piospa.utils.MessageResponse;
 
 import io.swagger.annotations.ApiOperation;
-
+@RestController
+@RequestMapping(RequestPath.ROOM_PATH)
 public class RoomController {
 
 	@Autowired
