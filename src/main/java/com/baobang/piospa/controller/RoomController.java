@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.baobang.piospa.entities.Room;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.RoomRepository;
 import com.baobang.piospa.utils.MessageResponse;
+import com.baobang.piospa.utils.RequestPath;
 
 import io.swagger.annotations.ApiOperation;
 @RestController
