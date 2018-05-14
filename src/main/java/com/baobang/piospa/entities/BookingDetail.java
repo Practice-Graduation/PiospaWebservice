@@ -13,11 +13,16 @@ import java.util.Date;
 @Entity
 @Table(name="booking_detail")
 @NamedQuery(name="BookingDetail.findAll", query="SELECT b FROM BookingDetail b")
+@NamedNativeQueries({
+	@NamedNativeQuery(
+			name = "getBookingDetailById",
+			query = "SELECT * FROM booking_detail WHERE date_booking = ?1", resultClass=BookingDetail.class)
+})
 public class BookingDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)	
 	@Column(name="booking_detail_id")
 	private int bookingDetailId;
 
