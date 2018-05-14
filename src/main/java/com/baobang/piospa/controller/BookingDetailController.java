@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +34,8 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(RequestPath.BOOKING_DETAIL_PATH)
 public class BookingDetailController {
 
+	@PersistenceContext
+	private EntityManager em;
 	@Autowired
 	BookingDetailRepository mBookingDetailRepository;
 
@@ -54,6 +60,35 @@ public class BookingDetailController {
 		List<BookingDetail> BookingDetails = mBookingDetailRepository.findAll();
 
 		return new DataResult<List<BookingDetail>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, BookingDetails);
+	}
+
+	/**
+	 * @api {post} /date Request BookingDetail information
+	 * @apiName getBookingDetailByDateBooking
+	 * @apiGroup BookingDetail
+	 * 
+	 * @apiBody {String} the date booking
+	 * 
+	 * @apiSuccess {Integer} the BookingDetail of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the BookingDetails was got
+	 * 
+	 */
+	@RequestMapping(//
+			value = "/date", //
+			method = RequestMethod.POST, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Get BookingDetail by date booking")
+	public DataResult<List<BookingDetail>> getBookingDetailưById(@RequestBody String date) {
+		System.err.println(date);
+
+		DataResult<List<BookingDetail>> result = new DataResult<>();
+		List<BookingDetail> details = mBookingDetailRepository.getBookingDetailByDateBooking(date);
+
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
+		result.setData(details);
+		return result;
 	}
 
 	/**
@@ -154,7 +189,7 @@ public class BookingDetailController {
 
 		return result;
 	}
-	
+
 	/**
 	 * @api {delete}/{bookingDetailId} delete Booking Detail by id
 	 * @apiName deleteBooking
@@ -182,6 +217,5 @@ public class BookingDetailController {
 		dataResult.setData(bookingDetail);
 		return dataResult;
 	}
-
 
 }
