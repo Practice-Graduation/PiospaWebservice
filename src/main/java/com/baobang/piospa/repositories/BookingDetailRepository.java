@@ -17,6 +17,7 @@ import com.baobang.piospa.entities.BookingDetail;
 @Repository
 public interface BookingDetailRepository extends JpaRepository<BookingDetail, Integer>{
 
-	@Query(value = "SELECT * FROM booking_detail WHERE date_booking = :dateBooking", nativeQuery = true)
-	public List<BookingDetail> getBookingDetailByDateBooking(@Param("dateBooking")String dateBooking);
+	@Query(value = "SELECT * FROM booking_detail WHERE room_id = :roomId and date_booking = :dateBooking", nativeQuery = true)
+	public List<BookingDetail> getBookingDetailByDateBooking(@Param("roomId") int roomId, 
+			@Param("dateBooking")String dateBooking);
 }

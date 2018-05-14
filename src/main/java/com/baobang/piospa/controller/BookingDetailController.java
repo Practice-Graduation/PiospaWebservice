@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baobang.piospa.entities.BookingDetail;
+import com.baobang.piospa.model.BookingDetailRequest;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.BookingDetailRepository;
 import com.baobang.piospa.utils.MessageResponse;
@@ -79,11 +79,10 @@ public class BookingDetailController {
 			method = RequestMethod.POST, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Get BookingDetail by date booking")
-	public DataResult<List<BookingDetail>> getBookingDetailưById(@RequestBody String date) {
-		System.err.println(date);
-
+	public DataResult<List<BookingDetail>> getBookingDetailưById(@RequestBody BookingDetailRequest bookingDetailRequest) {
+		
 		DataResult<List<BookingDetail>> result = new DataResult<>();
-		List<BookingDetail> details = mBookingDetailRepository.getBookingDetailByDateBooking(date);
+		List<BookingDetail> details = mBookingDetailRepository.getBookingDetailByDateBooking(bookingDetailRequest.getRoomId(), bookingDetailRequest.getDate());
 
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
