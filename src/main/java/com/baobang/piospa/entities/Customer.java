@@ -104,10 +104,8 @@ public class Customer implements Serializable {
 	@OneToMany(mappedBy="customer")
 	private List<Booking> bookings;
 
-	//bi-directional many-to-one association to CustomerSource
-	@ManyToOne
-	@JoinColumn(name="customer_source_id")
-	private CustomerSource customerSource;
+	@Column(name="customer_source_id")
+	private int customerSource;
 
 	//bi-directional many-to-one association to Order
 	@JsonIgnore
@@ -371,11 +369,11 @@ public class Customer implements Serializable {
 		return booking;
 	}
 
-	public CustomerSource getCustomerSource() {
+	public int getCustomerSource() {
 		return this.customerSource;
 	}
 
-	public void setCustomerSource(CustomerSource customerSource) {
+	public void setCustomerSource(int customerSource) {
 		this.customerSource = customerSource;
 	}
 
