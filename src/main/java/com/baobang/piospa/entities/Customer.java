@@ -105,7 +105,6 @@ public class Customer implements Serializable {
 	private List<Booking> bookings;
 
 	//bi-directional many-to-one association to CustomerSource
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="customer_source_id")
 	private CustomerSource customerSource;

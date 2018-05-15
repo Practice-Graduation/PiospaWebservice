@@ -2,9 +2,6 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 import java.util.List;
 
@@ -34,9 +31,8 @@ public class CustomerSource implements Serializable {
 	@Column(name="customer_source_code")
 	private String customerSourceCode;
 
-	@Lob
 	@Column(name="customer_source_description")
-	private String customerSourceDescription;
+	private byte customerSourceDescription;
 
 	@Column(name="customer_source_name")
 	private String customerSourceName;
@@ -52,12 +48,10 @@ public class CustomerSource implements Serializable {
 	private int updatedBy;
 
 	//bi-directional many-to-one association to Customer
-	@JsonIgnore
 	@OneToMany(mappedBy="customerSource")
 	private List<Customer> customers;
 
 	//bi-directional many-to-one association to Order
-	@JsonIgnore
 	@OneToMany(mappedBy="customerSource")
 	private List<Order> orders;
 
@@ -96,11 +90,11 @@ public class CustomerSource implements Serializable {
 		this.customerSourceCode = customerSourceCode;
 	}
 
-	public String getCustomerSourceDescription() {
+	public byte getCustomerSourceDescription() {
 		return this.customerSourceDescription;
 	}
 
-	public void setCustomerSourceDescription(String customerSourceDescription) {
+	public void setCustomerSourceDescription(byte customerSourceDescription) {
 		this.customerSourceDescription = customerSourceDescription;
 	}
 

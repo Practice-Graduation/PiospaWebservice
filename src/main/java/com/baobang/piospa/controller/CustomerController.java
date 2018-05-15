@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baobang.piospa.entities.Customer;
 import com.baobang.piospa.model.DataResult;
+import com.baobang.piospa.model.LoginForm;
 import com.baobang.piospa.repositories.CustomerRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
@@ -105,6 +106,9 @@ public class CustomerController {
 		Customer temp  = mCustomerRepository.findByCode(customer.getCode());
 
 		if (temp == null) {
+			Date date = new Date();
+			customer.setCreatedAt(date);
+			customer.setUpdatedAt(date);
 			temp = mCustomerRepository.save(customer);
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
@@ -204,5 +208,48 @@ public class CustomerController {
 		result.setData(customer);
 		return result;
 	}
+	
+	/**
+	 * @api {post} /login  request login
+	 * @apiName login
+	 * @api Customer
+	 * 
+	 * @apiParam  none
+	 * @apiBody {username, password} account login
+	 * 
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {Customer} the customer  was logined
+	 * 
+	 */
+	@RequestMapping(//
+			value = "/login", //
+			method = RequestMethod.POST, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "login")
+	public DataResult<Customer> login(
+			@RequestBody LoginForm loginRequest) {
+
+		DataResult<Customer> result = new DataResult<>();
+		Customer customer = mCustomerRepository.findByAccount(loginRequest.getUsername());
+		
+		if(customer == null) {
+			result.setMessage(MessageResponse.ACCOUNT_NOT_EXSIT);
+			result.setStatusCode(HttpStatus.NOT_FOUND.value());
+		}else {
+			customer = mCustomerRepository.findByAccountAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
+			if(customer == null) {
+				result.setMessage(MessageResponse.PASSWORD_INCORRECT);
+				result.setStatusCode(HttpStatus.NOT_FOUND.value());
+			}else {
+				result.setMessage(MessageResponse.SUCCESSED);
+				result.setStatusCode(HttpStatus.OK.value());
+			}
+		}
+
+		result.setData(customer);
+		return result;
+	}
+	
 	
 }
