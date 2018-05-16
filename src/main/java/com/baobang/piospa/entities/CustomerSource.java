@@ -35,7 +35,7 @@ public class CustomerSource implements Serializable {
 	private String customerSourceCode;
 
 	@Column(name="customer_source_description")
-	private byte customerSourceDescription;
+	private String customerSourceDescription;
 
 	@Column(name="customer_source_name")
 	private String customerSourceName;
@@ -50,10 +50,7 @@ public class CustomerSource implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
-	//bi-directional many-to-one association to Customer
-	@JsonIgnore
-	@OneToMany(mappedBy="customerSource")
-	private List<Customer> customers;
+	
 
 	//bi-directional many-to-one association to Order
 	@JsonIgnore
@@ -95,11 +92,11 @@ public class CustomerSource implements Serializable {
 		this.customerSourceCode = customerSourceCode;
 	}
 
-	public byte getCustomerSourceDescription() {
+	public String getCustomerSourceDescription() {
 		return this.customerSourceDescription;
 	}
 
-	public void setCustomerSourceDescription(byte customerSourceDescription) {
+	public void setCustomerSourceDescription(String customerSourceDescription) {
 		this.customerSourceDescription = customerSourceDescription;
 	}
 
@@ -135,14 +132,7 @@ public class CustomerSource implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public List<Customer> getCustomers() {
-		return this.customers;
-	}
-
-	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
-	}
-
+	
 
 	public List<Order> getOrders() {
 		return this.orders;
