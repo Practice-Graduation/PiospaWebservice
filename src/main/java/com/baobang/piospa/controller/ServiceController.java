@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baobang.piospa.entities.Service;
+import com.baobang.piospa.entities.ServicePackage;
 import com.baobang.piospa.model.DataResult;
+import com.baobang.piospa.repositories.ServicePackageRepository;
 import com.baobang.piospa.repositories.ServiceRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
@@ -31,6 +33,8 @@ import io.swagger.annotations.ApiOperation;
 public class ServiceController {
 	@Autowired
 	ServiceRepository mServiceRepository;
+	@Autowired
+	ServicePackageRepository mServicePackageRepository;
 
 	/**
 	 * @api {get} / Request Service information
@@ -186,5 +190,32 @@ public class ServiceController {
 		dataResult.setStatusCode(HttpStatus.OK.value());
 		dataResult.setData(service);
 		return dataResult;
+	}
+
+	/**
+	 * @api {get}/packages/{packageId} get Service by package id
+	 * @apiName getServiceByPackageId
+	 * @apiGroup Service
+	 * 
+	 * @apiParam {packageId} id Service package unique ID.
+	 * 
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array[Service]} the Services was got
+	 * 
+	 */
+	@RequestMapping(//
+			value = "/packages/{packageId}", //
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Get Service  by package id")
+	public DataResult<List<Service>> getServicePackageById(@PathVariable(value = "packageId") int packageId){
+		
+		ServicePackage servicePackage = mServicePackageRepository.findById(packageId).get();
+		
+		List<Service> services = servicePackage.getServices();
+		
+		return new DataResult<List<Service>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, services);
+		
 	}
 }
