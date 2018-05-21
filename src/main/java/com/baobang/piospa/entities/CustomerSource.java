@@ -50,14 +50,10 @@ public class CustomerSource implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
-<<<<<<< HEAD
-	//bi-directional many-to-one association to Order
 	@JsonIgnore
 	@OneToMany(mappedBy="customerSource")
 	private List<Order> orders;
 
-=======
->>>>>>> 941a1a3942f5029b3222ab807ae8627918675c81
 	public CustomerSource() {
 	}
 
@@ -132,10 +128,6 @@ public class CustomerSource implements Serializable {
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> 941a1a3942f5029b3222ab807ae8627918675c81
 	public List<Order> getOrders() {
 		return this.orders;
 	}
