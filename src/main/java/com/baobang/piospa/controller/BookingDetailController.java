@@ -82,7 +82,7 @@ public class BookingDetailController {
 	public DataResult<List<BookingDetail>> getBookingDetailưById(@RequestBody BookingDetailRequest bookingDetailRequest) {
 		
 		DataResult<List<BookingDetail>> result = new DataResult<>();
-		List<BookingDetail> details = mBookingDetailRepository.getBookingDetailByDateBooking(bookingDetailRequest.getRoomId(), bookingDetailRequest.getDate());
+		List<BookingDetail> details = mBookingDetailRepository.getBookingDetailByDateBooking(bookingDetailRequest.getDate());
 
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());

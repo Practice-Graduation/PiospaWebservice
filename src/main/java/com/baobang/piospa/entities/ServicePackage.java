@@ -32,6 +32,8 @@ public class ServicePackage implements Serializable {
 	private int createdBy;
 
 	private String image;
+	
+	private int time;
 
 	@Column(name="is_active")
 	private byte isActive;
@@ -95,6 +97,14 @@ public class ServicePackage implements Serializable {
 
 	public void setCreatedBy(int createdBy) {
 		this.createdBy = createdBy;
+	}
+	
+	public int getTime() {
+		return time;
+	}
+	
+	public void setTime(int time) {
+		this.time = time;
 	}
 
 	public String getImage() {

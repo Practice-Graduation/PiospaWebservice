@@ -6,23 +6,16 @@ package com.baobang.piospa.model;
   */
 public class BookingDetailRequest {
 
-	private int roomId;
 	private String date;
-	public int getRoomId() {
-		return roomId;
-	}
-	public void setRoomId(int roomId) {
-		this.roomId = roomId;
-	}
+
 	public String getDate() {
 		return date;
 	}
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public BookingDetailRequest(int roomId, String date) {
+	public BookingDetailRequest(String date) {
 		super();
-		this.roomId = roomId;
 		this.date = date;
 	}
 	public BookingDetailRequest() {
