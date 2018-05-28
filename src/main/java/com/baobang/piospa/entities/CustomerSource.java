@@ -35,7 +35,7 @@ public class CustomerSource implements Serializable {
 	private String customerSourceCode;
 
 	@Column(name="customer_source_description")
-	private byte customerSourceDescription;
+	private String customerSourceDescription;
 
 	@Column(name="customer_source_name")
 	private String customerSourceName;
@@ -91,11 +91,11 @@ public class CustomerSource implements Serializable {
 		this.customerSourceCode = customerSourceCode;
 	}
 
-	public byte getCustomerSourceDescription() {
+	public String getCustomerSourceDescription() {
 		return this.customerSourceDescription;
 	}
 
-	public void setCustomerSourceDescription(byte customerSourceDescription) {
+	public void setCustomerSourceDescription(String customerSourceDescription) {
 		this.customerSourceDescription = customerSourceDescription;
 	}
 

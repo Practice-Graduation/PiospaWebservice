@@ -1,8 +1,11 @@
 package com.baobang.piospa.controller;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,16 +16,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baobang.piospa.entities.Booking;
+import com.baobang.piospa.entities.BookingDetail;
 import com.baobang.piospa.entities.Order;
 import com.baobang.piospa.entities.OrderProduct;
 import com.baobang.piospa.entities.Product;
-import com.baobang.piospa.model.CartItem;
+import com.baobang.piospa.entities.ServicePrice;
+import com.baobang.piospa.model.CartItemProduct;
+import com.baobang.piospa.model.CartItemService;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.model.OrderBodyRequest;
+import com.baobang.piospa.repositories.BookingDetailRepository;
+import com.baobang.piospa.repositories.BookingRepository;
+import com.baobang.piospa.repositories.OrderProductRepository;
 import com.baobang.piospa.repositories.OrderRepository;
 import com.baobang.piospa.repositories.ProductRepository;
+import com.baobang.piospa.repositories.ServicePriceRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
+import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -40,7 +52,13 @@ public class OrderController {
 	@Autowired
 	ProductRepository mProductRepository;
 	@Autowired
-	OrderProductController mOrderProductController;
+	OrderProductRepository mOrderProductRepository;
+	@Autowired
+	BookingRepository mBookingRepository;
+	@Autowired
+	BookingDetailRepository mBookingDetailRepository;
+	@Autowired
+	ServicePriceRepository mServicePriceRepository;
 
 	/**
 	 * @api {get} / Request Order information
@@ -103,6 +121,7 @@ public class OrderController {
 	 * @apiSuccess {OrderDeliveryStatus} the new Order DeliveryStatus was created
 	 * 
 	 */
+	@Transactional
 	@RequestMapping(//
 			value = { "", "/" }, //
 			method = RequestMethod.POST, //
@@ -112,17 +131,18 @@ public class OrderController {
 		DataResult<Order> result = new DataResult<>();
 
 		Order temp = mOrderRepository.findByCode(orderBodyRequester.getOrder().getCode());
-		
+		String code = Utils.genarateCode();
 		if(temp == null) {
 			Date date = new Date();
 			temp = orderBodyRequester.getOrder();
 			temp.setOrderId(0);
+			temp.setCode(code);
 			temp.setCreatedAt(date);
 			temp.setUpdatedAt(date);
-
+			// insert order and get order was inserted
 			temp = mOrderRepository.save(temp);
 			Product product;
-			for(CartItem item : orderBodyRequester.getCartShopping().getCartItems()) {
+			for(CartItemProduct item : orderBodyRequester.getCartShopping().getCartItemProducts()) {
 				OrderProduct orderProduct = new OrderProduct();
 				product = mProductRepository.findById(item.getProductId()).get();
 				
@@ -134,10 +154,42 @@ public class OrderController {
 				orderProduct.setIsDeleted((byte) 0);
 				orderProduct.setCreatedBy(temp.getCreatedBy());
 				orderProduct.setUpdatedBy(orderProduct.getUpdatedBy());
-				orderProduct = mOrderProductController.createOrderProduct(orderProduct);
+				orderProduct.setCreatedAt(date);
+				orderProduct.setUpdatedAt(date);
+				
+				// insert order product and add to order
+				orderProduct = mOrderProductRepository.save(orderProduct);
 				temp.addOrderProduct(orderProduct);
 			}
-
+			if(orderBodyRequester.getCartShopping().getCartItemServices().size() > 0) {
+				Booking booking = new Booking();
+				booking.setOrder(temp);
+				booking.setCustomer(temp.getCustomer());
+				booking.setCode(code);
+				booking.setCreatedAt(date);
+				booking.setUpdatedAt(date);
+				
+				booking = mBookingRepository.save(booking);
+				ServicePrice servicePrice;
+				for(CartItemService item : orderBodyRequester.getCartShopping().getCartItemServices()) {
+					BookingDetail bookingDetail = new  BookingDetail();
+					
+					servicePrice = mServicePriceRepository.findById(item.getProductId()).get();
+					
+					bookingDetail.setBooking(booking);
+					bookingDetail.setServicePrice(servicePrice);
+					bookingDetail.setDateBooking(item.getDateBooking());
+					Time time = new Time(item.getDateBooking().getTime());
+					bookingDetail.setTimeStart(time);
+					bookingDetail.setCreatedAt(date);
+					bookingDetail.setUpdatedAt(date);
+					
+					bookingDetail = mBookingDetailRepository.save(bookingDetail);
+					booking.addBookingDetail(bookingDetail);
+				}
+				
+				temp.addBooking(booking);
+			}
 			temp.caculate();
 			temp = mOrderRepository.save(temp);
 			

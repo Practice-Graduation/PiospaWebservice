@@ -17,6 +17,7 @@ import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.CustomerGroupRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
+import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -104,6 +105,7 @@ public class CustomerGroupController {
 		CustomerGroup group = mCustomerGroupRepository.findByCode(customerGroup.getCustomerGroupCode());
 
 		if (group == null) {
+			customerGroup.setCustomerGroupCode(Utils.genarateCode());
 			group = mCustomerGroupRepository.save(customerGroup);
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());

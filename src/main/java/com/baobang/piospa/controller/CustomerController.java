@@ -23,6 +23,7 @@ import com.baobang.piospa.model.LoginForm;
 import com.baobang.piospa.repositories.CustomerRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
+import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -107,6 +108,7 @@ public class CustomerController {
 
 		if (temp == null) {
 			Date date = new Date();
+			customer.setCode(Utils.genarateCode());
 			customer.setCreatedAt(date);
 			customer.setUpdatedAt(date);
 			temp = mCustomerRepository.save(customer);

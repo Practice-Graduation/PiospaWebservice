@@ -20,6 +20,7 @@ import com.baobang.piospa.repositories.ServicePackageRepository;
 import com.baobang.piospa.repositories.ServiceRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
+import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -112,6 +113,7 @@ public class ServiceController {
 			Date date = new Date();
 			service.setCreatedAt(date);
 			service.setUpdatedAt(date);
+			service.setServiceCode(Utils.genarateCode());
 			s = mServiceRepository.save(service);
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
