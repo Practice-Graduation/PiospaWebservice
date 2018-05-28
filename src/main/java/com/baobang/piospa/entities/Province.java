@@ -5,33 +5,38 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.List;
 
+import java.util.List;
 
 /**
  * The persistent class for the province database table.
  * 
  */
 @Entity
-@NamedQuery(name="Province.findAll", query="SELECT p FROM Province p")
+@NamedQuery(name = "Province.findAll", query = "SELECT p FROM Province p")
 public class Province implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int provinceid;
 
-	@Column(name="location_id")
+	@Column(name = "location_id")
 	private int locationId;
 
 	private String name;
 
 	private String type;
 
-	//bi-directional many-to-one association to District
+	// bi-directional many-to-one association to District
 	@JsonIgnore
-	@OneToMany(mappedBy="province")
+	@OneToMany(mappedBy = "province")
 	private List<District> districts;
+
+	// bi-directional many-to-one association to Customer
+	@JsonIgnore
+	@OneToMany(mappedBy = "province")
+	private List<Customer> customers;
 
 	public Province() {
 	}
@@ -88,6 +93,28 @@ public class Province implements Serializable {
 		district.setProvince(null);
 
 		return district;
+	}
+	
+	public List<Customer> getCustomers() {
+		return this.customers;
+	}
+
+	public void setCustomers(List<Customer> customers) {
+		this.customers = customers;
+	}
+
+	public Customer addCustomer(Customer customer) {
+		getCustomers().add(customer);
+		customer.setProvince(this);
+
+		return customer;
+	}
+
+	public Customer removeCustomer(Customer customer) {
+		getCustomers().remove(customer);
+		customer.setProvince(null);
+
+		return customer;
 	}
 
 }

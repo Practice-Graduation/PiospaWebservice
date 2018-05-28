@@ -5,23 +5,23 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 import java.util.Date;
 import java.util.List;
-
 
 /**
  * The persistent class for the customers database table.
  * 
  */
 @Entity
-@Table(name="customers")
-@NamedQuery(name="Customer.findAll", query="SELECT c FROM Customer c")
+@Table(name = "customers")
+@NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c")
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="customer_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "customer_id")
 	private int customerId;
 
 	private String account;
@@ -36,43 +36,44 @@ public class Customer implements Serializable {
 	private String code;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
+	@Column(name = "created_at")
 	private Date createdAt;
 
-	@Column(name="created_by")
+	@Column(name = "created_by")
 	private int createdBy;
 
-	@Column(name="cusomer_refer_id")
+	@Column(name = "cusomer_refer_id")
 	private int cusomerReferId;
 
-	@Column(name="customer_avatar")
+	@Column(name = "customer_avatar")
 	private String customerAvatar;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="date_last_login")
+	@Column(name = "date_last_login")
 	private Date dateLastLogin;
 
-	@Column(name="district_id")
-	private int districtId;
-
+	// bi-directional many-to-one association to District
+	@ManyToOne
+	@JoinColumn(name = "district_id")
+	private District district;
 	private String email;
 
 	private String facebook;
 
-	@Column(name="facebook_id")
+	@Column(name = "facebook_id")
 	private int facebookId;
 
 	private String fullname;
 
 	private String gender;
 
-	@Column(name="is_active")
+	@Column(name = "is_active")
 	private byte isActive;
 
-	@Column(name="is_member")
+	@Column(name = "is_member")
 	private byte isMember;
 
-	@Column(name="member_code")
+	@Column(name = "member_code")
 	private String memberCode;
 
 	private String password;
@@ -81,35 +82,39 @@ public class Customer implements Serializable {
 
 	private int point;
 
-	@Column(name="point_used")
+	@Column(name = "point_used")
 	private int pointUsed;
 
-	@Column(name="provinces_id")
-	private int provincesId;
+	// bi-directional many-to-one association to Province
+	@ManyToOne
+	@JoinColumn(name = "provinces_id")
+	private Province province;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
+	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@Column(name="updated_by")
+	@Column(name = "updated_by")
 	private int updatedBy;
 
-	@Column(name="ward_id")
-	private int wardId;
+	// bi-directional many-to-one association to Ward
+	@ManyToOne
+	@JoinColumn(name = "ward_id")
+	private Ward ward;
 
 	private String zalo;
 
-	//bi-directional many-to-one association to Booking
+	// bi-directional many-to-one association to Booking
 	@JsonIgnore
-	@OneToMany(mappedBy="customer")
+	@OneToMany(mappedBy = "customer")
 	private List<Booking> bookings;
 
-	@Column(name="customer_source_id")
+	@Column(name = "customer_source_id")
 	private int customerSource;
 
-	//bi-directional many-to-one association to Order
+	// bi-directional many-to-one association to Order
 	@JsonIgnore
-	@OneToMany(mappedBy="customer")
+	@OneToMany(mappedBy = "customer")
 	private List<Order> orders;
 
 	public Customer() {
@@ -203,12 +208,12 @@ public class Customer implements Serializable {
 		this.dateLastLogin = dateLastLogin;
 	}
 
-	public int getDistrictId() {
-		return this.districtId;
+	public District getDistrict() {
+		return this.district;
 	}
 
-	public void setDistrictId(int districtId) {
-		this.districtId = districtId;
+	public void setDistrict(District district) {
+		this.district = district;
 	}
 
 	public String getEmail() {
@@ -307,12 +312,12 @@ public class Customer implements Serializable {
 		this.pointUsed = pointUsed;
 	}
 
-	public int getProvincesId() {
-		return this.provincesId;
+	public Province getProvince() {
+		return this.province;
 	}
 
-	public void setProvincesId(int provincesId) {
-		this.provincesId = provincesId;
+	public void setProvince(Province province) {
+		this.province = province;
 	}
 
 	public Date getUpdatedAt() {
@@ -331,13 +336,14 @@ public class Customer implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public int getWardId() {
-		return this.wardId;
+	public Ward getWard() {
+		return this.ward;
 	}
 
-	public void setWardId(int wardId) {
-		this.wardId = wardId;
+	public void setWard(Ward ward) {
+		this.ward = ward;
 	}
+
 
 	public String getZalo() {
 		return this.zalo;

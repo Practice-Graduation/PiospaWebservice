@@ -5,20 +5,20 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.List;
 
+import java.util.List;
 
 /**
  * The persistent class for the district database table.
  * 
  */
 @Entity
-@NamedQuery(name="District.findAll", query="SELECT d FROM District d")
+@NamedQuery(name = "District.findAll", query = "SELECT d FROM District d")
 public class District implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int districtid;
 
 	private String location;
@@ -27,14 +27,19 @@ public class District implements Serializable {
 
 	private String type;
 
-	//bi-directional many-to-one association to Province
+	// bi-directional many-to-one association to Customer
+	@JsonIgnore
+	@OneToMany(mappedBy = "district")
+	private List<Customer> customers;
+
+	// bi-directional many-to-one association to Province
 	@ManyToOne
-	@JoinColumn(name="provinceid")
+	@JoinColumn(name = "provinceid")
 	private Province province;
 
-	//bi-directional many-to-one association to Ward
+	// bi-directional many-to-one association to Ward
 	@JsonIgnore
-	@OneToMany(mappedBy="district")
+	@OneToMany(mappedBy = "district")
 	private List<Ward> wards;
 
 	public District() {
@@ -100,6 +105,28 @@ public class District implements Serializable {
 		ward.setDistrict(null);
 
 		return ward;
+	}
+
+	public List<Customer> getCustomers() {
+		return this.customers;
+	}
+
+	public void setCustomers(List<Customer> customers) {
+		this.customers = customers;
+	}
+
+	public Customer addCustomer(Customer customer) {
+		getCustomers().add(customer);
+		customer.setDistrict(this);
+
+		return customer;
+	}
+
+	public Customer removeCustomer(Customer customer) {
+		getCustomers().remove(customer);
+		customer.setDistrict(null);
+
+		return customer;
 	}
 
 }
