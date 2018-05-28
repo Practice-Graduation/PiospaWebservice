@@ -153,9 +153,9 @@ public class CustomerController {
 		temp.setCmnd(customer.getCmnd());
 		temp.setIsActive(customer.getIsActive());
 		temp.setCustomerSource(customer.getCustomerSource());
-		temp.setProvincesId(customer.getProvincesId());
-		temp.setDistrictId(customer.getDistrictId());
-		temp.setWardId(customer.getWardId());
+		temp.setProvince(customer.getProvince());
+		temp.setDistrict(customer.getDistrict());
+		temp.setWard(customer.getWard());
 		temp.setEmail(customer.getEmail());
 		temp.setZalo(customer.getZalo());
 		temp.setFacebook(customer.getFacebook());
