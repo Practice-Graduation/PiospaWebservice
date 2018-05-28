@@ -6,6 +6,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class Booking implements Serializable {
 	//bi-directional many-to-one association to BookingDetail
 	@JsonIgnore
 	@OneToMany(mappedBy="booking")
-	private List<BookingDetail> bookingDetails;
+	private List<BookingDetail> bookingDetails = new ArrayList<>();
 
 	//bi-directional many-to-many association to ServicePrice
 	@JsonIgnore

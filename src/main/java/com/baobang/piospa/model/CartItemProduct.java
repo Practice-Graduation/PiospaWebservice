@@ -4,7 +4,7 @@ package com.baobang.piospa.model;
   * @Created Apr 26, 2018
   * 
   */
-public class CartItem {
+public class CartItemProduct {
 
 	private int productId;
 	private int number;
@@ -20,12 +20,12 @@ public class CartItem {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	public CartItem(int productId, int number) {
+	public CartItemProduct(int productId, int number) {
 		super();
 		this.productId = productId;
 		this.number = number;
 	}
-	public CartItem() {
+	public CartItemProduct() {
 		super();
 	}
 	

@@ -17,6 +17,7 @@ import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductLabelRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
+import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -107,6 +108,7 @@ public class ProductLabelController {
 			
 			Date date = new Date();
 			productLabel.setProductLabelId(0);
+			productLabel.setProductLabelCode(Utils.genarateCode());
 			productLabel.setCreatedAt(date);
 			productLabel.setUpdatedAt(date);
 			label = mLabelRepository.save(productLabel);

@@ -17,6 +17,7 @@ import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.CustomerSourceRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
+import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -103,6 +104,7 @@ public class CustomerSourceController {
 		CustomerSource source = mCustomerSourceRepository.findByCode(customerSource.getCustomerSourceCode());
 
 		if (source == null) {
+			customerSource.setCustomerSourceCode(Utils.genarateCode());
 			source = mCustomerSourceRepository.save(customerSource);
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());

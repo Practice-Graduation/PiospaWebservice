@@ -18,6 +18,7 @@ import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
+import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -114,6 +115,7 @@ public class ProductController {
 			product.setProductId(0);
 			product.setCreatedAt(date);
 			product.setUpdatedAt(date);
+			product.setProductCode(Utils.genarateCode());
 			temp = mProductRepository.save(product);
 
 			result.setMessage(MessageResponse.SUCCESSED);

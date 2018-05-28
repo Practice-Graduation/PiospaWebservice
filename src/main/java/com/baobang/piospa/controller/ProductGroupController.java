@@ -20,6 +20,7 @@ import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductGroupRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
+import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -136,6 +137,7 @@ public class ProductGroupController {
 
 			Date date = new Date();
 			productGroup.setProductGroupId(0);
+			productGroup.setProductGroupCode(Utils.genarateCode());
 			productGroup.setCreatedAt(date);
 			productGroup.setUpdatedAt(date);
 			group = mGroupRepository.save(productGroup);
