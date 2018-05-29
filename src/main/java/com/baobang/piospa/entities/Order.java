@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,7 +54,12 @@ public class Order implements Serializable {
 
 	private String email;
 
+	@Column(name="full_name")
+	private String fullName;
+
 	private String note;
+
+	private String phone;
 
 	@Column(name="staff_id")
 	private int staffId;
@@ -378,4 +384,22 @@ public class Order implements Serializable {
 	public void caculate() {
 		
 	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	
 }
