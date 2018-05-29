@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +41,9 @@ public class OrderDeliveryType implements Serializable {
 	@Column(name="order_delivery_type_name")
 	private String orderDeliveryTypeName;
 
+	@Column(name="order_delivery_type_price")
+	private int price;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
 	private Date updatedAt;
@@ -57,6 +61,16 @@ public class OrderDeliveryType implements Serializable {
 
 	public int getOrderDeliveryTypeId() {
 		return this.orderDeliveryTypeId;
+	}
+	
+	
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
 	public void setOrderDeliveryTypeId(int orderDeliveryTypeId) {
