@@ -26,6 +26,7 @@ import com.baobang.piospa.model.CartItemProduct;
 import com.baobang.piospa.model.CartItemService;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.model.OrderBodyRequest;
+import com.baobang.piospa.model.OrderCustomerStatusBodyRequest;
 import com.baobang.piospa.repositories.BookingDetailRepository;
 import com.baobang.piospa.repositories.BookingRepository;
 import com.baobang.piospa.repositories.OrderProductRepository;
@@ -82,6 +83,32 @@ public class OrderController {
 
 		return new DataResult<List<Order>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, orders);
 	}
+	
+	/**
+	 * @api {get} / Request Order information
+	 * @apiName getOrderByStatus
+	 * @apiGroup Order
+	 * 
+	 * @apiParam none
+	 * @apiBody {customerId, ordetStatusId}
+	 * 
+	 * @apiSuccess {Integer} the Order of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list Orders
+	 * 
+	 */
+	@RequestMapping(//
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Get all Orders")
+	public DataResult<List<Order>> getOrderByStatus(@RequestBody OrderCustomerStatusBodyRequest orderBodyRequester) {
+
+		List<Order> orders = mOrderRepository.findAll();
+
+		return new DataResult<List<Order>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, orders);
+	}
+
+	
 
 	/**
 	 * @api {get} /{orderId} Request Order information
