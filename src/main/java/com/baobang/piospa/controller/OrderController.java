@@ -103,7 +103,7 @@ public class OrderController {
 	@ApiOperation(value = "Get all Orders")
 	public DataResult<List<Order>> getOrderByStatus(@RequestBody OrderCustomerStatusBodyRequest orderBodyRequester) {
 
-		List<Order> orders = mOrderRepository.findAll();
+		List<Order> orders = mOrderRepository.findOrderByStatus(orderBodyRequester.getOrderStatusId(), orderBodyRequester.getCustomerId());
 
 		return new DataResult<List<Order>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, orders);
 	}
