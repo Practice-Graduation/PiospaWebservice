@@ -99,7 +99,7 @@ public class OrderController {
 	 */
 	@RequestMapping(//
 			value = "/customer-order-status", //
-			method = RequestMethod.GET, //
+			method = RequestMethod.POST, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Get all Orders")
 	public DataResult<List<Order>> getOrderByStatus(@RequestBody OrderCustomerStatusBodyRequest orderBodyRequester) {
