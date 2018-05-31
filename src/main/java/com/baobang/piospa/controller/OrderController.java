@@ -4,7 +4,7 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.ArrayList;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,13 +100,13 @@ public class OrderController {
 	 */
 	@RequestMapping(//
 			value = "/customer-order-status", //
-			method = RequestMethod.GET, //
+			method = RequestMethod.POST, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Get all Orders")
 	public DataResult<List<Order>> getOrderByStatus(@RequestBody OrderCustomerStatusBodyRequest orderBodyRequester) {
 
 		List<Order> orders = mOrderRepository.findOrderByStatus(orderBodyRequester.getOrderStatusId(), orderBodyRequester.getCustomerId());
-
+		if(orders == null) orders = new ArrayList<>();
 		return new DataResult<List<Order>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, orders);
 	}
 
