@@ -47,29 +47,12 @@ public class ServicePrice implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
-	//bi-directional many-to-many association to Booking
-	@JsonIgnore
-	@ManyToMany(mappedBy="servicePrices1")
-	private List<Booking> bookings1;
-
+	
 	//bi-directional many-to-one association to BookingDetail
 	@JsonIgnore
 	@OneToMany(mappedBy="servicePrice")
 	private List<BookingDetail> bookingDetails;
 
-	//bi-directional many-to-many association to Booking
-	@JsonIgnore
-	@ManyToMany
-	@JoinTable(
-		name="booking_detail"
-		, joinColumns={
-			@JoinColumn(name="service_price_id")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="booking_id")
-			}
-		)
-	private List<Booking> bookings2;
 
 	//bi-directional many-to-one association to ServiceGroup
 	@ManyToOne
@@ -158,13 +141,6 @@ public class ServicePrice implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public List<Booking> getBookings1() {
-		return this.bookings1;
-	}
-
-	public void setBookings1(List<Booking> bookings1) {
-		this.bookings1 = bookings1;
-	}
 
 	public List<BookingDetail> getBookingDetails() {
 		return this.bookingDetails;
@@ -188,13 +164,6 @@ public class ServicePrice implements Serializable {
 		return bookingDetail;
 	}
 
-	public List<Booking> getBookings2() {
-		return this.bookings2;
-	}
-
-	public void setBookings2(List<Booking> bookings2) {
-		this.bookings2 = bookings2;
-	}
 
 	public ServiceGroup getServiceGroup() {
 		return this.serviceGroup;

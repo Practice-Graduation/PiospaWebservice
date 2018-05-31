@@ -27,6 +27,7 @@ import com.baobang.piospa.model.CartItemService;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.model.OrderBodyRequest;
 import com.baobang.piospa.model.OrderCustomerStatusBodyRequest;
+import com.baobang.piospa.model.OrderResultResponse;
 import com.baobang.piospa.repositories.BookingDetailRepository;
 import com.baobang.piospa.repositories.BookingRepository;
 import com.baobang.piospa.repositories.OrderProductRepository;
@@ -109,13 +110,12 @@ public class OrderController {
 		return new DataResult<List<Order>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, orders);
 	}
 
-	
 
 	/**
 	 * @api {get} /{orderId} Request Order information
 	 * @apiName getOrderById
 	 * @apiGroup Order
-	 * 
+	 * 	qaer0-po/
 	 * @apiParam {orderId} id Order DeliveryStatus unique ID.
 	 * 
 	 * @apiSuccess {Integer} the order of the response
@@ -128,7 +128,7 @@ public class OrderController {
 			method = RequestMethod.GET, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Get Order by id")
-	public DataResult<Order> getOrderưById(@PathVariable(value = "orderId") int orderId) {
+	public DataResult<Order> getOrderById(@PathVariable(value = "orderId") int orderId) {
 		DataResult<Order> result = new DataResult<>();
 		Order order = mOrderRepository.findById(orderId).get();
 		result.setMessage(MessageResponse.SUCCESSED);
@@ -136,6 +136,37 @@ public class OrderController {
 		result.setData(order);
 		return result;
 	}
+	
+	/**
+	 * @api {get} /{orderId}/order-product-service-price Request Order information
+	 * @apiName getOrderProductAndServicePrice
+	 * @apiGroup Order
+	 * @apiParam {orderId} id Order DeliveryStatus unique ID.
+	 * 
+	 * @apiSuccess {Integer} the order of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array[OrderProduct], array[ServicePrice]} the OrderProducts and ServicePrices was got
+	 * 
+	 */
+	@RequestMapping(//
+			value = "/{orderId}/order-product-service-price", //
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "get Order Product And Service Price by order id")
+	public DataResult<OrderResultResponse> getOrderProductAndServicePrice(@PathVariable(value = "orderId") int orderId) {
+		DataResult<OrderResultResponse> result = new DataResult<>();
+		Order order = mOrderRepository.findById(orderId).get();
+		
+		OrderResultResponse response = new OrderResultResponse();
+		response.setOrderProducts(order.getOrderProducts());
+		response.setBookingDetails(order.getBooking().getBookingDetails());
+		
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
+		result.setData(response);
+		return result;
+	}
+	
 
 	/**
 	 * @api {post} / Create a new Order
@@ -216,7 +247,7 @@ public class OrderController {
 					booking.addBookingDetail(bookingDetail);
 				}
 				
-				temp.addBooking(booking);
+				temp.setBooking(booking);
 			}
 			temp.caculate();
 			temp = mOrderRepository.save(temp);
