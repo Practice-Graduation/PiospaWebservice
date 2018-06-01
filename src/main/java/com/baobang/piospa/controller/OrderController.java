@@ -84,7 +84,7 @@ public class OrderController {
 
 		return new DataResult<List<Order>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, orders);
 	}
-	
+
 	/**
 	 * @api {get} / Request Order information
 	 * @apiName getOrderByStatus
@@ -105,17 +105,17 @@ public class OrderController {
 	@ApiOperation(value = "Get all Orders")
 	public DataResult<List<Order>> getOrderByStatus(@RequestBody OrderCustomerStatusBodyRequest orderBodyRequester) {
 
-		List<Order> orders = mOrderRepository.findOrderByStatus(orderBodyRequester.getOrderStatusId(), orderBodyRequester.getCustomerId());
-		if(orders == null) orders = new ArrayList<>();
+		List<Order> orders = mOrderRepository.findOrderByStatus(orderBodyRequester.getOrderStatusId(),
+				orderBodyRequester.getCustomerId());
+		if (orders == null)
+			orders = new ArrayList<>();
 		return new DataResult<List<Order>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, orders);
 	}
-
 
 	/**
 	 * @api {get} /{orderId} Request Order information
 	 * @apiName getOrderById
-	 * @apiGroup Order
-	 * 	qaer0-po/
+	 * @apiGroup Order qaer0-po/
 	 * @apiParam {orderId} id Order DeliveryStatus unique ID.
 	 * 
 	 * @apiSuccess {Integer} the order of the response
@@ -136,7 +136,7 @@ public class OrderController {
 		result.setData(order);
 		return result;
 	}
-	
+
 	/**
 	 * @api {get} /{orderId}/order-product-service-price Request Order information
 	 * @apiName getOrderProductAndServicePrice
@@ -145,7 +145,8 @@ public class OrderController {
 	 * 
 	 * @apiSuccess {Integer} the order of the response
 	 * @apiSuccess {String} the message of the response
-	 * @apiSuccess {array[OrderProduct], array[ServicePrice]} the OrderProducts and ServicePrices was got
+	 * @apiSuccess {array[OrderProduct], array[ServicePrice]} the OrderProducts and
+	 *             ServicePrices was got
 	 * 
 	 */
 	@RequestMapping(//
@@ -153,20 +154,26 @@ public class OrderController {
 			method = RequestMethod.GET, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "get Order Product And Service Price by order id")
-	public DataResult<OrderResultResponse> getOrderProductAndServicePrice(@PathVariable(value = "orderId") int orderId) {
+	public DataResult<OrderResultResponse> getOrderProductAndServicePrice(
+			@PathVariable(value = "orderId") int orderId) {
 		DataResult<OrderResultResponse> result = new DataResult<>();
 		Order order = mOrderRepository.findById(orderId).get();
-		
+
 		OrderResultResponse response = new OrderResultResponse();
 		response.setOrderProducts(order.getOrderProducts());
-		response.setBookingDetails(order.getBooking().getBookingDetails());
-		
+		Booking booking = order.getBooking();
+		if (booking != null) {
+
+			response.setBookingDetails(order.getBooking().getBookingDetails());
+		} else {
+			response.setBookingDetails(new ArrayList<>());
+		}
+
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(response);
 		return result;
 	}
-	
 
 	/**
 	 * @api {post} / Create a new Order
@@ -191,7 +198,7 @@ public class OrderController {
 
 		Order temp = mOrderRepository.findByCode(orderBodyRequester.getOrder().getCode());
 		String code = Utils.genarateCode();
-		if(temp == null) {
+		if (temp == null) {
 			Date date = new Date();
 			temp = orderBodyRequester.getOrder();
 			temp.setOrderId(0);
@@ -201,10 +208,10 @@ public class OrderController {
 			// insert order and get order was inserted
 			temp = mOrderRepository.save(temp);
 			Product product;
-			for(CartItemProduct item : orderBodyRequester.getCartShopping().getCartItemProducts()) {
+			for (CartItemProduct item : orderBodyRequester.getCartShopping().getCartItemProducts()) {
 				OrderProduct orderProduct = new OrderProduct();
 				product = mProductRepository.findById(item.getProductId()).get();
-				
+
 				orderProduct.setOrder(temp);
 				orderProduct.setProduct(product);
 				orderProduct.setNumber(item.getNumber());
@@ -215,26 +222,26 @@ public class OrderController {
 				orderProduct.setUpdatedBy(orderProduct.getUpdatedBy());
 				orderProduct.setCreatedAt(date);
 				orderProduct.setUpdatedAt(date);
-				
+
 				// insert order product and add to order
 				orderProduct = mOrderProductRepository.save(orderProduct);
 				temp.addOrderProduct(orderProduct);
 			}
-			if(orderBodyRequester.getCartShopping().getCartItemServices().size() > 0) {
+			if (orderBodyRequester.getCartShopping().getCartItemServices().size() > 0) {
 				Booking booking = new Booking();
 				booking.setOrder(temp);
 				booking.setCustomer(temp.getCustomer());
 				booking.setCode(code);
 				booking.setCreatedAt(date);
 				booking.setUpdatedAt(date);
-				
+
 				booking = mBookingRepository.save(booking);
 				ServicePrice servicePrice;
-				for(CartItemService item : orderBodyRequester.getCartShopping().getCartItemServices()) {
-					BookingDetail bookingDetail = new  BookingDetail();
-					
+				for (CartItemService item : orderBodyRequester.getCartShopping().getCartItemServices()) {
+					BookingDetail bookingDetail = new BookingDetail();
+
 					servicePrice = mServicePriceRepository.findById(item.getProductId()).get();
-					
+
 					bookingDetail.setBooking(booking);
 					bookingDetail.setServicePrice(servicePrice);
 					bookingDetail.setDateBooking(item.getDateBooking());
@@ -242,19 +249,19 @@ public class OrderController {
 					bookingDetail.setTimeStart(time);
 					bookingDetail.setCreatedAt(date);
 					bookingDetail.setUpdatedAt(date);
-					
+
 					bookingDetail = mBookingDetailRepository.save(bookingDetail);
 					booking.addBookingDetail(bookingDetail);
 				}
-				
+
 				temp.setBooking(booking);
 			}
 			temp.caculate();
 			temp = mOrderRepository.save(temp);
-			
+
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
-		}else {
+		} else {
 			result.setMessage(MessageResponse.EXITS);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		}
@@ -280,14 +287,12 @@ public class OrderController {
 			method = RequestMethod.PUT, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Update Order by id")
-	public DataResult<Order> updateOrder(
-			@PathVariable(value = "orderId") int orderId,
-			@RequestBody Order order) {
+	public DataResult<Order> updateOrder(@PathVariable(value = "orderId") int orderId, @RequestBody Order order) {
 		DataResult<Order> result;
 		Optional<Order> option = mOrderRepository.findById(orderId);
 
 		Order newOrder = option.get();
-		
+
 		newOrder.setCustomer(order.getCustomer());
 		newOrder.setCustomerSource(order.getCustomerSource());
 		newOrder.setAddress(order.getAddress());
@@ -308,13 +313,12 @@ public class OrderController {
 		newOrder.setSubTotal(order.getSubTotal());
 		newOrder.setUpdatedBy(order.getUpdatedBy());
 		newOrder.setUpdatedAt(new Date());
-		
+
 		newOrder = mOrderRepository.save(newOrder);
 
 		result = new DataResult<>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, newOrder);
 
 		return result;
 	}
-	
-	
+
 }
