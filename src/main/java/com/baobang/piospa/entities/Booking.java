@@ -78,7 +78,7 @@ public class Booking implements Serializable {
 
 	//bi-directional many-to-one association to BookingDetail
 	@JsonIgnore
-	@OneToMany(mappedBy="booking")
+	@OneToMany(mappedBy="booking", cascade = CascadeType.ALL)
 	private List<BookingDetail> bookingDetails = new ArrayList<>();
 
 
