@@ -158,7 +158,6 @@ public class BookingController {
 		newBooking.setUpdatedAt(new Date());
 		newBooking.setUpdatedBy(booking.getUpdatedBy());
 		newBooking.setVoucherId(booking.getVoucherId());
-		newBooking.setOrder(booking.getOrder());
 		newBooking.setTaxId(booking.getTaxId());
 		
 		

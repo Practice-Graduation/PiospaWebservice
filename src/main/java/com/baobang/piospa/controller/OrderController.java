@@ -229,7 +229,6 @@ public class OrderController {
 			}
 			if (orderBodyRequester.getCartShopping().getCartItemServices().size() > 0) {
 				Booking booking = new Booking();
-				booking.setOrder(temp);
 				booking.setCustomer(temp.getCustomer());
 				booking.setCode(code);
 				booking.setCreatedAt(date);
