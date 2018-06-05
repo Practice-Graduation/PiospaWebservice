@@ -69,13 +69,6 @@ public class Booking implements Serializable {
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 
-	//bi-directional many-to-one association to Order
-	@ManyToOne
-	@JoinColumn(name="order_id")
-	private Order order;
-
-
-
 	//bi-directional many-to-one association to BookingDetail
 	@JsonIgnore
 	@OneToMany(mappedBy="booking",cascade = CascadeType.ALL)
@@ -212,14 +205,6 @@ public class Booking implements Serializable {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-	}
-
-	public Order getOrder() {
-		return this.order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
 	}
 
 	
