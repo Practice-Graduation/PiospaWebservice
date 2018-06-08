@@ -205,6 +205,7 @@ public class OrderController {
 			temp.setCode(code);
 			temp.setCreatedAt(date);
 			temp.setUpdatedAt(date);
+			
 			// insert order and get order was inserted
 			temp = mOrderRepository.save(temp);
 			Product product;

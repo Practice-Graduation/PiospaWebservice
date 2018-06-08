@@ -102,18 +102,18 @@ public class Order implements Serializable {
 	private Customer customer;
 
 	//bi-directional many-to-one association to OrderDeliveryStatus
-	@ManyToOne
-	@JoinColumn(name="order_delivery_status_id", cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="order_delivery_status_id")
 	private OrderDeliveryStatus orderDeliveryStatus;
 
 	//bi-directional many-to-one association to OrderDeliveryType
-	@ManyToOne
-	@JoinColumn(name="order_delivery_type_id", cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="order_delivery_type_id")
 	private OrderDeliveryType orderDeliveryType;
 
 	//bi-directional many-to-one association to OrderPaymentType
-	@ManyToOne
-	@JoinColumn(name="order_payment_type_id", cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="order_payment_type_id")
 	private OrderPaymentType orderPaymentType;
 
 	//bi-directional many-to-one association to OrderReasonCancel
@@ -122,8 +122,8 @@ public class Order implements Serializable {
 	private OrderReasonCancel orderReasonCancel;
 
 	//bi-directional many-to-one association to OrderStatus
-	@ManyToOne
-	@JoinColumn(name="order_status_id", cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="order_status_id")
 	private OrderStatus orderStatus;
 
 	public Order() {
