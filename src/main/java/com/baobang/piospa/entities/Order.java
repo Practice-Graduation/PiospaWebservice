@@ -102,17 +102,17 @@ public class Order implements Serializable {
 	private Customer customer;
 
 	//bi-directional many-to-one association to OrderDeliveryStatus
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE , fetch = FetchType.EAGER)
 	@JoinColumn(name="order_delivery_status_id")
 	private OrderDeliveryStatus orderDeliveryStatus;
 
 	//bi-directional many-to-one association to OrderDeliveryType
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE , fetch = FetchType.EAGER)
 	@JoinColumn(name="order_delivery_type_id")
 	private OrderDeliveryType orderDeliveryType;
 
 	//bi-directional many-to-one association to OrderPaymentType
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE , fetch = FetchType.EAGER)
 	@JoinColumn(name="order_payment_type_id")
 	private OrderPaymentType orderPaymentType;
 
@@ -122,7 +122,7 @@ public class Order implements Serializable {
 	private OrderReasonCancel orderReasonCancel;
 
 	//bi-directional many-to-one association to OrderStatus
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE , fetch = FetchType.EAGER)
 	@JoinColumn(name="order_status_id")
 	private OrderStatus orderStatus;
 
