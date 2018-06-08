@@ -74,8 +74,8 @@ public class Booking implements Serializable {
 	private List<BookingDetail> bookingDetails = new ArrayList<>();
 
 	// bi-directional many-to-one association to Booking
-	@OneToOne
-	@JoinColumn(name = "order_id", referencedColumnName = "order_id")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="order_id", referencedColumnName="order_id")
 	private Order order;
 	
 	public void setOrder(Order order) {
