@@ -82,7 +82,7 @@ public class Order implements Serializable {
 	private int voucherId;
 
 	//bi-directional many-to-one association to Booking
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="order_id", referencedColumnName="order_id")
 	private Booking booking;
 

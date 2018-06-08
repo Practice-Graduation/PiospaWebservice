@@ -164,7 +164,6 @@ public class OrderController {
 		response.setOrderProducts(order.getOrderProducts());
 		Booking booking = order.getBooking();
 		if (booking != null) {
-
 			response.setBookingDetails(order.getBooking().getBookingDetails());
 		} else {
 			response.setBookingDetails(new ArrayList<>());
