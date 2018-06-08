@@ -39,6 +39,8 @@ public class BookingDetail implements Serializable {
 
 	@Column(name="time_start")
 	private Time timeStart;
+	
+	private int number;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
@@ -64,6 +66,20 @@ public class BookingDetail implements Serializable {
 
 	public BookingDetail() {
 	}
+
+	
+	
+	public int getNumber() {
+		return number;
+	}
+
+
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+
 
 	public int getBookingDetailId() {
 		return this.bookingDetailId;

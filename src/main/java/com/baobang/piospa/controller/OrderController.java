@@ -240,13 +240,17 @@ public class OrderController {
 				booking.setOrder(temp);
 
 				booking = mBookingRepository.save(booking);
+				int price = 0, totalNumber = 0;
+				
 				ServicePrice servicePrice;
 				for (CartItemService item : orderBodyRequester.getCartShopping().getCartItemServices()) {
 					BookingDetail bookingDetail = new BookingDetail();
-
+					totalNumber += item.getNumber();
 					servicePrice = mServicePriceRepository.findById(item.getProductId()).get();
 
+					price += item.getNumber() * servicePrice.getAllPrice(); 
 					bookingDetail.setBooking(booking);
+					bookingDetail.setNumber(item.getNumber());
 					bookingDetail.setServicePrice(servicePrice);
 					bookingDetail.setDateBooking(item.getDateBooking());
 					Time time = new Time(item.getDateBooking().getTime());
@@ -257,7 +261,9 @@ public class OrderController {
 					bookingDetail = mBookingDetailRepository.save(bookingDetail);
 					booking.addBookingDetail(bookingDetail);
 				}
-
+				booking.setPrice(price);
+				booking.setNumber(totalNumber);
+				booking.setTotal(price - booking.getDiscount());
 				temp.setBooking(booking);
 			}
 			temp.caculate();

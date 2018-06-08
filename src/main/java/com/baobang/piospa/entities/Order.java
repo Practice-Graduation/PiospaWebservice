@@ -367,7 +367,15 @@ public class Order implements Serializable {
 		this.orderStatus = orderStatus;
 	}
 	public void caculate() {
+		 total = 0;
+		for(OrderProduct orderProduct : orderProducts) {
+			total += orderProduct.getTotal();
+		}
+		if(booking != null) {
+			total += booking.getTotal();
+		}
 		
+		subTotal = total + deliveryCost - discount;
 	}
 
 	public String getFullName() {
