@@ -10,28 +10,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the booking database table.
  * 
  */
 @Entity
-@NamedQuery(name="Booking.findAll", query="SELECT b FROM Booking b")
+@NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b")
 public class Booking implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="booking_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "booking_id")
 	private int bookingId;
 
 	private String code;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
+	@Column(name = "created_at")
 	private Date createdAt;
 
-	@Column(name="created_by")
+	@Column(name = "created_by")
 	private int createdBy;
 
 	@Temporal(TemporalType.DATE)
@@ -43,38 +42,45 @@ public class Booking implements Serializable {
 
 	private int price;
 
-	@Column(name="tax_id")
+	@Column(name = "tax_id")
 	private int taxId;
 
-	@Column(name="time_end")
+	@Column(name = "time_end")
 	private Time timeEnd;
 
-	@Column(name="time_start")
+	@Column(name = "time_start")
 	private Time timeStart;
 
 	private int total;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
+	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@Column(name="updated_by")
+	@Column(name = "updated_by")
 	private int updatedBy;
 
-	@Column(name="voucher_id")
+	@Column(name = "voucher_id")
 	private int voucherId;
 
-	//bi-directional many-to-one association to Customer
+	// bi-directional many-to-one association to Customer
 	@ManyToOne
-	@JoinColumn(name="customer_id")
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
-	//bi-directional many-to-one association to BookingDetail
+	// bi-directional many-to-one association to BookingDetail
 	@JsonIgnore
-	@OneToMany(mappedBy="booking",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
 	private List<BookingDetail> bookingDetails = new ArrayList<>();
 
-
+	// bi-directional many-to-one association to Booking
+	@OneToOne
+	@JoinColumn(name = "order_id", referencedColumnName = "order_id")
+	private Order order;
+	
+	public void setOrder(Order order) {
+		this.order = order;
+	}
 
 	public Booking() {
 	}
@@ -207,7 +213,6 @@ public class Booking implements Serializable {
 		this.customer = customer;
 	}
 
-	
 	public List<BookingDetail> getBookingDetails() {
 		return this.bookingDetails;
 	}

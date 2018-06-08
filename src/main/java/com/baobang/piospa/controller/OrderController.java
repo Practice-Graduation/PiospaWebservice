@@ -237,6 +237,7 @@ public class OrderController {
 				booking.setCode(code);
 				booking.setCreatedAt(date);
 				booking.setUpdatedAt(date);
+				booking.setOrder(temp);
 
 				booking = mBookingRepository.save(booking);
 				ServicePrice servicePrice;
