@@ -34,6 +34,7 @@ import com.baobang.piospa.repositories.OrderProductRepository;
 import com.baobang.piospa.repositories.OrderRepository;
 import com.baobang.piospa.repositories.ProductRepository;
 import com.baobang.piospa.repositories.ServicePriceRepository;
+import com.baobang.piospa.utils.AppConstants;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 import com.baobang.piospa.utils.Utils;
@@ -203,6 +204,8 @@ public class OrderController {
 			temp = orderBodyRequester.getOrder();
 			temp.setOrderId(0);
 			temp.setCode(code);
+			temp.getOrderDeliveryStatus().setOrderDeliveryStatusId(AppConstants.ORDER_DELIVERY_STATUS);
+			temp.getOrderStatus().setOrderStatusId(AppConstants.ORDER_STATUS);
 			temp.setCreatedAt(date);
 			temp.setUpdatedAt(date);
 			
