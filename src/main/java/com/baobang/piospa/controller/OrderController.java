@@ -20,6 +20,8 @@ import com.baobang.piospa.entities.Booking;
 import com.baobang.piospa.entities.BookingDetail;
 import com.baobang.piospa.entities.Order;
 import com.baobang.piospa.entities.OrderProduct;
+import com.baobang.piospa.entities.OrderReasonCancel;
+import com.baobang.piospa.entities.OrderStatus;
 import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.entities.ServicePrice;
 import com.baobang.piospa.model.CartItemProduct;
@@ -31,7 +33,9 @@ import com.baobang.piospa.model.OrderResultResponse;
 import com.baobang.piospa.repositories.BookingDetailRepository;
 import com.baobang.piospa.repositories.BookingRepository;
 import com.baobang.piospa.repositories.OrderProductRepository;
+import com.baobang.piospa.repositories.OrderReasonCancelRepository;
 import com.baobang.piospa.repositories.OrderRepository;
+import com.baobang.piospa.repositories.OrderStatusRepository;
 import com.baobang.piospa.repositories.ProductRepository;
 import com.baobang.piospa.repositories.ServicePriceRepository;
 import com.baobang.piospa.utils.AppConstants;
@@ -62,6 +66,10 @@ public class OrderController {
 	BookingDetailRepository mBookingDetailRepository;
 	@Autowired
 	ServicePriceRepository mServicePriceRepository;
+	@Autowired
+	OrderReasonCancelRepository mOrderReasonCancelRepository;
+	@Autowired
+	OrderStatusRepository mOrderStatusRepository;
 
 	/**
 	 * @api {get} / Request Order information
@@ -310,13 +318,25 @@ public class OrderController {
 		newOrder.setDateDelivery(order.getDateDelivery());
 		newOrder.setOrderPaymentType(order.getOrderPaymentType());
 		newOrder.setNote(order.getNote());
-		newOrder.setOrderStatus(order.getOrderStatus());
+		
+		if(order.getOrderStatus() != null) {
+			OrderStatus orderStatus = mOrderStatusRepository.findById(order.getOrderStatus().getOrderStatusId()).get();
+			newOrder.setOrderStatus(orderStatus);
+			
+		}
+		
 		newOrder.setStaffId(order.getStaffId());
 		newOrder.setOrderDeliveryType(order.getOrderDeliveryType());
 		newOrder.setDeliveryCode(order.getDeliveryCode());
 		newOrder.setDeliveryCost(order.getDeliveryCost());
 		newOrder.setOrderDeliveryStatus(order.getOrderDeliveryStatus());
-		newOrder.setOrderReasonCancel(order.getOrderReasonCancel());
+		
+		if(order.getOrderReasonCancel() != null) {
+			OrderReasonCancel orderReasonCancel = mOrderReasonCancelRepository
+					.findById(order.getOrderReasonCancel().getOrderReasonCancelId()).get();
+			newOrder.setOrderReasonCancel(orderReasonCancel);
+		}
+		
 		newOrder.setTotal(order.getTotal());
 		newOrder.setDiscount(order.getDiscount());
 		newOrder.setSubTotal(order.getSubTotal());
