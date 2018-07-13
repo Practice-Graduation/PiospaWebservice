@@ -131,7 +131,7 @@ public class ProductAdminControler {
 		return "add-product";
 	}
 
-	@RequestMapping(value = "admin/add-product", method = RequestMethod.POST)
+	@RequestMapping(value = "admin/add-product")
 	public String addProduct(Model model, HttpServletRequest request,
 			@RequestParam(required = true, name = "productid", defaultValue = "0") int productId,
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
