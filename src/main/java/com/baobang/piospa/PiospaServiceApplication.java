@@ -27,7 +27,7 @@ public class PiospaServiceApplication {
 	public Docket userAPI() {
 		return new Docket(DocumentationType.SWAGGER_2)
 			.select()
-			.apis(RequestHandlerSelectors.basePackage("com.baobang.piospa.controller"))
+			.apis(RequestHandlerSelectors.basePackage("com.baobang.piospa.controller.api"))
 			.paths(PathSelectors.regex(".*"))
 			.build()
 			.apiInfo(metaData());

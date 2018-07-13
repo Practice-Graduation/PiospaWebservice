@@ -76,7 +76,7 @@ public class ProductAdminControler {
 		return "true";
 	}
 
-	@RequestMapping(value = "admin/edit-product/{id}")
+	@RequestMapping(value = "admin/edit-product/{id}", method = RequestMethod.POST)
 	public String orderDetail(Model model, HttpServletRequest request, @PathVariable("id") int id,
 			@RequestParam(required = true, name = "productid", defaultValue = "0") int productId,
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
@@ -131,7 +131,7 @@ public class ProductAdminControler {
 		return "add-product";
 	}
 
-	@RequestMapping(value = "admin/add-product")
+	@RequestMapping(value = "admin/add-product", method = RequestMethod.POST)
 	public String addProduct(Model model, HttpServletRequest request,
 			@RequestParam(required = true, name = "productid", defaultValue = "0") int productId,
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,

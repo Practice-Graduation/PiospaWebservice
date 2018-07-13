@@ -28,8 +28,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.baobang.piospa.model.UploadForm;
 import com.baobang.piospa.utils.ConvertCharacterUtils;
 
-
-
 @Controller
 @RequestMapping(value = "/ajax/upload")
 public class UploadFileWithAjaxController {
@@ -70,8 +68,7 @@ public class UploadFileWithAjaxController {
 		int second = calendar.get(Calendar.SECOND);
 
 		// Thư mục gốc upload file.
-		String uploadRootPath = request.getServletContext().getRealPath(UPLOAD_DIRECTORY) + File.separator
-				+ year;
+		String uploadRootPath = request.getServletContext().getRealPath(UPLOAD_DIRECTORY) + File.separator + year;
 		System.out.println("uploadRootPath=" + uploadRootPath);
 
 		File uploadRootDir = new File(uploadRootPath);
@@ -81,29 +78,27 @@ public class UploadFileWithAjaxController {
 			uploadRootDir.mkdirs();
 		}
 
-	            // Tên file gốc tại Client.
-	            String name = file.getOriginalFilename();
-	            System.out.println("Client File Name = " + name);
-	            String fileName = year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + second + "-" + name;
-				String fileSlug = ConvertCharacterUtils.toURLFriendly(fileName);
-				
-	            if (name != null && name.length() > 0) {
-	                try {
-	                    // Tạo file tại Server.
-	                    File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + fileSlug);
-	 
-	                    BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-	                    stream.write(file.getBytes());
-	                    stream.close();
-	                   
-	                    return   ServletUriComponentsBuilder.fromCurrentContextPath()
-	    	                    .path("/"+UPLOAD_DIRECTORY+"/")
-	    	                    .path(year + "/" + fileSlug)
-	    	                    .toUriString();
-	                } catch (Exception e) {
-	                    System.out.println("Error Write file: " + name);
-	                }
-	            }
+		// Tên file gốc tại Client.
+		String name = file.getOriginalFilename();
+		System.out.println("Client File Name = " + name);
+		String fileName = year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + second + "-" + name;
+		String fileSlug = ConvertCharacterUtils.toURLFriendly(fileName);
+
+		if (name != null && name.length() > 0) {
+			try {
+				// Tạo file tại Server.
+				File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + fileSlug);
+
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+				stream.write(file.getBytes());
+				stream.close();
+
+				return ServletUriComponentsBuilder.fromCurrentContextPath().path("/" + UPLOAD_DIRECTORY + "/")
+						.path(year + "/" + fileSlug).toUriString();
+			} catch (Exception e) {
+				System.out.println("Error Write file: " + name);
+			}
+		}
 		return "";
 	}
 }
