@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.baobang.piospa.model.UploadForm;
 import com.baobang.piospa.utils.ConvertCharacterUtils;
@@ -94,9 +95,11 @@ public class UploadFileWithAjaxController {
 	                    BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
 	                    stream.write(file.getBytes());
 	                    stream.close();
-	                    // 
-	                    System.out.println("Write file: " + serverFile);
-	                    return  serverFile.toString();
+	                   
+	                    return   ServletUriComponentsBuilder.fromCurrentContextPath()
+	    	                    .path("/"+UPLOAD_DIRECTORY+"/")
+	    	                    .path(year + "/" + fileSlug)
+	    	                    .toUriString();
 	                } catch (Exception e) {
 	                    System.out.println("Error Write file: " + name);
 	                }
