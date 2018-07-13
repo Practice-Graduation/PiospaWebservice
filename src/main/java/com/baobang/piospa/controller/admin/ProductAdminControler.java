@@ -76,19 +76,64 @@ public class ProductAdminControler {
 		return "true";
 	}
 
-	@RequestMapping(value = "admin/edit-product/{id}", method = RequestMethod.GET)
-	public void orderDetail(Model model, HttpServletRequest request, @PathVariable("id") int id) {
+	@RequestMapping(value = "admin/edit-product/{id}")
+	public String orderDetail(Model model, HttpServletRequest request, @PathVariable("id") int id,
+			@RequestParam(required = true, name = "productid", defaultValue = "0") int productId,
+			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
+			@RequestParam(required = true, name = "productimage", defaultValue = "") String productImage,
+			@RequestParam(required = true, name = "productgroup", defaultValue = "0") int productGroup,
+			@RequestParam(required = true, name = "productbrand", defaultValue = "0") int productLable,
+			@RequestParam(required = true, name = "productorigin", defaultValue = "0") int productOrigin,
+			@RequestParam(required = true, name = "productunit", defaultValue = "0") int productUnit,
+			@RequestParam(required = true, name = "productcostprice", defaultValue = "0") int productCostPrice,
+			@RequestParam(required = true, name = "productprice", defaultValue = "0") int productPrice,
+			@RequestParam(required = true, name = "productquantity", defaultValue = "0") int productQuantity,
+			@RequestParam(required = true, name = "productdescription", defaultValue = "") String productDescription) {
 
 		Product product = mRepository.findById(id).get();
 
-		addProduct(model, request, product.getProductName(), product.getImage(),
-				product.getProductGroup().getProductGroupId(), product.getProductLabel().getProductLabelId(),
-				product.getProductOrigin().getProductOriginId(), product.getProductUnit().getProductUnitId(),
-				product.getCostPrice(), product.getPrice(), product.getQuantity(), product.getDescription());
+		String message = "";
+		if (request.getParameter("submit") != null) {
+
+			ProductGroup group = mProductGroupRepository.findById(productGroup).get();
+			ProductLabel lable = mProductLableRepository.findById(productLable).get();
+			ProductOrigin origin = mProductOriginRepository.findById(productOrigin).get();
+			ProductUnit unit = mProductUnitRepository.findById(productUnit).get();
+
+			product.setProductName(productName);
+			product.setImage(productImage);
+			product.setThumbnail(productImage);
+			product.setProductGroup(group);
+			product.setProductLabel(lable);
+			product.setProductOrigin(origin);
+			product.setProductUnit(unit);
+			product.setCostPrice(productCostPrice);
+			product.setPrice(productPrice);
+			product.setQuantity(productQuantity);
+			product.setDescription(productDescription);
+			product.setInfo(productDescription);
+
+			try {
+				mRepository.save(product);
+
+				message = "Cập nhật thành công sản phẩm " + productName;
+			} catch (Exception e) {
+				message = e.getMessage();
+			}
+		}
+
+		loadAttribute(model, product.getProductId(), product.getProductName(), product.getImage(), product.getProductGroup().getProductGroupId(),
+				product.getProductLabel().getProductLabelId(), product.getProductOrigin().getProductOriginId(),
+				product.getProductUnit().getProductUnitId(), product.getCostPrice(), 
+				product.getPrice(), product.getQuantity(), product.getDescription());
+		loadData(model);
+		model.addAttribute("message", message);
+		return "add-product";
 	}
 
 	@RequestMapping(value = "admin/add-product")
 	public String addProduct(Model model, HttpServletRequest request,
+			@RequestParam(required = true, name = "productid", defaultValue = "0") int productId,
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
 			@RequestParam(required = true, name = "productimage", defaultValue = "") String productImage,
 			@RequestParam(required = true, name = "productgroup", defaultValue = "0") int productGroup,
@@ -101,14 +146,15 @@ public class ProductAdminControler {
 			@RequestParam(required = true, name = "productdescription", defaultValue = "") String productDescription) {
 		String message = "";
 		if (request.getParameter("submit") != null) {
-			Product product = new Product();
+			Product product;
+			product = new Product();
+			product.setProductCode(Utils.genarateCode());
 
 			ProductGroup group = mProductGroupRepository.findById(productGroup).get();
 			ProductLabel lable = mProductLableRepository.findById(productLable).get();
 			ProductOrigin origin = mProductOriginRepository.findById(productOrigin).get();
 			ProductUnit unit = mProductUnitRepository.findById(productUnit).get();
 
-			product.setProductCode(Utils.genarateCode());
 			product.setProductName(productName);
 			product.setImage(productImage);
 			product.setThumbnail(productImage);
@@ -120,26 +166,29 @@ public class ProductAdminControler {
 			product.setPrice(productPrice);
 			product.setQuantity(productQuantity);
 			product.setDescription(productDescription);
-			product.setIsActive((byte) 1);
-
+			product.setInfo(productDescription);
 			try {
 				mRepository.save(product);
 				message = "Thêm thành công sản phẩm " + productName + " vào cơ sở dữ liệu";
+
+				loadAttribute(model, 0, "", "", 0, 0, 0, 0, 0, 0, 0, "");
 			} catch (Exception e) {
 				message = e.getMessage();
+				loadAttribute(model, productId, productName, productImage, productGroup, productLable, productOrigin,
+						productUnit, productCostPrice, productPrice, productQuantity, productDescription);
 			}
 
 		}
-		loadAttribute(model, productName, productImage, productGroup, productLable, productOrigin, productUnit,
-				productCostPrice, productPrice, productQuantity, productDescription);
+
 		loadData(model);
 		model.addAttribute("message", message);
 		return "add-product";
 	}
 
-	private void loadAttribute(Model model, String productName, String productImage, int productGroup, int productLable,
-			int productOrigin, int productUnit, int productCostPrice, int productPrice, int productQuantity,
-			String productDescription) {
+	private void loadAttribute(Model model, int productId, String productName, String productImage, int productGroup,
+			int productLable, int productOrigin, int productUnit, int productCostPrice, int productPrice,
+			int productQuantity, String productDescription) {
+		model.addAttribute("productid", productId);
 		model.addAttribute("productname", productName);
 		model.addAttribute("productimage", productImage);
 		model.addAttribute("productgroup", productGroup);

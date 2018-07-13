@@ -96,7 +96,7 @@ public class UploadFileWithAjaxController {
 	                    stream.close();
 	                    // 
 	                    System.out.println("Write file: " + serverFile);
-	                    return  request.getContextPath() + "/" + UPLOAD_DIRECTORY + "/" + year + "/" + fileSlug;
+	                    return  serverFile.toString();
 	                } catch (Exception e) {
 	                    System.out.println("Error Write file: " + name);
 	                }
