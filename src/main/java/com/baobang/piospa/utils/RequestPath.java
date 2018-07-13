@@ -57,4 +57,7 @@ public interface RequestPath {
 
  	// ------------------------ROOM-------------------------------------
 	public static final String ROOM_PATH = "/room";
+	
+	// ---------------------UPLOAD--------------------------------------
+	public static final String UPLOAD_PATH = "/upload-api";
 }
