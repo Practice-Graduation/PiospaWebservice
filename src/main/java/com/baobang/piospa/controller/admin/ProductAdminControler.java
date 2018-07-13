@@ -76,7 +76,7 @@ public class ProductAdminControler {
 		return "true";
 	}
 
-	@RequestMapping(value = "admin/edit-product/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "admin/edit-product/{id}")
 	public String orderDetail(Model model, HttpServletRequest request, @PathVariable("id") int id,
 			@RequestParam(required = true, name = "productid", defaultValue = "0") int productId,
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
