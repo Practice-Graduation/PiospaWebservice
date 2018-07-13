@@ -16,4 +16,10 @@ import com.baobang.piospa.entities.Staff;
 public interface StaffRepository extends JpaRepository<Staff, Integer> {
 	@Query("select s from Staff s where s.code = :code")
 	public Staff findByCode(@Param("code") String code);
+	
+	@Query("select s from Staff s where s.account = :account")
+	public Staff findByUsername(@Param("account") String account);
+	
+	@Query("select s from Staff s where s.account = :account and s.password = :password")
+	public Staff findByUsernameAndPassword(@Param("account") String account, @Param("password") String password);
 }

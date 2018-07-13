@@ -25,7 +25,7 @@ public class Product implements Serializable {
 	private int productId;
 
 	@Column(name="cost_price")
-	private int costPrice;
+	private int costPrice = 0;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
@@ -34,17 +34,17 @@ public class Product implements Serializable {
 	@Column(name="created_by")
 	private int createdBy;
 
-	private String description;
+	private String description = "";
 
-	private String image;
+	private String image = "";
 
 	@Lob
-	private String info;
+	private String info = "";
 
 	@Column(name="is_active")
-	private byte isActive;
+	private byte isActive = 1;
 
-	private int price;
+	private int price = 0;
 
 	@Column(name="product_code")
 	private String productCode;
@@ -52,14 +52,14 @@ public class Product implements Serializable {
 	@Column(name="product_name")
 	private String productName;
 
-	private int quantity;
+	private int quantity = 0;
 
 	@Column(name="quantity_value")
-	private String quantityValue;
+	private String quantityValue = "gram";
 
-	private String sku;
+	private String sku = "";
 
-	private String thumbnail;
+	private String thumbnail = "";
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
