@@ -18,6 +18,7 @@ import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.entities.ProductGroup;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductGroupRepository;
+import com.baobang.piospa.repositories.ProductRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 import com.baobang.piospa.utils.Utils;
@@ -34,6 +35,8 @@ import io.swagger.annotations.ApiOperation;
 public class ProductGroupController {
 	@Autowired
 	ProductGroupRepository mGroupRepository;
+	@Autowired
+	ProductRepository mProductRepository;
 
 	/**
 	 * @api {get} / Request Product Group information
@@ -106,12 +109,42 @@ public class ProductGroupController {
 		DataResult<List<Product>> result = new DataResult<>();
 		Optional<ProductGroup> option = mGroupRepository.findById(productGroupId);
 		ProductGroup group = option.get();
+		
+		List<Product> list = mProductRepository.findByGroupId(group.getProductGroupId());
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
-		result.setData(group.getProducts());
+		result.setData(list);
 		return result;
 	}
 
+	/**
+	 * @api {get} / Request Product  information
+	 * @apiName getAllActive
+	 * @api Product
+	 * 
+	 * @apiParam none
+	 * 
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list product  of the response
+	 *
+	 */
+	@RequestMapping(//
+			value = "/{groupId}/products/top-ten", //
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Get all products were actived")
+	public DataResult<List<Product>> getTopTenProductByGroup(@PathVariable(value = "groupId") int groupId) {
+		DataResult<List<Product>> result = new DataResult<>();
+		Optional<ProductGroup> option = mGroupRepository.findById(groupId);
+		ProductGroup group = option.get();
+		List<Product> list = mProductRepository.findTopTenByGroupId(group.getProductGroupId()+"");
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
+		result.setData(list);
+		return new DataResult<List<Product>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, list);
+	}
+	
 	/**
 	 * @api {post} / Create a new Product Group
 	 * @apiName createProductGroup

@@ -61,10 +61,10 @@ a:hover {
 }
 
 .content h5 {
-	margin-bottom: 0;
-	padding: 10px;
+	 margin-bottom: 0;
+	padding: 10px;/* 
 	background-color: #F1F1F1;
-	border: 1px solid #DFDFDF;
+	border: 1px solid #DFDFDF; */
 }
 
 .form-shop{
@@ -166,7 +166,7 @@ a:hover {
 	display: block;
 	color: #000;
 	font-size: 100%;
-	text-align: left;
+	text-align: center;
 }
 			
 .fileuploader {
@@ -233,4 +233,8 @@ div#example1_length>label>select {
 	
 	vertical-align: middle;
 	text-align: center;
+}
+
+.control-label{
+	text-align: left;
 }

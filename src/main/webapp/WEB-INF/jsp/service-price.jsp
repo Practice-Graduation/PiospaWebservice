@@ -13,8 +13,8 @@
 <jsp:include page="includes/_head.jsp"></jsp:include>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-	<c:set var="currentPageParent" value="pageProduct" scope="request"/>
-	<c:set var="currentPage" value="pageProductList" scope="request"/>
+	<c:set var="currentPageParent" value="pageServicePrice" scope="request"/>
+	<c:set var="currentPage" value="pageServicePriceList" scope="request"/>
 	<div class="wrapper">
 		<jsp:include page="includes/_header.jsp"></jsp:include>
 		<jsp:include page="includes/_sidebar.jsp"></jsp:include>
@@ -23,7 +23,7 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 			<h1>
-				Sản Phẩm <small>PioSpa</small>
+				Giá dịch vụ <small>PioSpa</small>
 			</h1>
 
 			</section>
@@ -33,33 +33,48 @@
 				<div class="col-md-12">
 					<div class="box">
 						<div class="box-header">
-							<h3 class="box-title">DANH SÁCH SẢN PHẨM</h3>
+							<h3 class="box-title">DANH SÁCH GIÁ DỊCH VỤ</h3>
 						</div>
 						<!-- /.box-header -->
 						<div class="box-body">
 							<table id="example1" class="table table-bordered">
 								<thead>
 									<tr>
-										<th style="width: 10px; text-align: center;">#</th>
-										<th style="text-align: center; width: 90px;">Hình</th>
-										<th style="width: 150px; text-align: center;">Tên sản
-											phẩm</th>
-										<th style="text-align: center; width: 60px;">Giá</th>
-										<th style="text-align: center; width: 35px;">Tr Thái</th>
-										<th style="text-align: center; width: 10px;"></th>
+										<th style="text-align: center;">#</th>
+										<th style="text-align: center;">Hình</th>
+										<th style="text-align: center;">Tên dịch vụ</th>
+										<th style="text-align: center;;">Thời gian sử
+											dụng</th>
+										<th style="text-align: center;">Giá</th>
+										<th style="text-align: center;">Tr Thái</th>
+										<th style="text-align: center;"></th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var="p" items="${result}">
-										<tr id="${p.productId }">
-											<td style="text-align: center; vertical-align: middle;width: 10px;">${p.productId}</td>
-											<td style="width: 100px;" class="post-img"><img
-												src="${p.image}" alt="${p.image }" width="80px"
-												height="100px"></td>
-											<td style="text-align: center; vertical-align: middle;width: 150px;">${p.productName}</td>
-											<td style="text-align: center; vertical-align: middle;width: 65px;"><fmt:formatNumber
-													type="currency" pattern = "#,###đ" value="${p.price }" /></td>
-											<td style="text-align: center; vertical-align: middle;width: 35px;"><c:if test="${p.isActive eq 1}">
+										<tr id="${p.servicePriceId }">
+											<td
+												style="text-align: center; vertical-align: middle;">${p.servicePriceId}</td>
+											<td style="" class="post-img"><img
+												src='<c:if test="${not empty p.service }">${p.service.image }</c:if>
+												<c:if test="${not empty p.servicePackage }">${p.servicePackage.image }</c:if>'
+												alt="" width="100px" height="80px"></td>
+											<td
+												style="text-align: center; vertical-align: middle;">
+												<c:if test="${not empty p.service }">${p.service.serviceName }</c:if>
+												<c:if test="${not empty p.servicePackage }">${p.servicePackage.servicePackageName }</c:if>
+											</td>
+											<td
+												style="text-align: center; vertical-align: middle;">
+												<c:if test="${not empty p.service }">${p.service.serviceTime.time }</c:if>
+												<c:if test="${not empty p.servicePackage }">${p.servicePackage.time }</c:if>
+											</td>
+											<td
+												style="text-align: center; vertical-align: middle;"><fmt:formatNumber
+													type="currency" pattern = "#,###đ" value="${p.allPrice}" /></td>
+											<td
+												style="text-align: center; vertical-align: middle;"><c:if
+													test="${p.isActive eq 1}">
 													<span class="badge bg-green">Hiện</span>
 												</c:if> <c:if test="${p.isActive eq 0}">
 													<span class="badge bg-yellow">Ẩn</span>
@@ -68,10 +83,12 @@
 											<td style="text-align: center; vertical-align: middle;">
 												<div class="btn-group-vertical">
 													<a class="btn btn-info"
-														href="${pageContext.request.contextPath }/admin/edit-product/${p.productId}"><i
+														href="${pageContext.request.contextPath }/admin/edit-service-prie/${p.servicePriceId}"><i
 														class="fa fa-pencil-square-o"></i></a>
-													<button type="button" product-name="${p.productName}"
-														product-id="${p.productId}"
+													<button type="button"
+														product-name="<c:if test="${not empty p.service }">${p.service.serviceName }</c:if>
+												<c:if test="${not empty p.servicePackage }">${p.servicePackage.servicePackageName }</c:if>"
+														product-id="${p.servicePriceId}"
 														class="btn btn-danger btn-remove-product">
 														<i class="fa fa-times"></i>
 													</button>
@@ -183,7 +200,7 @@
 													// AJAX: /ajax/remove-product-from-cart
 													$
 															.ajax({
-																url : "${pageContext.request.contextPath}/admin/remove-product",
+																url : "${pageContext.request.contextPath}/admin/remove-service-price",
 																type : "get",
 																contentType : "application/json;charset=UTF-8",
 																dataType : "text",

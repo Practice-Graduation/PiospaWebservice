@@ -39,6 +39,10 @@ public class WebSercurityConfig extends WebSecurityConfigurerAdapter {
 		// Sét đặt dịch vụ để tìm kiếm User trong Database.
 		// Và sét đặt PasswordEncoder.
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		auth
+	      // Defines three users with their passwords and roles
+	      .inMemoryAuthentication()
+	      .withUser("admin").password("$2a$10$/4bRBzbXEjHCoi/zkZZwpevS4nfiPwmDPcgi2F9qU3W9MZy/qRswO").roles("ADMIN");
 
 	}
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baobang.piospa.entities.Service;
 import com.baobang.piospa.entities.ServicePackage;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ServicePackageRepository;
@@ -109,6 +110,15 @@ public class ServicePackageController {
 			Date date = new Date();
 			servicePackage.setCreatedAt(date);
 			servicePackage.setUpdatedAt(date);
+			
+			List<Service> list = servicePackage.getServices();
+			int time = 0;
+			if(list != null) {
+				for(Service s : list) {
+					time += Integer.parseInt(s.getServiceTime().getTime());
+				}
+			}
+			servicePackage.setTime(time);
 			sPackage = mServicePackageRepository.save(servicePackage);
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());

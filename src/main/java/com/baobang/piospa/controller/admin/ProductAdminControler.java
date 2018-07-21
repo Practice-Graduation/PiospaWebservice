@@ -116,7 +116,7 @@ public class ProductAdminControler {
 			try {
 				mRepository.save(product);
 
-				message = "Cập nhật thành công sản phẩm " + productName;
+				model.addAttribute("result", "update");
 			} catch (Exception e) {
 				message = e.getMessage();
 			}
@@ -169,8 +169,8 @@ public class ProductAdminControler {
 			product.setInfo(productDescription);
 			try {
 				mRepository.save(product);
-				message = "Thêm thành công sản phẩm " + productName + " vào cơ sở dữ liệu";
 
+				model.addAttribute("result", "create");
 				loadAttribute(model, 0, "", "", 0, 0, 0, 0, 0, 0, 0, "");
 			} catch (Exception e) {
 				message = e.getMessage();

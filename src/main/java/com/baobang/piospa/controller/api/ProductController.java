@@ -56,6 +56,8 @@ public class ProductController {
 		return new DataResult<List<Product>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, products);
 	}
 	
+	
+	
 	/**
 	 * @api {get} /{productId} Request Product  information
 	 * @apiName getProductById

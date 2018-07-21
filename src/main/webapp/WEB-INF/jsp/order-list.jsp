@@ -13,8 +13,8 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
-	<c:set var="current_page_parent" value="page_order" />
-	<c:set var="current_page" value="page_order_list" />
+	<c:set var="currentPageParent" value="pageOrder"  scope="request"/>
+	<c:set var="currentPage" value="pageOrderList" scope="request"/>
 	<div class="wrapper">
 		<jsp:include page="includes/_header.jsp" />
 		<jsp:include page="includes/_sidebar.jsp" />
@@ -58,8 +58,11 @@
 										<tr id="${p.orderId}">
 											<td style="width: 10px;">${p.orderId}</td>
 											<td>${p.fullName}</td>
-											<td style="text-align: center; vertical-align: middle;"><fmt:formatNumber
-													value="${p.subTotal}" type="currency" /></td>
+											<td style="text-align: center; vertical-align: middle;">
+											<fmt:setLocale
+														value="vi_VN" /> <fmt:formatNumber type="currency" pattern = "#,###đ"
+														value="${p.subTotal }"  />
+											</td>
 											<td style="text-align: center; vertical-align: middle;"><fmt:formatDate
 													pattern="dd '/' MM '/' yyyy" value="${p.createdAt}" /></td>
 											<td width="300px;">${p.addressDelivery}</td>

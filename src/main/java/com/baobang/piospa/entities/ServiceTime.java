@@ -43,10 +43,6 @@ public class ServiceTime implements Serializable {
 	@Column(name="updated_by")
 	private int updatedBy;
 
-	//bi-directional many-to-one association to ServicePackageDetail
-	@JsonIgnore
-	@OneToMany(mappedBy="serviceTime")
-	private List<ServicePackageDetail> servicePackageDetails;
 
 	//bi-directional many-to-one association to Service
 	@JsonIgnore
@@ -112,27 +108,7 @@ public class ServiceTime implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public List<ServicePackageDetail> getServicePackageDetails() {
-		return this.servicePackageDetails;
-	}
-
-	public void setServicePackageDetails(List<ServicePackageDetail> servicePackageDetails) {
-		this.servicePackageDetails = servicePackageDetails;
-	}
-
-	public ServicePackageDetail addServicePackageDetail(ServicePackageDetail servicePackageDetail) {
-		getServicePackageDetails().add(servicePackageDetail);
-		servicePackageDetail.setServiceTime(this);
-
-		return servicePackageDetail;
-	}
-
-	public ServicePackageDetail removeServicePackageDetail(ServicePackageDetail servicePackageDetail) {
-		getServicePackageDetails().remove(servicePackageDetail);
-		servicePackageDetail.setServiceTime(null);
-
-		return servicePackageDetail;
-	}
+	
 
 	public List<Service> getServices() {
 		return this.services;

@@ -10,8 +10,8 @@
 <jsp:include page="includes/_head.jsp"></jsp:include>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-	<c:set var="current_page_parent" value="page_order" />
-	<c:set var="current_page" value="page_order_list" />
+	<c:set var="currentPageParent" value="pageOrder" scope="request"/>
+	<c:set var="currentPage" value="pageOrderList" scope="request"/>
 	<div class="wrapper">
 
 		<jsp:include page="includes/_header.jsp"></jsp:include>
@@ -30,6 +30,11 @@
 
 			<!-- Main content -->
 			<section class="content">
+			<div class ="row">
+				<c:if test="${not empty message}">
+						<div class="alert alert-danger">${message }</div>
+					</c:if>
+			</div>
 			<div class="row">
 				<div class="col-xs-3">
 					<!-- Profile Image -->
@@ -48,35 +53,35 @@
 							<ul class="list-group list-group-unbordered">
 								<li class="list-group-item"><b>Tổng giá trị</b> <a
 									class="pull-right"><fmt:formatNumber
-											value="${order.total}" type="currency" /></a></li>
+											value="${order.total}" type="currency" pattern = "#,###đ" /></a></li>
 								<li class="list-group-item"><b>Số tiền giảm</b> <a
 									class="pull-right"><fmt:formatNumber
-											value="${order.discount}" type="currency" /></a></li>
+											value="${order.discount}" type="currency" pattern = "#,###đ" /></a></li>
 								<li class="list-group-item"><b>Phí giao hàng</b> <a
 									class="pull-right"><fmt:formatNumber
-											value="${order.deliveryCost}" type="currency" /></a></li>
+											value="${order.deliveryCost}" type="currency" pattern = "#,###đ" /></a></li>
 								<li class="list-group-item"><b>Thành tiền</b> <a
 									class="pull-right"><fmt:formatNumber
-											value="${order.subTotal}" type="currency" /></a></li>
+											value="${order.subTotal}" type="currency" pattern = "#,###đ" /></a></li>
 								<li class="list-group-item"><b>Thời gian</b> <a
 									class="pull-right"><fmt:formatDate
 											pattern="dd '/' MM '/' yyyy" value="${order.createdAt}" /></a></li>
 								<li class="list-group-item"><b>Tình trạng</b> <a
 									class="pull-right"> <c:if
 											test="${order.orderStatus.orderStatusId eq 3}">
-											<span class="label label-danger">Đã hủy</span>
+											<span class="label label-danger">Hủy</span>
 										</c:if> <c:if test="${order.orderStatus.orderStatusId eq 1}">
-											<span class="label label-warning">Chờ duyệt</span>
+											<span class="label label-warning">Chưa thanh toán</span>
 										</c:if> <c:if test="${order.orderStatus.orderStatusId eq 2}">
-											<span class="label label-success">Đã giao hàng</span>
+											<span class="label label-success">Đã thanh toán</span>
 										</c:if>
 								</a></li>
 
 							</ul>
 
-							<a
+							<%-- <a
 								href="${pageContext.request.contextPath}/admin/profile/${order.customer.customerId}"
-								class="btn btn-primary btn-block"><b>Thông tin cá nhân</b></a>
+								class="btn btn-primary btn-block"><b>Thông tin cá nhân</b></a> --%>
 						</div>
 						<!-- /.box-body -->
 					</div>
@@ -93,15 +98,17 @@
 									<label> <input type="radio" name="order_status"
 										value="3" class="minimal"
 										${order.orderStatus.orderStatusId eq 3 ? 'checked' : '' }>
-										<span class="label label-danger">Đã hủy</span>
-									</label> <label> <input type="radio" name="order_status"
+										<span class="label label-danger">Hủy</span>
+									</label>
+									 <label> <input type="radio" name="order_status"
 										value="1" class="minimal"
 										${order.orderStatus.orderStatusId eq 1 ? 'checked' : '' }>
-										<span class="label label-warning">Chờ duyệt</span>
-									</label> <label> <input type="radio" name="order_status"
+										<span class="label label-warning">Chưa Thanh toán</span>
+									</label> 
+									<label> <input type="radio" name="order_status"
 										value="2" class="minimal"
 										${order.orderStatus.orderStatusId eq 2 ? 'checked' : '' }>
-										<span class="label label-success">Đã giao</span>
+										<span class="label label-success">Thanh toán</span>
 									</label>
 								</div>
 								<button type="submit" class="btn btn-primary btn-block">
@@ -139,7 +146,7 @@
 												<td>${o.product.productName}</td>
 												<td style="text-align: center;vertical-align : middle;">${o.number}</td>
 												<td style="text-align: center;vertical-align : middle;"><fmt:formatNumber value="${o.price}"
-														type="currency" /></td>
+														type="currency" pattern = "#,###đ" /></td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -191,7 +198,7 @@
 												</c:if>
 												<td style="text-align: center;vertical-align : middle;"">${o.number}</td>
 												<td><fmt:formatNumber
-														value="${o.servicePrice.allPrice }" type="currency" /></td>
+														value="${o.servicePrice.allPrice }" type="currency" pattern = "#,###đ" /></td>
 												<td style="text-align: center;vertical-align : middle;"><fmt:formatDate
 														pattern="dd'/'MM'/'yyyy" value="${o.dateBooking}" /></td>
 												<td style="text-align: center;vertical-align : middle;"><fmt:formatDate

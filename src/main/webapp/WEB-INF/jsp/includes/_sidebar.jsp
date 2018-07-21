@@ -17,90 +17,71 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">Bảng hoạt động chính</li>
-        
-      <%--    <li class="treeview ${current_page eq 'page_dashboard' ? 'active':''}">
-          <a href="${pageContext.request.contextPath}/admin">
-            <i class="fa fa-tachometer" aria-hidden="true"></i>
-            <span>Tổng quan</span>
-          </a>
-         </li>
-         
-         <li class="treeview ${current_page_parent eq 'page_category' ? 'active':''}">
-          <a href="${pageContext.request.contextPath}/admin/categories">
-            <i class="fa fa-bars"></i>
-            <span>Thể loại</span>
-            <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-            <li class="${current_page eq 'page_add_new_category' ? 'active':''}"><a href="${pageContext.request.contextPath}/admin/add-new-category"><i class="fa fa-circle-o"></i> Thêm thể loại</a></li>
-            <li class="${current_page eq 'page_category_list' ? 'active':''}"><a href="${pageContext.request.contextPath}/admin/categories"><i class="fa fa-circle-o"></i> Danh sách thể loại</a></li>
-          </ul>
-        </li> --%>
-       <%--  <li class="treeview ${current_page_parent eq 'page_brand' ? 'active':''}">
-          <a href="#">
-            <i class="fa fa-university" aria-hidden="true"></i>
-            <span>Hãng sản xuất</span>
-             <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-            <li class="${current_page eq 'page_add_new_brand' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/add-brand"><i class="fa fa-circle-o"></i>Thêm hãng</a></li>
-            <li class="${current_page eq 'page_brand_list' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/brand"><i class="fa fa-circle-o"></i>Danh sách hãng</a></li>
-          </ul>
-        </li> --%>
-         <li class="treeview ${current_page_parent eq 'page_product' ? 'active':''}">
+   
+       <li class="treeview ${currentPageParent eq 'pageProduct' ? 'active':''}">
           <a href="#">
            <i class="fa fa-shopping-bag" aria-hidden="true"></i>
             <span>Sản phẩm</span>
              <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li class="${current_page eq 'page_add_new_product' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/add-product"><i class="fa fa-circle-o"></i>Thêm sản phẩm</a></li>
-            <li class="${current_page eq 'page_product_list' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/product"><i class="fa fa-circle-o"></i>Danh sách sản phẩm</a></li>
+            <li class="${currentPage eq 'pageAddNewProduct' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/add-product"><i class="fa fa-circle-o"></i>Thêm sản phẩm</a></li>
+            <li class="${currentPage eq 'pageProductList' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/product"><i class="fa fa-circle-o"></i>Danh sách sản phẩm</a></li>
           </ul>
         </li>
-        <li class="treeview ${current_page_parent eq 'page_order' ? 'active':''}">
+        
+        <li class="treeview ${currentPageParent eq 'pageService' ? 'active':''}">
+          <a href="#">
+           <i class="fa fa-bed" aria-hidden="true"></i>
+            <span>Dịch vụ</span>
+             <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li class="${currentPage eq 'pageAddNewService' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/add-service"><i class="fa fa-circle-o"></i>Thêm dịch vụ</a></li>
+             <li class="${currentPage eq 'pageAddNewServicePackage' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/add-service-package"><i class="fa fa-circle-o"></i>Thêm gói dịch vụ</a></li>
+            <li class="${currentPage eq 'pageServiceList' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/service"><i class="fa fa-circle-o"></i>Danh sách dịch vụ</a></li>
+            <li class="${currentPage eq 'pageServicePackageList' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/service-package"><i class="fa fa-circle-o"></i>Danh sách gói dịch vụ</a></li>
+          </ul>
+        </li>
+        
+        
+        <li class="treeview ${currentPageParent eq 'pageServicePrice' ? 'active':''}">
+          <a href="#">
+           <i class="fa fa-usd" aria-hidden="true"></i>
+            <span>Giá dịch vụ</span>
+             <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li class="${currentPage eq 'pageAddNewServicePrice' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/add-service-price"><i class="fa fa-circle-o"></i>Thêm giá dịch vụ</a></li>
+            <li class="${currentPage eq 'pageServicePriceList' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/service-price"><i class="fa fa-circle-o"></i>Danh sách giá dịch vụ</a></li>
+            
+          </ul>
+        </li>
+        
+      
+       <li class="treeview ${currentPageParent eq 'pageOrder' ? 'active':''}">
           <a href="${pageContext.request.contextPath }/admin/order-list">
             <i class="fa fa-shopping-cart"></i>
             <span>Đơn hàng</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li class="${current_page eq 'page_order_list' ? 'active':''}"><a href="${pageContext.request.contextPath}/admin/order-list"><i class="fa fa-circle-o"></i> Danh sách đơn hàng</a></li>
+            <li class="${currentPage eq 'pageOrderList' ? 'active':''}"><a href="${pageContext.request.contextPath}/admin/order-list"><i class="fa fa-circle-o"></i> Danh sách đơn hàng</a></li>
           </ul>
         </li>
-    <%--      <li class="treeview ${current_page_parent eq 'page_promotion' ? 'active':''}">
-          <a href="#">
-            <i class="fa fa-bullhorn" aria-hidden="true"></i>
-            <span>Khuyến mãi</span>
-             <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-            <li class="${current_page eq 'page_add_new_promotion' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/add-promotion"><i class="fa fa-circle-o"></i>Thêm khuyến mãi</a></li>
-            <li class="${current_page eq 'page_promotion_list' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/promotion"><i class="fa fa-circle-o"></i>Danh sách khuyến mãi</a></li>
-          </ul>
-        </li> --%>
-       <%--  <li class="treeview ${current_page_parent eq 'page_post' ? 'active':''}">
-          <a href="${pageContext.request.contextPath}/admin/posts">
-            <i class="fa fa-newspaper-o"></i>
-            <span>Bài viết</span>
-            <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-            <li class="${current_page eq 'page_add_new_post' ? 'active':''}"><a href="${pageContext.request.contextPath}/admin/add-new-post"><i class="fa fa-circle-o"></i> Viết bài mới</a></li>
-            <li class="${current_page eq 'page_post_list' ? 'active':''}"><a href="${pageContext.request.contextPath}/admin/posts"><i class="fa fa-circle-o"></i> Danh sách bài viết</a></li>
-          </ul>
-        </li> --%>
-        <li class="treeview ${current_page_parent eq 'page_account' ? 'active':''}">
+    
+       <li class="treeview ${currentPageParent eq 'pageAccount' ? 'active':''}">
           <a href="${pageContext.request.contextPath}/admin/members">
             <i class="fa fa-users"></i> <span>Thành viên</span>
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li class="${current_page eq 'page_add_new_account' ? 'active':''}"><a href="${pageContext.request.contextPath}/admin/add-new-account"><i class="fa fa-circle-o"></i> Thêm thành viên</a></li>
-            <li class="${current_page eq 'page_account_list' ? 'active':''}"><a href="${pageContext.request.contextPath}/admin/members"><i class="fa fa-circle-o"></i> Danh sách thành viên</a></li>
+            <li class="${currentPage eq 'pageAddNewAccount' ? 'active':''}"><a href="${pageContext.request.contextPath}/admin/add-new-account"><i class="fa fa-circle-o"></i> Thêm thành viên</a></li>
+            <li class="${currentPage eq 'pageAccountList' ? 'active':''}"><a href="${pageContext.request.contextPath}/admin/members"><i class="fa fa-circle-o"></i> Danh sách thành viên</a></li>
           </ul>
         </li>
-        <li class="treeview">
+       
+       <li class="treeview">
           <a href="${pageContext.request.contextPath}/swagger-ui.html" target="_blank">
             <i class="fa fa-external-link" aria-hidden="true"></i>
             <span>PioSpa Services</span>

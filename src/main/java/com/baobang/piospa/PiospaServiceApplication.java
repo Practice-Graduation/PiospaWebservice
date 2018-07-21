@@ -1,7 +1,9 @@
 package com.baobang.piospa;
 
 
+
 import org.springframework.boot.SpringApplication;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
@@ -17,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableSwagger2
 public class PiospaServiceApplication {
-	
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(PiospaServiceApplication.class, args);
@@ -42,4 +44,40 @@ public class PiospaServiceApplication {
 	        .version("1.0.0")
 	        .build();
 	}
+	
+	// notify
+	
+//	   static final String topicExchangeName = "spring-boot-exchange";
+//
+//	    static final String queueName = "spring-boot";
+//
+//	    @Bean
+//	    Queue queue() {
+//	        return new Queue(queueName, false);
+//	    }
+//
+//	    @Bean
+//	    TopicExchange exchange() {
+//	        return new TopicExchange(topicExchangeName);
+//	    }
+//
+//	    @Bean
+//	    Binding binding(Queue queue, TopicExchange exchange) {
+//	        return BindingBuilder.bind(queue).to(exchange).with("foo.bar.#");
+//	    }
+//
+//	    @Bean
+//	    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
+//	            MessageListenerAdapter listenerAdapter) {
+//	        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+//	        container.setConnectionFactory(connectionFactory);
+//	        container.setQueueNames(queueName);
+//	        container.setMessageListener(listenerAdapter);
+//	        return container;
+//	    }
+//
+//	    @Bean
+//	    MessageListenerAdapter listenerAdapter(Receiver receiver) {
+//	        return new MessageListenerAdapter(receiver, "receiveMessage");
+//	}
 }

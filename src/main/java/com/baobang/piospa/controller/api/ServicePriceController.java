@@ -80,10 +80,33 @@ public class ServicePriceController {
 
 		
 		ServiceGroup group = mServiceGroupRepository.findById(groupId).get();
-		
-		return new DataResult<List<ServicePrice>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, group.getServicePrices());
+		List<ServicePrice> list = mServicePriceRepository.getServiceByGroupId(group.getServiceGroupId());
+		return new DataResult<List<ServicePrice>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, list);
 	}
 	
+	/**
+	 * @api {get} /group/{groupId} Request Service Price information
+	 * @apiName getServicePriceByGroupId
+	 * @apiPrice Service
+	 * 
+	 * @apiParam none
+	 * 
+	 * @apiSuccess {Integer} the status of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list Service Price of the response
+	 * 
+	 */
+	@RequestMapping(//
+			value = "/group/{groupId}/top-ten", //
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE})
+	@ApiOperation(value = "Get top ten Service Prices By Group Id")
+	public DataResult<List<ServicePrice>> getTopTenServicePriceByGroupId(@PathVariable(value = "groupId") int groupId) {
+
+		ServiceGroup group = mServiceGroupRepository.findById(groupId).get();
+		List<ServicePrice> list = mServicePriceRepository.findTopTenByGroupId(group.getServiceGroupId() +"");
+		return new DataResult<List<ServicePrice>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, list);
+	}
 
 	/**
 	 * 

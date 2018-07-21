@@ -19,6 +19,11 @@ public interface ProductRepository  extends JpaRepository<Product, Integer> {
 	
 	@Query("select p from Product p where p.productCode = :productCode")
 	public Product findByCode(@Param("productCode") String productCode);
-	@Query("select p from Product p where p.productGroup.productGroupId = :groupId")
+	
+	@Query("select p from Product p where p.productGroup.productGroupId = :groupId and p.isActive = 1")
 	public List<Product> findByGroupId(@Param("groupId") int groupId);
+	
+	@Query(value="SELECT * FROM products WHERE product_group_id = ?1 and is_active = 1 LIMIT 10", nativeQuery = true)
+	public List<Product> findTopTenByGroupId(String groupId);
+	
 }

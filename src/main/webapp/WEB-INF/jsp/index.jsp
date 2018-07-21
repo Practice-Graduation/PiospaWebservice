@@ -12,7 +12,7 @@
 <jsp:include page="includes/_head.jsp"></jsp:include>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-	<c:set var="current_page" value="page_dashboard" />
+	<c:set var="currentPage" value="pageDashboard" />
 	<div class="wrapper">
 
 		<jsp:include page="includes/_header.jsp"></jsp:include>
@@ -164,11 +164,9 @@
 													href="${pageContext.request.contextPath}/admin/edit-product/${p.productId}"
 													class="product-title"> ${p.productName} <c:if
 														test="${p.isActive eq 1}">
-														<span class="label label-success pull-right">Còn
-															hàng</span>
+														<span class="label label-success pull-right">Hiện</span>
 													</c:if> <c:if test="${p.isActive eq 0}">
-														<span class="label label-warning pull-right">Hết
-															hàng</span>
+														<span class="label label-warning pull-right">Ẩn</span>
 													</c:if>
 												</a> <span class="product-description"> <fmt:setLocale
 														value="vi_VN" /> <fmt:formatNumber type="currency"
@@ -220,10 +218,9 @@
 													href="${pageContext.request.contextPath}/admin/edit-post/${p.serviceId}"
 													class="product-title">${p.serviceName} <c:if
 														test="${p.isActive eq 1}">
-														<span class="label label-success pull-right">Công
-															khai</span>
+														<span class="label label-success pull-right">Hiện</span>
 													</c:if> <c:if test="${p.isActive eq 0}">
-														<span class="label label-warning pull-right">Đã ẩn</span>
+														<span class="label label-warning pull-right">Ẩn</span>
 													</c:if>
 												</a> <span class="product-description"> ${p.description}
 												</span>
@@ -292,11 +289,11 @@
 													<td style="text-align: center;">${o.addressDelivery}</td>
 													<td style="text-align: center;"><c:if
 															test="${o.orderStatus.orderStatusId eq 3}">
-															<span class="label label-danger">Đã hủy</span>
+															<span class="label label-danger">Hủy</span>
 														</c:if> <c:if test="${o.orderStatus.orderStatusId eq 1}">
-															<span class="label label-warning">Chờ duyệt</span>
+															<span class="label label-warning">Chưa thanh toán</span>
 														</c:if> <c:if test="${o.orderStatus.orderStatusId eq 2}">
-															<span class="label label-success">Đã giao hàng</span>
+															<span class="label label-success">Đã thanh toán</span>
 														</c:if></td>
 												</tr>
 											</c:forEach>

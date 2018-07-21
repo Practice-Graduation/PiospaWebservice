@@ -30,7 +30,6 @@ public class ServicePackageDetail implements Serializable {
 	@Column(name="is_active")
 	private byte isActive;
 
-	private int price;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="update_at")
@@ -44,10 +43,7 @@ public class ServicePackageDetail implements Serializable {
 	@JoinColumn(name="service_package_id")
 	private ServicePackage servicePackage;
 
-	//bi-directional many-to-one association to ServiceTime
-	@ManyToOne
-	@JoinColumn(name="service_time_id")
-	private ServiceTime serviceTime;
+	
 
 	//bi-directional many-to-one association to Service
 	@ManyToOne
@@ -89,13 +85,6 @@ public class ServicePackageDetail implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public int getPrice() {
-		return this.price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
 
 	public Date getUpdateAt() {
 		return this.updateAt;
@@ -121,13 +110,6 @@ public class ServicePackageDetail implements Serializable {
 		this.servicePackage = servicePackage;
 	}
 
-	public ServiceTime getServiceTime() {
-		return this.serviceTime;
-	}
-
-	public void setServiceTime(ServiceTime serviceTime) {
-		this.serviceTime = serviceTime;
-	}
 
 	public Service getService() {
 		return this.service;

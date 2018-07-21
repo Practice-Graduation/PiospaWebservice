@@ -12,8 +12,8 @@
 	href="${pageContext.request.contextPath}/themes/css/admin.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-	<c:set var="currentPageParent" value="pageProduct" scope="request"/>
-	<c:set var="currentPage" value="pageAddNewProduct" scope="request"/>
+	<c:set var="currentPageParent" value="pageService" scope="request"/>
+	<c:set var="currentPage" value="pageAddNewService" scope="request"/>
 	<div class="wrapper">
 
 		<jsp:include page="includes/_header.jsp"></jsp:include>
@@ -24,7 +24,7 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 			<h1>
-				Sản Phẩm <small>PioSpa</small>
+				Dịch Vụ <small>PioSpa</small>
 			</h1>
 
 			</section>
@@ -36,10 +36,11 @@
 					<!-- general form elements -->
 					<div class="box box-primary ">
 						<div class="box-header with-border">
-							<h3 class="box-title title-name">THÊM SẢN PHẨM</h3>
+							<h3 class="box-title title-name">THÊM DỊCH VỤ</h3>
 						</div>
 						<!-- /.box-header -->
-							<div class="col-md-12">
+						
+						<div class="col-md-12">
 					       <c:if test="${not empty message}">
 								<div class="alert alert-warning alert-dismissible">
 									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -49,13 +50,13 @@
 					        <c:if test="${not empty result and result eq 'create'}">
 						        <div class="alert alert-success alert-dismissible">
 						        	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						        	<h4><i class="icon fa fa-check"></i> Thành công!</h4> Thêm sản phẩm <strong>${productname}</strong> thành công.
+						        	<h4><i class="icon fa fa-check"></i> Thành công!</h4> Thêm dịch vụ <strong>${productname}</strong> thành công.
 						        </div>
 					         </c:if>
 					         <c:if test="${not empty result and result eq 'update'}">
 						        <div class="alert alert-success alert-dismissible">
 						        	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						        	<h4><i class="icon fa fa-check"></i> Thành công!</h4> Cập nhật sản phẩm <strong>${productname}</strong> thành công.
+						        	<h4><i class="icon fa fa-check"></i> Thành công!</h4> Cập nhật dịch vụ <strong>${productname}</strong> thành công.
 						        </div>
 					         </c:if>
 					         <%-- <c:if test="${not empty result and result eq false}">
@@ -65,16 +66,18 @@
 					              </div>
 					         </c:if> --%>
 					        </div>
+						
 						<!-- form start -->
 						<form role="form" action="" method="post"
 							enctype="multipart/form-data" autocomplete='off'>
 							<div class="box-body">
 								<input type="hidden" name="productid" value="${productid }">
 								<div class="form-group">
-									<label for="productname">Tên Sản phẩm</label> <input
+									<label for="productname">Tên dịch vụ</label> 
+									<input
 										type="text" class="form-control" id="productname"
 										name="productname" placeholder="Nhập vào tên sản phẩm"
-										value="${ productname}" required>
+										value="${productname}" required>
 								</div>
 								<div id="form-upload" class="form-group">
 									<label for="brandimage">Hình</label>
@@ -86,66 +89,37 @@
 									</button>
 								</div>
 								<div class="form-group">
-									<label for="exampleInputPassword1">Nhóm sản phẩm</label> <select
-										class="form-control" name="productgroup">
-										<c:forEach items="${groups }" var="group">
-											<option value="${group.productGroupId }"
-												<c:if test="${ group.productGroupId eq productgroup}">selected</c:if>>${group.productGroupName }</option>
+									<label for="exampleInputPassword1">Thời gian sử dụng</label>
+									 <select class="form-control" name="timeId">
+										<c:forEach items="${times }" var="t">
+											<option value="${t.serviceTimeId }" <c:if test="${ t.serviceTimeId eq timeId}">selected</c:if>>
+												${t.time }
+											</option>
 										</c:forEach>
 									</select>
-								</div>
-								<div class="form-group">
-									<label for="exampleInputPassword1">Nhãn hiệu sản phẩm</label> <select
-										class="form-control" name="productbrand">
-										<c:forEach items="${labels }" var="brand">
-											<option value="${brand.productLabelId }"
-												<c:if test="${ brand.productLabelId eq productbrand}">selected</c:if>>${brand.productLabelName }</option>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="exampleInputPassword1">Nguồn gốc xuất xứ</label> <select
-										class="form-control" name="productorigin">
-										<c:forEach items="${origins }" var="origin">
-											<option value="${origin.productOriginId }"
-												<c:if test="${ origin.productOriginId eq productorigin}">selected</c:if>>${origin.productOriginName }</option>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="exampleInputPassword1">Đơn vị</label> <select
-										class="form-control" name="productunit">
-										<c:forEach items="${units }" var="unit">
-											<option value="${unit.productUnitId }"
-												<c:if test="${ unit.productUnitId eq productunit}">selected</c:if>>${unit.productUnitName }</option>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="productprice">Giá nhập</label> <input type="number"
-										min="0" class="form-control" id="productcostprice"
-										name="productcostprice" placeholder="Nhập vào đơn giá sản phẩm"
-										required value="${ productcostprice}">
-								</div>
-								<div class="form-group">
-									<label for="productname">Giá bán</label> <input type="number"
-										min="0" class="form-control" id="productprice"
-										name="productprice"
-										placeholder="Nhập vào đơn giá khuyến mãi" required
-										value="${ productprice}">
-								</div>
-								<div class="form-group">
-									<label for="productquantity">Số lượng</label> <input
-										type="number" min="0" class="form-control"
-										id="productquantity" name="productquantity"
-										placeholder="Nhập vào số lượng sản phẩm" required
-										value="${ productquantity}">
 								</div>
 								<div class="form-group">
 									<label for="productquantity">Mô tả</label>
 									<textarea id="txtAreaCKEditor" name="productdescription"
 										class="form-control" rows="5" cols="">${productdescription }</textarea>
 								</div>
+								
+								  <!-- radio -->
+					                <div class="form-group">
+					                  <label>Tình trạng</label>
+					                  <div class="radio">
+					                    <label>
+					                      <input type="radio" name="post_status" value="1" ${post_status eq 1 ? 'checked':'checked'}>
+					                      <span class="label label-success">Hoạt động</span>
+					                    </label>
+					                  </div>
+					                  <div class="radio">
+					                    <label>
+					                      <input type="radio" name="post_status" value="0" ${post_status eq 0 ? 'checked':''}>
+					                      <span class="label label-warning">Khóa</span>
+					                    </label>
+					                  </div>
+					                </div>
 
 							</div>
 							<!-- /.box-body -->
@@ -156,6 +130,8 @@
 							</div>
 						</form>
 					</div>
+					<!-- /.box -->
+
 				</div>
 			</div>
 			<!-- /.row --> </section>

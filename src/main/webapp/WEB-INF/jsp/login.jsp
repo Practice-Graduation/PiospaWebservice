@@ -27,15 +27,15 @@
 					<div class="login-form">
 						<form name="f"
 							action="${pageContext.request.contextPath}/j_spring_security_check?${_csrf.parameterName}=${_csrf.token}"
-							method="post">
+							method="post" autocomplete='off'>
 							<div class="form-group">
-								<label for="userName">Email</label> <input type="text"
+								<label for="userName">Email</label> <input type="text" autocomplete="off"
 									class="form-control" id="username" name="username"
 									aria-describedby="emailHelp" placeholder="Nhập vào email">
 								
 							</div>
 							<div class="form-group">
-								<label for="password">Mật Khẩu</label> <input type="password"
+								<label for="password">Mật Khẩu</label> <input type="password" autocomplete="off"
 									class="form-control" id="password" name="password"
 									placeholder="Nhập vào mật khẩu">
 							</div>

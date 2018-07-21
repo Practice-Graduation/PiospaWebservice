@@ -45,10 +45,10 @@ public class Staff implements Serializable {
 
 	private String password;
 
-	private String phone;
+	private String phone = "";
 
 	@Column(name="staff_avatar")
-	private String staffAvatar;
+	private String staffAvatar = "https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1";
 
 	@Column(name="store_id")
 	private int storeId;
