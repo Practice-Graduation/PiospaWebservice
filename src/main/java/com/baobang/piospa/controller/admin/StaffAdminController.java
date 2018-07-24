@@ -1,13 +1,14 @@
 package com.baobang.piospa.controller.admin;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.entities.Staff;
 import com.baobang.piospa.repositories.StaffRepository;
 import com.baobang.piospa.utils.Utils;
@@ -50,7 +50,7 @@ public class StaffAdminController {
 	}
 	
 	@RequestMapping(value = "admin/profile/{id}", method = RequestMethod.POST)
-	public String updateInfo(Model model, @PathVariable("id") int id,
+	public String updateInfo(Model model, @PathVariable("id") int id,Principal principal,
 			@RequestParam(required = true, name = "account_name") String fullName,
 			@RequestParam(required = true, name = "account_phone") String phone,
 			@RequestParam(required = false, name = "account_avatar", defaultValue = "") String avatar,
@@ -70,6 +70,13 @@ public class StaffAdminController {
 				staff.setStaffAvatar(avatar);
 			}
 			
+			if(principal != null) {
+				User loginedUser = (User) ((Authentication) principal).getPrincipal();
+
+				Staff staffLogin = mStaffRepository.findByUsername(loginedUser.getUsername());
+				staff.setUpdatedBy(staffLogin.getStaffId());
+			}
+			
 			try {
 				mStaffRepository.save(staff);
 				model.addAttribute("result", true);
@@ -82,7 +89,7 @@ public class StaffAdminController {
 	}
 	
 	@RequestMapping(value = "admin/profile/{id}/reset-password", method = RequestMethod.POST)
-	public String resetPassword(Model model, @PathVariable("id") int id,
+	public String resetPassword(Model model, @PathVariable("id") int id,Principal principal,
 			@RequestParam(required = true, name = "current_password") String currentPassword,
 			@RequestParam(required = true, name = "new_password") String newPassword,
 			@RequestParam(required = true, name = "confirm_password") String confirmPassword) {
@@ -111,6 +118,14 @@ public class StaffAdminController {
 			} else {
 				String hashPassword = encoder.encode(newPassword);
 				staff.setPassword(hashPassword);
+				
+				if(principal != null) {
+					User loginedUser = (User) ((Authentication) principal).getPrincipal();
+
+					Staff staffLogin = mStaffRepository.findByUsername(loginedUser.getUsername());
+					staff.setUpdatedBy(staffLogin.getStaffId());
+				}
+				
 				mStaffRepository.save(staff);
 				model.addAttribute("result_reset_password", true);
 			}
@@ -128,7 +143,7 @@ public class StaffAdminController {
 	
 	@RequestMapping(value="admin/add-new-account", method=RequestMethod.POST)
 	public String doAddNewAccount(
-			Model model,
+			Model model,Principal principal,
 			@RequestParam(required=true, name="account_user_name", defaultValue= "") String userName,
 			@RequestParam(required=true, name="account_fullname", defaultValue= "") String fullname,
 			@RequestParam(required=false, name="account_role") int role,
@@ -158,6 +173,14 @@ public class StaffAdminController {
 			account.setPassword(passwordHash);
 			account.setCreatedAt(new Date());
 			account.setUpdatedAt(new Date());
+			if(principal != null) {
+				User loginedUser = (User) ((Authentication) principal).getPrincipal();
+
+				Staff staffLogin = mStaffRepository.findByUsername(loginedUser.getUsername());
+				
+				account.setCreatedBy(staffLogin.getStaffId());
+				account.setUpdatedBy(staffLogin.getStaffId());
+			}
 			
 			if(!password.equals(confirmPassword)) {
 				model.addAttribute("message", "Mật khẩu xác nhận không đúng");

@@ -1,11 +1,14 @@
 package com.baobang.piospa.controller.admin;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -15,17 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baobang.piospa.entities.Product;
-import com.baobang.piospa.entities.ProductGroup;
-import com.baobang.piospa.entities.ProductLabel;
-import com.baobang.piospa.entities.ProductOrigin;
-import com.baobang.piospa.entities.ProductUnit;
 import com.baobang.piospa.entities.Service;
-import com.baobang.piospa.entities.ServicePackage;
 import com.baobang.piospa.entities.ServiceTime;
-import com.baobang.piospa.repositories.ServicePackageRepository;
+import com.baobang.piospa.entities.Staff;
 import com.baobang.piospa.repositories.ServiceRepository;
 import com.baobang.piospa.repositories.ServiceTimeRepository;
+import com.baobang.piospa.repositories.StaffRepository;
 import com.baobang.piospa.utils.Utils;
 
 /**
@@ -39,7 +37,9 @@ public class ServiceAdminController {
 	@Autowired
 	ServiceRepository mServiceRepository;
 	@Autowired
-	ServiceTimeRepository mServiceTimeRepository;
+	ServiceTimeRepository mServiceTimeRepository;;
+	@Autowired
+	StaffRepository mStaffRepository;
 
 
 	@Transactional
@@ -73,7 +73,7 @@ public class ServiceAdminController {
 	
 
 	@RequestMapping(value = "admin/edit-service/{id}")
-	public String orderDetail(Model model, HttpServletRequest request, 
+	public String orderDetail(Model model, HttpServletRequest request, Principal principal,
 			@PathVariable("id") int id,
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
 			@RequestParam(required = true, name = "productimage", defaultValue = "") String productImage,
@@ -82,7 +82,7 @@ public class ServiceAdminController {
 			@RequestParam(required = true, name = "post_status", defaultValue = "1") int post_status) {
 
 		Service product = mServiceRepository.findById(id).get();
-
+		model.addAttribute("title", "CẬP NHẬT DỊCH VỤ");
 		String message = "";
 		if (request.getParameter("submit") != null) {
 
@@ -95,6 +95,13 @@ public class ServiceAdminController {
 			product.setIsActive((byte) post_status);
 			product.setServiceTime(time);
 			product.setUpdatedAt(new Date());
+			
+			if(principal != null) {
+				User loginedUser = (User) ((Authentication) principal).getPrincipal();
+
+				Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
+				product.setUpdatedBy(staff.getStaffId());
+			}
 
 			try {
 				mServiceRepository.save(product);
@@ -112,7 +119,7 @@ public class ServiceAdminController {
 	}
 	
 	@RequestMapping(value = "admin/add-service")
-	public String addProduct(Model model, HttpServletRequest request,
+	public String addProduct(Model model, HttpServletRequest request,Principal principal,
 			@RequestParam(required = true, name = "productid", defaultValue = "0") int productId,
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
 			@RequestParam(required = true, name = "productimage", defaultValue = "") String productImage,
@@ -120,6 +127,7 @@ public class ServiceAdminController {
 			@RequestParam(required = true, name = "productdescription", defaultValue = "") String productDescription,
 			@RequestParam(required = true, name = "post_status", defaultValue = "1") int post_status) {
 		String message = "";
+		model.addAttribute("title", "THÊM DỊCH VỤ");
 		if (request.getParameter("submit") != null) {
 			if(productImage.trim().length() == 0) {
 				message  = "Vui lòng chọn ảnh, và upload ảnh";
@@ -139,6 +147,13 @@ public class ServiceAdminController {
 				product.setServiceTime(time);
 				product.setCreatedAt(new Date());
 				product.setUpdatedAt(new Date());
+				if(principal != null) {
+					User loginedUser = (User) ((Authentication) principal).getPrincipal();
+
+					Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
+					product.setUpdatedBy(staff.getStaffId());
+					product.setCreatedBy(staff.getStaffId());
+				}
 
 				try {
 					mServiceRepository.save(product);

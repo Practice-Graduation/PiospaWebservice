@@ -59,17 +59,7 @@ public class Staff implements Serializable {
 
 	@Column(name="updated_by")
 	private int updatedBy;
-
-	//bi-directional many-to-one association to StaffDepartment
-	@ManyToOne
-	@JoinColumn(name="staff_department_id")
-	private StaffDepartment staffDepartment;
-
-	//bi-directional many-to-one association to StaffTitle
-	@ManyToOne
-	@JoinColumn(name="staff_title_id")
-	private StaffTitle staffTitle;
-
+	
 	public Staff() {
 	}
 
@@ -191,22 +181,6 @@ public class Staff implements Serializable {
 
 	public void setUpdatedBy(int updatedBy) {
 		this.updatedBy = updatedBy;
-	}
-
-	public StaffDepartment getStaffDepartment() {
-		return this.staffDepartment;
-	}
-
-	public void setStaffDepartment(StaffDepartment staffDepartment) {
-		this.staffDepartment = staffDepartment;
-	}
-
-	public StaffTitle getStaffTitle() {
-		return this.staffTitle;
-	}
-
-	public void setStaffTitle(StaffTitle staffTitle) {
-		this.staffTitle = staffTitle;
 	}
 
 }

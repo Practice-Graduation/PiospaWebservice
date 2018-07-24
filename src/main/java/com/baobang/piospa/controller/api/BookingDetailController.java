@@ -176,7 +176,6 @@ public class BookingDetailController {
 
 		newBookingDetail.setBooking(bookingDetail.getBooking());
 		newBookingDetail.setServicePrice(bookingDetail.getServicePrice());
-		newBookingDetail.setRoom(bookingDetail.getRoom());
 		newBookingDetail.setDateBooking(bookingDetail.getDateBooking());
 		newBookingDetail.setTimeStart(bookingDetail.getTimeStart());
 		newBookingDetail.setUpdatedAt(new Date());

@@ -5,126 +5,121 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 /**
  * The persistent class for the orders database table.
  * 
  */
 @Entity
-@Table(name="orders")
-@NamedQuery(name="Order.findAll", query="SELECT o FROM Order o")
+@Table(name = "orders")
+@NamedQuery(name = "Order.findAll", query = "SELECT o FROM Order o")
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="order_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "order_id")
 	private int orderId;
 
 	private String address;
 
-	@Column(name="address_delivery")
+	@Column(name = "address_delivery")
 	private String addressDelivery;
 
 	private String code;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
+	@Column(name = "created_at")
 	private Date createdAt;
 
-	@Column(name="created_by")
+	@Column(name = "created_by")
 	private int createdBy;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="date_delivery")
+	@Column(name = "date_delivery")
 	private Date dateDelivery;
 
-	@Column(name="delivery_code")
+	@Column(name = "delivery_code")
 	private String deliveryCode;
 
-	@Column(name="delivery_cost")
+	@Column(name = "delivery_cost")
 	private int deliveryCost;
 
 	private int discount;
 
 	private String email;
 
-	@Column(name="full_name")
+	@Column(name = "full_name")
 	private String fullName;
 
 	private String note;
 
 	private String phone;
 
-	@Column(name="staff_id")
+	@Column(name = "staff_id")
 	private int staffId;
 
-	@Column(name="sub_total")
+	@Column(name = "sub_total")
 	private int subTotal;
-
-	@Column(name="tax_id")
-	private int taxId;
 
 	private int total;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
+	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@Column(name="updated_by")
+	@Column(name = "updated_by")
 	private int updatedBy;
 
-	@Column(name="voucher_id")
+	@Column(name = "voucher_id")
 	private int voucherId;
 
-	//bi-directional many-to-one association to Booking
+	// bi-directional many-to-one association to Booking
 
-	@OneToOne(mappedBy="order", cascade =  CascadeType.ALL)
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Booking booking;
-	//bi-directional many-to-one association to OrderProduct
+	// bi-directional many-to-one association to OrderProduct
 	@JsonIgnore
-	@OneToMany(mappedBy="order" , cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderProduct> orderProducts = new ArrayList<>();
 
-	//bi-directional many-to-one association to CustomerSource
+	// bi-directional many-to-one association to Customer
 	@ManyToOne
-	@JoinColumn(name="customer_source_id")
-	private CustomerSource customerSource;
-
-	//bi-directional many-to-one association to Customer
-	@ManyToOne
-	@JoinColumn(name="customer_id")
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
-	//bi-directional many-to-one association to OrderDeliveryStatus
+	// bi-directional many-to-one association to OrderDeliveryStatus
 	@ManyToOne
-	@JoinColumn(name="order_delivery_status_id")
+	@JoinColumn(name = "order_delivery_status_id")
 	private OrderDeliveryStatus orderDeliveryStatus;
 
-	//bi-directional many-to-one association to OrderDeliveryType
+	// bi-directional many-to-one association to OrderDeliveryType
 	@ManyToOne
-	@JoinColumn(name="order_delivery_type_id")
+	@JoinColumn(name = "order_delivery_type_id")
 	private OrderDeliveryType orderDeliveryType;
 
-	//bi-directional many-to-one association to OrderPaymentType
+	// bi-directional many-to-one association to OrderPaymentType
 	@ManyToOne
-	@JoinColumn(name="order_payment_type_id")
+	@JoinColumn(name = "order_payment_type_id")
 	private OrderPaymentType orderPaymentType;
 
-	//bi-directional many-to-one association to OrderReasonCancel
+	// bi-directional many-to-one association to OrderReasonCancel
 	@ManyToOne
-	@JoinColumn(name="order_reasion_cancel_id")
+	@JoinColumn(name = "order_reasion_cancel_id")
 	private OrderReasonCancel orderReasonCancel;
 
-	//bi-directional many-to-one association to OrderStatus
+	// bi-directional many-to-one association to OrderStatus
 	@ManyToOne
-	@JoinColumn(name="order_status_id")
+	@JoinColumn(name = "order_status_id")
 	private OrderStatus orderStatus;
+
+	// bi-directional many-to-one association to Tax
+	@ManyToOne
+	@JoinColumn(name = "tax_id")
+	private Tax tax;
 
 	public Order() {
 	}
@@ -241,14 +236,6 @@ public class Order implements Serializable {
 		this.subTotal = subTotal;
 	}
 
-	public int getTaxId() {
-		return this.taxId;
-	}
-
-	public void setTaxId(int taxId) {
-		this.taxId = taxId;
-	}
-
 	public int getTotal() {
 		return this.total;
 	}
@@ -311,14 +298,6 @@ public class Order implements Serializable {
 		return orderProduct;
 	}
 
-	public CustomerSource getCustomerSource() {
-		return this.customerSource;
-	}
-
-	public void setCustomerSource(CustomerSource customerSource) {
-		this.customerSource = customerSource;
-	}
-
 	public Customer getCustomer() {
 		return this.customer;
 	}
@@ -366,16 +345,27 @@ public class Order implements Serializable {
 	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
+
 	public void caculate() {
-		 total = 0;
-		for(OrderProduct orderProduct : orderProducts) {
+		total = 0;
+		for (OrderProduct orderProduct : orderProducts) {
 			total += orderProduct.getTotal();
 		}
-		if(booking != null) {
+		if (booking != null) {
 			total += booking.getTotal();
 		}
+		 
+		int taxCost = 0;
+
+		if(tax != null) {
+			if(tax.getType().equals("percent")) {
+				taxCost = total * tax.getValue() / 100;
+			}else if(tax.getType().equals("money")) {
+				taxCost = tax.getValue();
+			}
+		}
 		
-		subTotal = total + deliveryCost - discount;
+		subTotal = total + deliveryCost - discount + taxCost;
 	}
 
 	public String getFullName() {
@@ -394,5 +384,12 @@ public class Order implements Serializable {
 		this.phone = phone;
 	}
 	
-	
+	public Tax getTax() {
+		return this.tax;
+	}
+
+	public void setTax(Tax tax) {
+		this.tax = tax;
+	}
+
 }

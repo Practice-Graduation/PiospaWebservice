@@ -12,5 +12,7 @@ public interface AppConstants {
 	int ORDER_NOT_PAYMENT = 1;
 	int ORDER_PAYMENT = 2;
 	int ORDER_CANCEL = 3;
+	
+	int TAX_ID = 1;
 
 }

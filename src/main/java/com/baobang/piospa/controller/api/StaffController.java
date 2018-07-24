@@ -147,8 +147,6 @@ public class StaffController {
 
 		Staff newStaff = option.get();
 		newStaff.setFullname(staff.getFullname());
-		newStaff.setStaffDepartment(staff.getStaffDepartment());
-		newStaff.setStaffTitle(staff.getStaffTitle());
 		newStaff.setPhone(staff.getPhone());
 		newStaff.setStaffAvatar(staff.getStaffAvatar());
 		newStaff.setIsActive(staff.getIsActive());

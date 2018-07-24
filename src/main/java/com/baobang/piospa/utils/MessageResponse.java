@@ -15,5 +15,6 @@ public interface MessageResponse {
 	
 	public static final String ACCOUNT_NOT_EXSIT = "Tài khoản không tồn tại";
 	public static final String PASSWORD_INCORRECT = "Mật khẩu không đúng";
+	public static final String ACCOUNT_EXSIT = "Tài khoản đã tồn tại";
 
 }

@@ -36,7 +36,7 @@
 					<!-- general form elements -->
 					<div class="box box-primary ">
 						<div class="box-header with-border">
-							<h3 class="box-title title-name">THÊM SẢN PHẨM</h3>
+							<h3 class="box-title title-name">${title }</h3>
 						</div>
 						<!-- /.box-header -->
 							<div class="col-md-12">
@@ -113,12 +113,21 @@
 									</select>
 								</div>
 								<div class="form-group">
+									<label for="productprice">Trọng lượng</label> <input type="number"
+										min="0" class="form-control" id="productquantity"
+										name="productquantity" placeholder="Nhập vào trọng lượng"
+										required value="${ productquantity}">
+								</div>
+								<div class="form-group">
 									<label for="exampleInputPassword1">Đơn vị</label> <select
 										class="form-control" name="productunit">
-										<c:forEach items="${units }" var="unit">
-											<option value="${unit.productUnitId }"
-												<c:if test="${ unit.productUnitId eq productunit}">selected</c:if>>${unit.productUnitName }</option>
-										</c:forEach>
+										<option value="mililit"
+												<c:if test="${ 'mililit' eq productunit}">selected</c:if>>Mililit</option>
+												
+										<option value="kilogram"
+												<c:if test="${ 'kilogram' eq productunit}">selected</c:if>>Kilogram	</option>
+										<option value="gram"
+												<c:if test="${ 'gram' eq productunit}">selected</c:if>>Gram</option>
 									</select>
 								</div>
 								<div class="form-group">
@@ -131,15 +140,15 @@
 									<label for="productname">Giá bán</label> <input type="number"
 										min="0" class="form-control" id="productprice"
 										name="productprice"
-										placeholder="Nhập vào đơn giá khuyến mãi" required
+										placeholder="Nhập vào giá bán" required
 										value="${ productprice}">
 								</div>
 								<div class="form-group">
-									<label for="productquantity">Số lượng</label> <input
+									<label for="productamount">Số lượng</label> <input
 										type="number" min="0" class="form-control"
-										id="productquantity" name="productquantity"
+										id="productamount" name="productamount"
 										placeholder="Nhập vào số lượng sản phẩm" required
-										value="${ productquantity}">
+										value="${ productamount}">
 								</div>
 								<div class="form-group">
 									<label for="productquantity">Mô tả</label>

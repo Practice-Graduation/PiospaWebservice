@@ -49,7 +49,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
         }
  
-        UserDetails userDetails = (UserDetails) new User(appUser.getFullname(), //
+        UserDetails userDetails = (UserDetails) new User(appUser.getAccount(), //
                 appUser.getPassword(), grantList);
  
         return userDetails;

@@ -211,6 +211,7 @@ public class OrderController {
 			temp = orderBodyRequester.getOrder();
 			temp.setOrderId(0);
 			temp.setCode(code);
+			temp.getTax().setTaxId(AppConstants.TAX_ID);
 			temp.getOrderDeliveryStatus().setOrderDeliveryStatusId(AppConstants.ORDER_DELIVERY_STATUS);
 			temp.getOrderStatus().setOrderStatusId(AppConstants.ORDER_STATUS);
 			temp.setCreatedAt(date);
@@ -311,7 +312,6 @@ public class OrderController {
 		Order newOrder = option.get();
 
 		newOrder.setCustomer(order.getCustomer());
-		newOrder.setCustomerSource(order.getCustomerSource());
 		newOrder.setAddress(order.getAddress());
 		newOrder.setAddressDelivery(order.getAddressDelivery());
 		newOrder.setEmail(order.getEmail());

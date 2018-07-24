@@ -3,9 +3,7 @@ package com.baobang.piospa.controller.api;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Base64;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.baobang.piospa.entities.Ward;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.utils.ConvertCharacterUtils;
 import com.baobang.piospa.utils.MessageResponse;

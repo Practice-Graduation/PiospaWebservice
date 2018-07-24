@@ -9,34 +9,20 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.baobang.piospa.entities.Booking;
-import com.baobang.piospa.entities.BookingDetail;
 import com.baobang.piospa.entities.Order;
-import com.baobang.piospa.entities.OrderProduct;
-import com.baobang.piospa.entities.OrderStatus;
 import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.entities.Service;
-import com.baobang.piospa.entities.ServicePrice;
 import com.baobang.piospa.entities.Staff;
 import com.baobang.piospa.repositories.OrderRepository;
-import com.baobang.piospa.repositories.OrderStatusRepository;
 import com.baobang.piospa.repositories.ProductRepository;
-import com.baobang.piospa.repositories.ServicePriceRepository;
 import com.baobang.piospa.repositories.ServiceRepository;
 import com.baobang.piospa.repositories.StaffRepository;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author BaoBang

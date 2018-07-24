@@ -1,5 +1,6 @@
 package com.baobang.piospa.controller.admin;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -19,12 +22,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baobang.piospa.entities.Service;
 import com.baobang.piospa.entities.ServicePackage;
 import com.baobang.piospa.entities.ServicePackageDetail;
-import com.baobang.piospa.entities.ServiceTime;
+import com.baobang.piospa.entities.Staff;
 import com.baobang.piospa.repositories.ServicePackageDetailRepository;
 import com.baobang.piospa.repositories.ServicePackageRepository;
 import com.baobang.piospa.repositories.ServicePriceRepository;
 import com.baobang.piospa.repositories.ServiceRepository;
-import com.baobang.piospa.utils.Utils;
+import com.baobang.piospa.repositories.StaffRepository;
 
 /**
  * @author BaoBang
@@ -45,6 +48,8 @@ public class ServicePackageAdminController {
 
 	@Autowired
 	ServicePriceRepository mServicePriceRepository;
+	@Autowired
+	StaffRepository mStaffRepository;
 
 	@RequestMapping(value = "admin/service-package", method = RequestMethod.GET)
 	public String servicePackageList(Model model) {
@@ -75,13 +80,14 @@ public class ServicePackageAdminController {
 
 	@Transactional
 	@RequestMapping(value = "admin/add-service-package")
-	public String addProduct(Model model, HttpServletRequest request,
+	public String addProduct(Model model, HttpServletRequest request,Principal principal,
 			@RequestParam(required = true, name = "productid", defaultValue = "0") int productId,
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
 			@RequestParam(required = true, name = "productimage", defaultValue = "") String productImage,
 			@RequestParam(required = false, name = "var_ids") List<Integer> serviceIds,
 			@RequestParam(required = true, name = "post_status", defaultValue = "1") int post_status) {
 		String message = "";
+		model.addAttribute("title", "THÊM GÓI DỊCH VỤ");
 		if (request.getParameter("submit") != null) {
 			if (productImage.trim().length() == 0) {
 				message = "Vui lòng chọn ảnh, và upload ảnh";
@@ -95,6 +101,16 @@ public class ServicePackageAdminController {
 				product.setIsActive((byte) post_status);
 				product.setCreatedAt(new Date());
 				product.setUpdatedAt(new Date());
+				
+				int staffId = 0;
+				if(principal != null) {
+					User loginedUser = (User) ((Authentication) principal).getPrincipal();
+
+					Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
+					product.setUpdatedBy(staff.getStaffId());
+					product.setCreatedBy(staff.getStaffId());
+					staffId = staff.getStaffId();
+				}
 
 				try {
 					product = mServicePackageRepository.save(product);
@@ -111,6 +127,8 @@ public class ServicePackageAdminController {
 							detail.setIsActive((byte) 1);
 							detail.setCreatedAt(new Date());
 							detail.setUpdateAt(new Date());
+							detail.setUpdatedBy(staffId);
+							detail.setCreatedBy(staffId);
 
 							detail = mServicePackageDetailRepository.save(detail);
 							time += Integer.parseInt(service.getServiceTime().getTime());
@@ -128,7 +146,7 @@ public class ServicePackageAdminController {
 					}
 
 					model.addAttribute("result", "create");
-					loadAttribute(model, 0, "", "", new ArrayList(), 0);
+					loadAttribute(model, 0, "", "", new ArrayList<>(), 0);
 				} catch (Exception e) {
 					message = e.getMessage();
 					loadAttribute(model, productId, productName, productImage, serviceIds, post_status);
@@ -144,7 +162,7 @@ public class ServicePackageAdminController {
 
 	@Transactional
 	@RequestMapping(value = "admin/edit-service-package/{id}")
-	public String orderDetail(Model model, HttpServletRequest request, @PathVariable("id") int id,
+	public String orderDetail(Model model, HttpServletRequest request,Principal principal, @PathVariable("id") int id,
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
 			@RequestParam(required = true, name = "productimage", defaultValue = "") String productImage,
 			@RequestParam(required = false, name = "var_ids") List<Integer> serviceIds,
@@ -152,18 +170,29 @@ public class ServicePackageAdminController {
 
 		ServicePackage product = mServicePackageRepository.findById(id).get();
 		String message = "";
+		model.addAttribute("title", "CẬP NHẬT GÓI DỊCH VỤ");
 		if (request.getParameter("submit") != null) {
 			try {
 				product.setServicePackageName(productName);
 				product.setImage(productImage);
 				product.setIsActive((byte) post_status);
 				product.setUpdatedAt(new Date());
+				
+				int staffId = 0;
+				if(principal != null) {
+					User loginedUser = (User) ((Authentication) principal).getPrincipal();
+
+					Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
+					product.setUpdatedBy(staff.getStaffId());
+					product.setCreatedBy(staff.getStaffId());
+					staffId = staff.getStaffId();
+				}
 
 				if (serviceIds == null) {
 					serviceIds = new ArrayList<>();
 				}
 				product = removeDetail(product, serviceIds);
-				product = addDetail(product, serviceIds);
+				product = addDetail(product, serviceIds, staffId);
 
 				return "redirect:/admin/service-package";
 			} catch (Exception e) {
@@ -181,7 +210,7 @@ public class ServicePackageAdminController {
 		return "add-service-package";
 	}
 
-	private ServicePackage addDetail(ServicePackage product, List<Integer> serviceIds) {
+	private ServicePackage addDetail(ServicePackage product, List<Integer> serviceIds, int staffId) {
 
 		// danh sách dịch vụ hiện tại
 		List<Integer> ids = getSerivceIds(product);
@@ -202,7 +231,9 @@ public class ServicePackageAdminController {
 				detail.setIsActive((byte) 1);
 				detail.setCreatedAt(new Date());
 				detail.setUpdateAt(new Date());
-
+				detail.setCreatedBy(staffId);
+				detail.setUpdatedBy(staffId);
+				
 				detail = mServicePackageDetailRepository.save(detail);
 				details.add(detail);
 			}

@@ -159,6 +159,7 @@ public class ProductController {
 		Product oldProduct = option.get();
 
 		product.setProductId(oldProduct.getProductId());
+		product.setUpdatedAt(new Date());
 
 		product = mProductRepository.save(product);
 

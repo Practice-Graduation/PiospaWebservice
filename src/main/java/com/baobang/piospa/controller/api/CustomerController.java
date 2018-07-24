@@ -104,7 +104,7 @@ public class CustomerController {
 	@ApiOperation(value = "Create new Customer")
 	public DataResult<Customer> createCustomer(@RequestBody Customer customer) {
 		DataResult<Customer> result = new DataResult<>();
-		Customer temp  = mCustomerRepository.findByCode(customer.getCode());
+		Customer temp  = mCustomerRepository.findByAccount(customer.getAccount());
 
 		if (temp == null) {
 			Date date = new Date();
@@ -115,7 +115,7 @@ public class CustomerController {
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		} else {
-			result.setMessage(MessageResponse.EXITS);
+			result.setMessage(MessageResponse.ACCOUNT_EXSIT);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		}
 		result.setData(temp);
@@ -152,7 +152,6 @@ public class CustomerController {
 		temp.setPhone(customer.getPhone());
 		temp.setCmnd(customer.getCmnd());
 		temp.setIsActive(customer.getIsActive());
-		temp.setCustomerSource(customer.getCustomerSource());
 		temp.setProvince(customer.getProvince());
 		temp.setDistrict(customer.getDistrict());
 		temp.setWard(customer.getWard());

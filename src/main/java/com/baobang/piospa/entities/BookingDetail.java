@@ -54,11 +54,6 @@ public class BookingDetail implements Serializable {
 	@JoinColumn(name="booking_id")
 	private Booking booking;
 
-	//bi-directional many-to-one association to Room
-	@ManyToOne
-	@JoinColumn(name="room_id")
-	private Room room;
-
 	//bi-directional many-to-one association to ServicePrice
 	@ManyToOne
 	@JoinColumn(name="service_price_id")
@@ -143,14 +138,6 @@ public class BookingDetail implements Serializable {
 
 	public void setBooking(Booking booking) {
 		this.booking = booking;
-	}
-
-	public Room getRoom() {
-		return this.room;
-	}
-
-	public void setRoom(Room room) {
-		this.room = room;
 	}
 
 	public ServicePrice getServicePrice() {

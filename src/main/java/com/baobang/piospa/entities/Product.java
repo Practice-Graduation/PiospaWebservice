@@ -53,6 +53,8 @@ public class Product implements Serializable {
 	private String productName;
 
 	private int quantity = 0;
+	
+	private int amount = 0;
 
 	@Column(name="quantity_value")
 	private String quantityValue = "gram";
@@ -73,11 +75,6 @@ public class Product implements Serializable {
 	@OneToMany(mappedBy="product")
 	private List<OrderProduct> orderProducts;
 
-	//bi-directional many-to-one association to ProductAttribute
-	@JsonIgnore
-	@OneToMany(mappedBy="product")
-	private List<ProductAttribute> productAttributes;
-
 	//bi-directional many-to-one association to ProductGroup
 	@ManyToOne
 	@JoinColumn(name="product_group_id")
@@ -93,10 +90,7 @@ public class Product implements Serializable {
 	@JoinColumn(name="product_origin_id")
 	private ProductOrigin productOrigin;
 
-	//bi-directional many-to-one association to ProductUnit
-	@ManyToOne
-	@JoinColumn(name="product_unit_id")
-	private ProductUnit productUnit;
+	
 
 	public Product() {
 	}
@@ -259,28 +253,6 @@ public class Product implements Serializable {
 		return orderProduct;
 	}
 
-	public List<ProductAttribute> getProductAttributes() {
-		return this.productAttributes;
-	}
-
-	public void setProductAttributes(List<ProductAttribute> productAttributes) {
-		this.productAttributes = productAttributes;
-	}
-
-	public ProductAttribute addProductAttribute(ProductAttribute productAttribute) {
-		getProductAttributes().add(productAttribute);
-		productAttribute.setProduct(this);
-
-		return productAttribute;
-	}
-
-	public ProductAttribute removeProductAttribute(ProductAttribute productAttribute) {
-		getProductAttributes().remove(productAttribute);
-		productAttribute.setProduct(null);
-
-		return productAttribute;
-	}
-
 	public ProductGroup getProductGroup() {
 		return this.productGroup;
 	}
@@ -305,12 +277,14 @@ public class Product implements Serializable {
 		this.productOrigin = productOrigin;
 	}
 
-	public ProductUnit getProductUnit() {
-		return this.productUnit;
+	public int getAmount() {
+		return amount;
 	}
 
-	public void setProductUnit(ProductUnit productUnit) {
-		this.productUnit = productUnit;
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
+	
+	
 
 }

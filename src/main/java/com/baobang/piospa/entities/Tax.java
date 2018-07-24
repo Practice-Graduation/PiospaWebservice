@@ -2,45 +2,55 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * The persistent class for the tax database table.
  * 
  */
 @Entity
-@NamedQuery(name="Tax.findAll", query="SELECT t FROM Tax t")
+@NamedQuery(name = "Tax.findAll", query = "SELECT t FROM Tax t")
 public class Tax implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="tax_id")
+	@Column(name = "tax_id")
 	private int taxId;
 
-	@Column(name="created_at")
-	private Timestamp createdAt;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_at")
+	private Date createdAt;
 
-	@Column(name="created_by")
-	private int createdBy;
+	@Column(name = "created_by")
+	private int createdBy = 0;
 
 	private String descripton;
 
-	@Column(name="is_active")
-	private byte isActive;
+	@Column(name = "is_active")
+	private byte isActive = 1;
 
 	private String name;
 
 	private String type;
 
-	@Column(name="updated_at")
-	private Timestamp updatedAt;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "updated_at")
+	private Date updatedAt;
 
-	@Column(name="updated_by")
-	private int updatedBy;
+	@Column(name = "updated_by")
+	private int updatedBy = 0;
 
 	private int value;
+
+	// bi-directional many-to-one association to Order
+	@JsonIgnore
+	@OneToMany(mappedBy = "tax")
+	private List<Order> orders;
 
 	public Tax() {
 	}
@@ -53,11 +63,11 @@ public class Tax implements Serializable {
 		this.taxId = taxId;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -101,11 +111,11 @@ public class Tax implements Serializable {
 		this.type = type;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return this.updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
@@ -124,5 +134,25 @@ public class Tax implements Serializable {
 	public void setValue(int value) {
 		this.value = value;
 	}
+	public List<Order> getOrders() {
+		return this.orders;
+	}
 
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+	public Order addOrder(Order order) {
+		getOrders().add(order);
+		order.setTax(this);
+
+		return order;
+	}
+
+	public Order removeOrder(Order order) {
+		getOrders().remove(order);
+		order.setTax(null);
+
+		return order;
+	}
 }

@@ -9,6 +9,12 @@ public class OrderCustomerStatusBodyRequest {
 
 	private int customerId;
 	private int orderStatusId;
+	
+	
+
+	public OrderCustomerStatusBodyRequest() {
+		super();
+	}
 
 	public OrderCustomerStatusBodyRequest(int customerId, int orderStatusId) {
 		super();
