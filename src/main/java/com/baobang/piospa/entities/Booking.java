@@ -33,9 +33,6 @@ public class Booking implements Serializable {
 	@Column(name = "created_by")
 	private int createdBy;
 
-	@Temporal(TemporalType.DATE)
-	private Date date;
-
 	private int discount;
 
 	private int number;
@@ -45,12 +42,7 @@ public class Booking implements Serializable {
 	@Column(name = "tax_id")
 	private int taxId;
 
-	@Column(name = "time_end")
-	private Time timeEnd;
-
-	@Column(name = "time_start")
-	private Time timeStart;
-
+	
 	private int total;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -116,15 +108,6 @@ public class Booking implements Serializable {
 	public void setCreatedBy(int createdBy) {
 		this.createdBy = createdBy;
 	}
-
-	public Date getDate() {
-		return this.date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
 	public int getDiscount() {
 		return this.discount;
 	}
@@ -155,22 +138,6 @@ public class Booking implements Serializable {
 
 	public void setTaxId(int taxId) {
 		this.taxId = taxId;
-	}
-
-	public Time getTimeEnd() {
-		return this.timeEnd;
-	}
-
-	public void setTimeEnd(Time timeEnd) {
-		this.timeEnd = timeEnd;
-	}
-
-	public Time getTimeStart() {
-		return this.timeStart;
-	}
-
-	public void setTimeStart(Time timeStart) {
-		this.timeStart = timeStart;
 	}
 
 	public int getTotal() {
