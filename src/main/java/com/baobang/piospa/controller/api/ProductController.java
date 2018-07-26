@@ -90,6 +90,27 @@ public class ProductController {
 		return product;
 	}
 	
+	@RequestMapping(//
+			value = "/code/{productCode}", //
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Get product  by code")
+	public DataResult<Product> getProductByCode(@PathVariable(value = "productCode") String productCode) {
+		DataResult<Product> result = new DataResult<>();
+		Product product  = mProductRepository.findByCode(productCode);
+		
+		if(product != null) {
+			result.setMessage(MessageResponse.SUCCESSED);
+			result.setStatusCode(HttpStatus.OK.value());
+			result.setData(product);
+		}else {
+			result.setMessage(MessageResponse.NOT_CONTENT);
+			result.setStatusCode(HttpStatus.NOT_FOUND.value());
+			result.setData(null);
+		}
+		return result;
+	}
+	
 	/**
 	 * @api {post} / Create a new Product 
 	 * @apiName createProduct
