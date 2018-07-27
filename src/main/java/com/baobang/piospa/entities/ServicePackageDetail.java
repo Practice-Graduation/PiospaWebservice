@@ -25,7 +25,7 @@ public class ServicePackageDetail implements Serializable {
 	private Date createdAt;
 
 	@Column(name="created_by")
-	private int createdBy;
+	private int createdBy = 0;
 
 	@Column(name="is_active")
 	private byte isActive;
@@ -36,7 +36,7 @@ public class ServicePackageDetail implements Serializable {
 	private Date updateAt;
 
 	@Column(name="updated_by")
-	private int updatedBy;
+	private int updatedBy = 0;
 
 	//bi-directional many-to-one association to ServicePackage
 	@ManyToOne

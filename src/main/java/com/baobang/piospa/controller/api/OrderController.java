@@ -205,6 +205,7 @@ public class OrderController {
 		DataResult<Order> result = new DataResult<>();
 
 		Order temp = mOrderRepository.findByCode(orderBodyRequester.getOrder().getCode());
+		OrderStatus orderStatus = mOrderStatusRepository.findById(AppConstants.ORDER_STATUS).get();
 		String code = Utils.genarateCode();
 		if (temp == null) {
 			Date date = new Date();
@@ -213,7 +214,7 @@ public class OrderController {
 			temp.setCode(code);
 			temp.getTax().setTaxId(AppConstants.TAX_ID);
 			temp.getOrderDeliveryStatus().setOrderDeliveryStatusId(AppConstants.ORDER_DELIVERY_STATUS);
-			temp.getOrderStatus().setOrderStatusId(AppConstants.ORDER_STATUS);
+			temp.setOrderStatus(orderStatus);
 			temp.setCreatedAt(date);
 			temp.setUpdatedAt(date);
 			
