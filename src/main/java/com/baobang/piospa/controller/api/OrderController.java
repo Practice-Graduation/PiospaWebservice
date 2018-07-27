@@ -24,6 +24,7 @@ import com.baobang.piospa.entities.OrderReasonCancel;
 import com.baobang.piospa.entities.OrderStatus;
 import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.entities.ServicePrice;
+import com.baobang.piospa.model.CancelOrderBody;
 import com.baobang.piospa.model.CartItemProduct;
 import com.baobang.piospa.model.CartItemService;
 import com.baobang.piospa.model.DataResult;
@@ -288,6 +289,33 @@ public class OrderController {
 		return result;
 	}
 
+	
+	@RequestMapping(//
+			value = "/cancel", //
+			method = RequestMethod.PUT, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Cancel Order by id")
+	public DataResult<Order> cancelOrder(@RequestBody CancelOrderBody body) {
+		DataResult<Order> result = new DataResult<>();
+		
+		Order order = mOrderRepository.findById(body.getOrderId()).get();
+		if(order.getOrderStatus().getOrderStatusId() == AppConstants.ORDER_PAYMENT) {
+
+			result.setMessage("Đơn hàng đã thanh toán, không thể hủy");
+		}else {
+			OrderStatus orderStatus = mOrderStatusRepository.findById(AppConstants.ORDER_CANCEL).get();
+			order.setOrderStatus(orderStatus);
+			order = mOrderRepository.save(order);
+
+			result.setMessage(MessageResponse.SUCCESSED);
+			
+		}
+
+		result.setStatusCode(HttpStatus.OK.value());
+		result.setData(order);
+		return result;
+	}
+	
 	/**
 	 * @api {put}/{orderId} update Order by id
 	 * @apiName updateOrder
