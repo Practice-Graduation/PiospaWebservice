@@ -24,12 +24,15 @@ import com.baobang.piospa.entities.OrderReasonCancel;
 import com.baobang.piospa.entities.OrderStatus;
 import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.entities.ServicePrice;
+import com.baobang.piospa.model.BookingDetailObject;
 import com.baobang.piospa.model.CancelOrderBody;
 import com.baobang.piospa.model.CartItemProduct;
 import com.baobang.piospa.model.CartItemService;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.model.OrderBodyRequest;
 import com.baobang.piospa.model.OrderCustomerStatusBodyRequest;
+import com.baobang.piospa.model.OrderObject;
+import com.baobang.piospa.model.OrderProductObject;
 import com.baobang.piospa.model.OrderResultResponse;
 import com.baobang.piospa.repositories.BookingDetailRepository;
 import com.baobang.piospa.repositories.BookingRepository;
@@ -218,7 +221,7 @@ public class OrderController {
 			temp.setOrderStatus(orderStatus);
 			temp.setCreatedAt(date);
 			temp.setUpdatedAt(date);
-			
+
 			// insert order and get order was inserted
 			temp = mOrderRepository.save(temp);
 			Product product;
@@ -251,14 +254,14 @@ public class OrderController {
 
 				booking = mBookingRepository.save(booking);
 				int price = 0, totalNumber = 0;
-				
+
 				ServicePrice servicePrice;
 				for (CartItemService item : orderBodyRequester.getCartShopping().getCartItemServices()) {
 					BookingDetail bookingDetail = new BookingDetail();
 					totalNumber += item.getNumber();
 					servicePrice = mServicePriceRepository.findById(item.getProductId()).get();
 
-					price += item.getNumber() * servicePrice.getAllPrice(); 
+					price += item.getNumber() * servicePrice.getAllPrice();
 					bookingDetail.setBooking(booking);
 					bookingDetail.setNumber(item.getNumber());
 					bookingDetail.setServicePrice(servicePrice);
@@ -289,7 +292,6 @@ public class OrderController {
 		return result;
 	}
 
-	
 	@RequestMapping(//
 			value = "/cancel", //
 			method = RequestMethod.PUT, //
@@ -297,25 +299,25 @@ public class OrderController {
 	@ApiOperation(value = "Cancel Order by id")
 	public DataResult<Order> cancelOrder(@RequestBody CancelOrderBody body) {
 		DataResult<Order> result = new DataResult<>();
-		
+
 		Order order = mOrderRepository.findById(body.getOrderId()).get();
-		if(order.getOrderStatus().getOrderStatusId() == AppConstants.ORDER_PAYMENT) {
+		if (order.getOrderStatus().getOrderStatusId() == AppConstants.ORDER_PAYMENT) {
 
 			result.setMessage("Đơn hàng đã thanh toán, không thể hủy");
-		}else {
+		} else {
 			OrderStatus orderStatus = mOrderStatusRepository.findById(AppConstants.ORDER_CANCEL).get();
 			order.setOrderStatus(orderStatus);
 			order = mOrderRepository.save(order);
 
 			result.setMessage(MessageResponse.SUCCESSED);
-			
+
 		}
 
 		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(order);
 		return result;
 	}
-	
+
 	/**
 	 * @api {put}/{orderId} update Order by id
 	 * @apiName updateOrder
@@ -347,25 +349,25 @@ public class OrderController {
 		newOrder.setDateDelivery(order.getDateDelivery());
 		newOrder.setOrderPaymentType(order.getOrderPaymentType());
 		newOrder.setNote(order.getNote());
-		
-		if(order.getOrderStatus() != null) {
+
+		if (order.getOrderStatus() != null) {
 			OrderStatus orderStatus = mOrderStatusRepository.findById(order.getOrderStatus().getOrderStatusId()).get();
 			newOrder.setOrderStatus(orderStatus);
-			
+
 		}
-		
+
 		newOrder.setStaffId(order.getStaffId());
 		newOrder.setOrderDeliveryType(order.getOrderDeliveryType());
 		newOrder.setDeliveryCode(order.getDeliveryCode());
 		newOrder.setDeliveryCost(order.getDeliveryCost());
 		newOrder.setOrderDeliveryStatus(order.getOrderDeliveryStatus());
-		
-		if(order.getOrderReasonCancel() != null) {
+
+		if (order.getOrderReasonCancel() != null) {
 			OrderReasonCancel orderReasonCancel = mOrderReasonCancelRepository
 					.findById(order.getOrderReasonCancel().getOrderReasonCancelId()).get();
 			newOrder.setOrderReasonCancel(orderReasonCancel);
 		}
-		
+
 		newOrder.setTotal(order.getTotal());
 		newOrder.setDiscount(order.getDiscount());
 		newOrder.setSubTotal(order.getSubTotal());
@@ -379,4 +381,66 @@ public class OrderController {
 		return result;
 	}
 
+	/**
+	 * @api {get} / Request Order information
+	 * @apiName getOrderByCustomerId
+	 * @apiGroup Order
+	 * 
+	 * @apiParam {customerId} the unique id of customer
+	 * 
+	 * @apiSuccess {Integer} the Order of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {array} the list Orders
+	 * 
+	 */
+	@RequestMapping(//
+			method = RequestMethod.GET, //
+			value = "/customer/{customerId}", //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Get all Orders")
+	public DataResult<List<OrderObject>> getCustomerId(@PathVariable(value = "customerId") int customerId) {
+
+		List<Order> orders = mOrderRepository.findOrderByCustomerId(customerId);
+		List<OrderObject> list = new ArrayList<>();
+		for (Order order : orders) {
+			List<OrderProductObject> orderProductObjects = getOrderProduct(order);
+			List<BookingDetailObject> bookingDetailObjects = getBookingDetail(order);
+			list.add(new OrderObject(order, orderProductObjects, bookingDetailObjects));
+		}
+		return new DataResult<List<OrderObject>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, list);
+	}
+
+	private List<BookingDetailObject> getBookingDetail(Order order) {
+		// TODO Auto-generated method stub
+		List<BookingDetailObject> bookingDetailObjects = new ArrayList<>();
+		Booking booking = order.getBooking();
+		if(booking != null) {
+			for(BookingDetail detail : booking.getBookingDetails()) {
+				bookingDetailObjects.add(new BookingDetailObject(detail));
+			}
+		}
+		
+		return bookingDetailObjects;
+	}
+
+	private List<OrderProductObject> getOrderProduct(Order order) {
+		// TODO Auto-generated method stub
+		List<OrderProductObject> orders = new ArrayList<>();
+		for(OrderProduct orderProduct : order.getOrderProducts()){
+			orders.add(new OrderProductObject(orderProduct));
+		}
+		return orders;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
