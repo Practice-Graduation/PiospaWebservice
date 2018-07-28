@@ -23,6 +23,7 @@ import com.baobang.piospa.repositories.OrderRepository;
 import com.baobang.piospa.repositories.OrderStatusRepository;
 import com.baobang.piospa.repositories.ProductRepository;
 import com.baobang.piospa.utils.AppConstants;
+import com.baobang.piospa.utils.FCM;
 
 /**
   * @author BaoBang
@@ -116,6 +117,9 @@ public class OrderAdminControler {
 					}
 				}
 			}
+			
+			FCM.send_FCM_Notification(order.getCustomer().getAccount(), order.getCode());
+			
 		}
 		
 		order.setOrderStatus(orderStatus);
