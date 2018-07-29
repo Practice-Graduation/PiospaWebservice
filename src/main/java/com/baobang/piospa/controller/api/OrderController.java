@@ -149,6 +149,39 @@ public class OrderController {
 		result.setData(order);
 		return result;
 	}
+	
+	/**
+	 * @api {get} /code/{orderCode} Request Order information
+	 * @apiName getOrderByCode
+	 * @apiGroup Order 
+	 * @apiParam {orderCode} id Order DeliveryStatus unique code.
+	 * 
+	 * @apiSuccess {Integer} the order of the response
+	 * @apiSuccess {String} the message of the response
+	 * @apiSuccess {Order} the Order was got
+	 * 
+	 */
+	@RequestMapping(//
+			value = "/code/{orderCode}", //
+			method = RequestMethod.GET, //
+			produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Get Order by id")
+	public DataResult<Order> getOrderByCode(@PathVariable(value = "orderCode") String orderCode) {
+		DataResult<Order> result = new DataResult<>();
+		Order order = mOrderRepository.findByCode(orderCode);
+		if(order == null) {
+
+			result.setMessage(MessageResponse.NOT_FOUND);
+			result.setStatusCode(HttpStatus.NOT_FOUND.value());
+		}else {
+
+			result.setMessage(MessageResponse.SUCCESSED);
+			result.setStatusCode(HttpStatus.OK.value());
+		}
+		result.setData(order);
+		return result;
+	}
+
 
 	/**
 	 * @api {get} /{orderId}/order-product-service-price Request Order information
