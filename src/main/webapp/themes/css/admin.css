@@ -189,10 +189,14 @@ a:hover {
 }
 			
 .label {
-	display: block;
 	color: #000;
 	font-size: 100%;
 	text-align: center;
+	display: inline-block;
+}
+
+.group-lable{
+	margin-top: 10px;
 }
 			
 .fileuploader {

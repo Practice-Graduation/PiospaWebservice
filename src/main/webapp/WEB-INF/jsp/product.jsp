@@ -45,6 +45,7 @@
 										<th style="width: 150px; text-align: center;">Tên sản
 											phẩm</th>
 										<th style="text-align: center; width: 60px;">Giá</th>
+										<th style="text-align: center; width: 60px;">Số lượng</th>
 										<th style="text-align: center; width: 35px;">Tr Thái</th>
 										<th style="text-align: center; width: 10px;"></th>
 									</tr>
@@ -59,6 +60,7 @@
 											<td style="text-align: center; vertical-align: middle;width: 150px;">${p.productName}</td>
 											<td style="text-align: center; vertical-align: middle;width: 65px;"><fmt:formatNumber
 													type="currency" pattern = "#,###đ" value="${p.price }" /></td>
+													<td style="text-align: center; vertical-align: middle;width: 150px;">${p.amount}</td>
 											<td style="text-align: center; vertical-align: middle;width: 35px;"><c:if test="${p.isActive eq 1}">
 													<span class="badge bg-green">Hiện</span>
 												</c:if> <c:if test="${p.isActive eq 0}">

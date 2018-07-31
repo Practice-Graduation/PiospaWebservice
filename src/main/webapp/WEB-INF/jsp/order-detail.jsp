@@ -95,21 +95,30 @@
 								method="post">
 								<!-- radio -->
 								<div class="form-group">
+								<div class = "group-lable">
 									<label> <input type="radio" name="order_status"
 										value="3" class="minimal"
 										${order.orderStatus.orderStatusId eq 3 ? 'checked' : '' }>
 										<span class="label label-danger">Hủy</span>
 									</label>
-									 <label> <input type="radio" name="order_status"
+								</div>
+								<div class = "group-lable">
+									<label> <input type="radio" name="order_status"
 										value="1" class="minimal"
 										${order.orderStatus.orderStatusId eq 1 ? 'checked' : '' }>
 										<span class="label label-warning">Chưa Thanh toán</span>
 									</label> 
+								</div>
+								<div class = "group-lable">
 									<label> <input type="radio" name="order_status"
 										value="2" class="minimal"
 										${order.orderStatus.orderStatusId eq 2 ? 'checked' : '' }>
 										<span class="label label-success">Thanh toán</span>
 									</label>
+								</div>
+									
+									 
+									
 								</div>
 								<button type="submit" class="btn btn-primary btn-block">
 									<i class="fa fa-floppy-o"></i> Lưu
@@ -199,10 +208,8 @@
 												<td style="text-align: center;vertical-align : middle;"">${o.number}</td>
 												<td><fmt:formatNumber
 														value="${o.servicePrice.allPrice }" type="currency" pattern = "#,###đ" /></td>
-												<td style="text-align: center;vertical-align : middle;"><fmt:formatDate
-														pattern="dd'/'MM'/'yyyy" value="${o.dateBooking}" /></td>
-												<td style="text-align: center;vertical-align : middle;"><fmt:formatDate
-														pattern="HH':'mm" value="${o.timeStart}" /></td>
+												<td style="text-align: center;vertical-align : middle;">${o.dateBooking}</td>
+												<td style="text-align: center;vertical-align : middle;">${o.timeStart}</td>
 											</tr>
 										</c:forEach>
 									</tbody>
