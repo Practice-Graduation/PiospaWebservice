@@ -95,7 +95,7 @@ public class OrderAdminControler {
 				List<OrderProduct> list = order.getOrderProducts();
 				for (OrderProduct op : list) {
 					Product product = op.getProduct();
-					product.setAmount(product.getQuantity() + op.getNumber());
+					product.setAmount(product.getAmount() + op.getNumber());
 					mProductRepository.save(product);
 				}
 
@@ -106,15 +106,15 @@ public class OrderAdminControler {
 					List<OrderProduct> list = order.getOrderProducts();
 					for (OrderProduct op : list) {
 						Product product = op.getProduct();
-						if (product.getQuantity() < op.getNumber()) {
-							message = product.getProductName() + " chỉ còn " + product.getQuantity();
+						if (product.getAmount() < op.getNumber()) {
+							message = product.getProductName() + " chỉ còn " + product.getAmount();
 							model.addAttribute("message", message);
 							model.addAttribute("order", order);
 							model.addAttribute("products", products);
 							model.addAttribute("bookingDetails", bookingDetails);
 							return "order-detail";
 						}
-						product.setAmount(product.getQuantity() - op.getNumber());
+						product.setAmount(product.getAmount() - op.getNumber());
 						mProductRepository.save(product);
 					}
 				}
