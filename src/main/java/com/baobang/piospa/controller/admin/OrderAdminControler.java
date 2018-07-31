@@ -27,20 +27,20 @@ import com.baobang.piospa.utils.AppConstants;
 import com.baobang.piospa.utils.FCM;
 
 /**
-  * @author BaoBang
-  * @Created Jul 11, 2018
-  * 
-  */
+ * @author BaoBang
+ * @Created Jul 11, 2018
+ * 
+ */
 @Controller
 public class OrderAdminControler {
-	
+
 	@Autowired
 	OrderRepository mOrderRepository;
 	@Autowired
 	OrderStatusRepository mOrderStatusRepository;
 	@Autowired
 	ProductRepository mProductRepository;
-	
+
 	@RequestMapping(value = "admin/order-list", method = RequestMethod.GET)
 	public String orderList(Model model) {
 		List<Order> orderList = mOrderRepository.findAll();
@@ -75,7 +75,7 @@ public class OrderAdminControler {
 		Order order = mOrderRepository.findById(id).get();
 		OrderStatus orderStatus = mOrderStatusRepository.findById(status).get();
 		String message = "";
-		
+
 		// DANH SACH SAN PHAM
 		List<OrderProduct> products = order.getOrderProducts();
 		// DANH SACH DICH VU
@@ -87,46 +87,46 @@ public class OrderAdminControler {
 			bookingDetails = new ArrayList<>();
 		}
 		// KIEM TRA TRANG THAI DON HANG
-		if(order.getOrderStatus().getOrderStatusId() != orderStatus.getOrderStatusId()) {
+		if (order.getOrderStatus().getOrderStatusId() != orderStatus.getOrderStatusId()) {
 			// nếu đơn hàng hiện tại đã thanh toán
 			// cập nhật lại hủy hoặc đợi duyệt
-			if(order.getOrderStatus().getOrderStatusId() == AppConstants.ORDER_PAYMENT) {
+			if (order.getOrderStatus().getOrderStatusId() == AppConstants.ORDER_PAYMENT) {
 				// tăng số lượng sản phẩm
 				List<OrderProduct> list = order.getOrderProducts();
-				for(OrderProduct op : list){
+				for (OrderProduct op : list) {
 					Product product = op.getProduct();
-					product.setQuantity(product.getQuantity() + op.getNumber());
+					product.setAmount(product.getQuantity() + op.getNumber());
 					mProductRepository.save(product);
 				}
-				
-			}else {
+
+			} else {
 				// nếu là đơn hàng hiện tại đang chờ duyệt hoặc hủy
-				if(orderStatus.getOrderStatusId() == AppConstants.ORDER_PAYMENT) {
+				if (orderStatus.getOrderStatusId() == AppConstants.ORDER_PAYMENT) {
 					// giảm số lượng
 					List<OrderProduct> list = order.getOrderProducts();
-					for(OrderProduct op : list){
+					for (OrderProduct op : list) {
 						Product product = op.getProduct();
-						if(product.getQuantity() < op.getNumber()) {
-							message = product.getProductName()  + " chỉ còn " + product.getQuantity();
+						if (product.getQuantity() < op.getNumber()) {
+							message = product.getProductName() + " chỉ còn " + product.getQuantity();
 							model.addAttribute("message", message);
 							model.addAttribute("order", order);
 							model.addAttribute("products", products);
 							model.addAttribute("bookingDetails", bookingDetails);
 							return "order-detail";
 						}
-						product.setQuantity(product.getQuantity() - op.getNumber());
+						product.setAmount(product.getQuantity() - op.getNumber());
 						mProductRepository.save(product);
 					}
 				}
 			}
-			
+
 			FCM.send_FCM_Notification(order.getCustomer().getAccount(), order.getCode());
-			
+
 		}
-		
+
 		order.setOrderStatus(orderStatus);
 		order = mOrderRepository.save(order);
-		
+
 		model.addAttribute("order", order);
 		model.addAttribute("products", products);
 		model.addAttribute("bookingDetails", bookingDetails);
