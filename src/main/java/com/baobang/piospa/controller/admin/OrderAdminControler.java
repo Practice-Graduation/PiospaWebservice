@@ -1,6 +1,7 @@
 package com.baobang.piospa.controller.admin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -43,6 +44,7 @@ public class OrderAdminControler {
 	@RequestMapping(value = "admin/order-list", method = RequestMethod.GET)
 	public String orderList(Model model) {
 		List<Order> orderList = mOrderRepository.findAll();
+		Collections.reverse(orderList);
 		model.addAttribute("result", orderList);
 		return "order-list";
 	}

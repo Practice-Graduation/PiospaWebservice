@@ -2,6 +2,7 @@ package com.baobang.piospa.controller.admin;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -54,6 +55,8 @@ public class ServicePackageAdminController {
 	@RequestMapping(value = "admin/service-package", method = RequestMethod.GET)
 	public String servicePackageList(Model model) {
 		List<ServicePackage> liProducts = mServicePackageRepository.findAll();
+		Collections.reverse(liProducts);
+		
 		model.addAttribute("result", liProducts);
 		return "service-package";
 	}

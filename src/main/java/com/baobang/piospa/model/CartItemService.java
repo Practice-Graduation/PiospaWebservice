@@ -1,6 +1,5 @@
 package com.baobang.piospa.model;
 
-import java.util.Date;
 
 /**
   * @author BaoBang
@@ -10,12 +9,14 @@ import java.util.Date;
 public class CartItemService {
 	private int productId;
 	private int number;
-	private Date dateBooking;
-	public CartItemService(int productId, int number, Date dateBooking) {
+	private String dateBooking;
+	private String timeBooking;
+	public CartItemService(int productId, int number, String dateBooking, String timeBooking) {
 		super();
 		this.productId = productId;
 		this.number = number;
 		this.dateBooking = dateBooking;
+		this.timeBooking = timeBooking;
 	}
 	public CartItemService() {
 		super();
@@ -32,11 +33,17 @@ public class CartItemService {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	public Date getDateBooking() {
+	public String getDateBooking() {
 		return dateBooking;
 	}
-	public void setDateBooking(Date dateBooking) {
+	public void setDateBooking(String dateBooking) {
 		this.dateBooking = dateBooking;
+	}
+	public String getTimeBooking() {
+		return timeBooking;
+	}
+	public void setTimeBooking(String timeBooking) {
+		this.timeBooking = timeBooking;
 	}
 	
 	

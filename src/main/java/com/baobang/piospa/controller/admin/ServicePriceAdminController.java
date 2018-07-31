@@ -1,6 +1,7 @@
 package com.baobang.piospa.controller.admin;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -55,6 +56,7 @@ public class ServicePriceAdminController {
 	@RequestMapping(value = "admin/service-price", method = RequestMethod.GET)
 	public String productList(Model model) {
 		List<ServicePrice> liProducts = mServicePriceRepository.findAll();
+		Collections.reverse(liProducts);
 		model.addAttribute("result", liProducts);
 		return "service-price";
 	}

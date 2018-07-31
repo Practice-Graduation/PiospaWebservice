@@ -1,8 +1,5 @@
 package com.baobang.piospa.model;
 
-import java.sql.Time;
-import java.util.Date;
-
 import com.baobang.piospa.entities.BookingDetail;
 
 /**
@@ -14,13 +11,13 @@ public class BookingDetailObject {
 
 	private String serviceName;
 	private String serviceImage;
-	private Date dateBooking;
-	private Time timeBooking;
+	private String dateBooking;
+	private String timeBooking;
 	private int numberCustomer;
 	private int price;
 	
 
-	public BookingDetailObject(String serviceName, String serviceImage, Date dateBooking, Time timeBooking,
+	public BookingDetailObject(String serviceName, String serviceImage, String dateBooking, String timeBooking,
 			int numberCustomer, int price) {
 		super();
 		this.serviceName = serviceName;
@@ -59,16 +56,16 @@ public class BookingDetailObject {
 	public void setServiceImage(String serviceImage) {
 		this.serviceImage = serviceImage;
 	}
-	public Date getDateBooking() {
+	public String getDateBooking() {
 		return dateBooking;
 	}
-	public void setDateBooking(Date dateBooking) {
+	public void setDateBooking(String dateBooking) {
 		this.dateBooking = dateBooking;
 	}
-	public Time getTimeBooking() {
+	public String getTimeBooking() {
 		return timeBooking;
 	}
-	public void setTimeBooking(Time timeBooking) {
+	public void setTimeBooking(String timeBooking) {
 		this.timeBooking = timeBooking;
 	}
 	public int getNumberCustomer() {

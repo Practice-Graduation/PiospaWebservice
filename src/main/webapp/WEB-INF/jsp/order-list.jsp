@@ -143,7 +143,8 @@
 					"scrollX" : true,
 					"fnDrawCallback" : function(oSettings) {
 						showModal();
-					}
+					},
+					"order" : []
 				});
 			});
 		</script>

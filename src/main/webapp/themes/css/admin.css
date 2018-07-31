@@ -117,7 +117,33 @@ a:hover {
 	margin-bottom: 1em;
 }
 
+/********************* LOGIN PAGE *********************/
+.login-account{
+	padding: 10px;
+}
 
+.login-account .login-form{
+	padding: 15px;
+	border: 1px solid #EEEEEE;
+	background-color: #FFFFFF;
+}
+.login-account .login-form .form-group label {
+    display: block;
+}
+.login-card{
+	margin: 0 auto;
+	float: none;
+}
+.login-account h2 {
+    text-align: center;
+}
+.button-submit{
+	text-align: center;
+}
+.login-account .form-control{
+	width: 90%;
+	display: block;	
+}
 /*******************************************************/
 /********************* ADMIN PAGE **********************/
 /*******************************************************/
@@ -219,22 +245,7 @@ div#example1_length>label>select {
 	cursor: pointer;
 	
 }
-/* table.dataTable thead > tr > th{
-	padding-right: 8px;
-	
-} */
-/* #example1>tbody>tr>td.large-cell{
-	min-width: 250px;
-}
-#example1>tbody>tr>td.min-cell{
-	width: 30px;
-} */
-.table td, th{
-	
-	vertical-align: middle;
-	text-align: center;
-}
-
-.control-label{
-	text-align: left;
+table#example1 tr td {
+    text-align:  center;
+    vertical-align:  middle;
 }

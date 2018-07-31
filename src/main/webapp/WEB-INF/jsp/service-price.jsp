@@ -160,7 +160,8 @@
 									"scrollX" : false,
 									"fnDrawCallback" : function(oSettings) {
 										showModal();
-									}
+									},
+									"order" : []
 								});
 								// close modal
 								$('.btn-close-modal').click(function() {

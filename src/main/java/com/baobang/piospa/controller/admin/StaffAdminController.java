@@ -1,6 +1,7 @@
 package com.baobang.piospa.controller.admin;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,8 @@ public class StaffAdminController {
 	@RequestMapping(value = "admin/members", method = RequestMethod.GET)
 	public String productList(Model model) {
 		List<Staff> staffs = mStaffRepository.findAll();
+		Collections.reverse(staffs);
+		
 		model.addAttribute("result", staffs);
 		return "member-list";
 	}

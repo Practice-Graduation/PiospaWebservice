@@ -143,12 +143,15 @@
 									"scrollX" : false,
 									"fnDrawCallback" : function(oSettings) {
 										showModal();
-									}
+									},
+									"order" : []
 								});
+								
 								// close modal
 								$('.btn-close-modal').click(function() {
 									$('#modalRemoveProduct').modal('hide');
 								});
+								
 								// show modal
 								function showModal() {
 									$('.btn-remove-product')

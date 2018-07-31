@@ -2,7 +2,6 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Time;
 import java.util.Date;
 
 
@@ -33,16 +32,14 @@ public class BookingDetail implements Serializable {
 	@Column(name="created_by")
 	private int createdBy;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="date_booking")
-	private Date dateBooking;
+	private String dateBooking;
 
 	@Column(name="time_start")
-	private Time timeStart;
+	private String timeStart;
 	
 	private int number;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
 	private Date updatedAt;
 
@@ -100,19 +97,19 @@ public class BookingDetail implements Serializable {
 		this.createdBy = createdBy;
 	}
 
-	public Date getDateBooking() {
+	public String getDateBooking() {
 		return this.dateBooking;
 	}
 
-	public void setDateBooking(Date dateBooking) {
+	public void setDateBooking(String dateBooking) {
 		this.dateBooking = dateBooking;
 	}
 
-	public Time getTimeStart() {
+	public String getTimeStart() {
 		return this.timeStart;
 	}
 
-	public void setTimeStart(Time timeStart) {
+	public void setTimeStart(String timeStart) {
 		this.timeStart = timeStart;
 	}
 

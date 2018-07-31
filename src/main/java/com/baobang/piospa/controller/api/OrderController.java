@@ -1,6 +1,5 @@
 package com.baobang.piospa.controller.api;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -299,8 +298,8 @@ public class OrderController {
 					bookingDetail.setNumber(item.getNumber());
 					bookingDetail.setServicePrice(servicePrice);
 					bookingDetail.setDateBooking(item.getDateBooking());
-					Time time = new Time(item.getDateBooking().getTime());
-					bookingDetail.setTimeStart(time);
+					
+					bookingDetail.setTimeStart(item.getTimeBooking());
 					bookingDetail.setCreatedAt(date);
 					bookingDetail.setUpdatedAt(date);
 

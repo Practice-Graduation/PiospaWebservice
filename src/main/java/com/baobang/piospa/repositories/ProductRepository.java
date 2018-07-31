@@ -25,5 +25,6 @@ public interface ProductRepository  extends JpaRepository<Product, Integer> {
 	
 	@Query(value="SELECT * FROM products WHERE product_group_id = ?1 and is_active = 1 LIMIT 10", nativeQuery = true)
 	public List<Product> findTopTenByGroupId(String groupId);
+
 	
 }

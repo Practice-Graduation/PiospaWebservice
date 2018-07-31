@@ -1,6 +1,7 @@
 package com.baobang.piospa.controller.admin;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class ProductAdminControler {
 	@RequestMapping(value = "admin/product", method = RequestMethod.GET)
 	public String productList(Model model) {
 		List<Product> liProducts = mRepository.findAll();
+		Collections.reverse(liProducts);
 		model.addAttribute("result", liProducts);
 		return "product";
 	}
