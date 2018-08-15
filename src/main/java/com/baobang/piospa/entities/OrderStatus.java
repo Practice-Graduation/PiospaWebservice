@@ -24,29 +24,10 @@ public class OrderStatus implements Serializable {
 	@Column(name="order_status_id")
 	private int orderStatusId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy;
-
-	@Column(name="is_active")
-	private byte isActive;
-
-	@Column(name="order_status_description")
-	private String orderStatusDescription;
 
 	@Column(name="order_status_name")
 	private String orderStatusName;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
-	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
-
+	
 	//bi-directional many-to-one association to Order
 	@JsonIgnore
 	@OneToMany(mappedBy="orderStatus")
@@ -63,37 +44,6 @@ public class OrderStatus implements Serializable {
 		this.orderStatusId = orderStatusId;
 	}
 
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public byte getIsActive() {
-		return this.isActive;
-	}
-
-	public void setIsActive(byte isActive) {
-		this.isActive = isActive;
-	}
-
-	public String getOrderStatusDescription() {
-		return this.orderStatusDescription;
-	}
-
-	public void setOrderStatusDescription(String orderStatusDescription) {
-		this.orderStatusDescription = orderStatusDescription;
-	}
 
 	public String getOrderStatusName() {
 		return this.orderStatusName;
@@ -101,22 +51,6 @@ public class OrderStatus implements Serializable {
 
 	public void setOrderStatusName(String orderStatusName) {
 		this.orderStatusName = orderStatusName;
-	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 	public List<Order> getOrders() {

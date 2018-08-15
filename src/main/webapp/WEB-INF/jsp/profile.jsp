@@ -52,16 +52,16 @@
                 <li class="list-group-item">
                   <b>Tên tài khoản</b> <a class="pull-right">${account.account}</a>
                 </li>
-                <li class="list-group-item">
+               <%--  <li class="list-group-item">
                   <b>Ngày lập</b> <a class="pull-right"><fmt:formatDate pattern="dd '/' MM '/' yyyy" value="${account.createdAt}"/></a>
-                </li>
-                <li class="list-group-item">
+                </li> --%>
+               <%--  <li class="list-group-item">
                   <b>Tình trạng</b> 
                   <a class="pull-right">
                   	<c:if test="${account.isActive eq 1}"><span class="label label-success">Hoạt động</span></c:if>
 	                <c:if test="${account.isActive eq 0}"><span class="label label-warning">Khóa</span></c:if>
                   </a>
-                </li>
+                </li> --%>
               </ul>
 		     
 		     <c:if test="${account.isAdmin eq 0 }">

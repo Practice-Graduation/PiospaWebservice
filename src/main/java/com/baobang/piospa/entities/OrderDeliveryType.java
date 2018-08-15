@@ -25,32 +25,12 @@ public class OrderDeliveryType implements Serializable {
 	@Column(name="order_delivery_type_id")
 	private int orderDeliveryTypeId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy;
-
-	@Column(name="is_active")
-	private byte isActive;
-
-	@Column(name="order_delivery_type_code")
-	private String orderDeliveryTypeCode;
-
 	@Column(name="order_delivery_type_name")
 	private String orderDeliveryTypeName;
 
 	@Column(name="order_delivery_type_price")
 	private int price;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
-	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
-
 	//bi-directional many-to-one association to Order
 	@JsonIgnore
 	@OneToMany(mappedBy="orderDeliveryType")
@@ -77,37 +57,7 @@ public class OrderDeliveryType implements Serializable {
 		this.orderDeliveryTypeId = orderDeliveryTypeId;
 	}
 
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public byte getIsActive() {
-		return this.isActive;
-	}
-
-	public void setIsActive(byte isActive) {
-		this.isActive = isActive;
-	}
-
-	public String getOrderDeliveryTypeCode() {
-		return this.orderDeliveryTypeCode;
-	}
-
-	public void setOrderDeliveryTypeCode(String orderDeliveryTypeCode) {
-		this.orderDeliveryTypeCode = orderDeliveryTypeCode;
-	}
+	
 
 	public String getOrderDeliveryTypeName() {
 		return this.orderDeliveryTypeName;
@@ -115,22 +65,6 @@ public class OrderDeliveryType implements Serializable {
 
 	public void setOrderDeliveryTypeName(String orderDeliveryTypeName) {
 		this.orderDeliveryTypeName = orderDeliveryTypeName;
-	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 	public List<Order> getOrders() {

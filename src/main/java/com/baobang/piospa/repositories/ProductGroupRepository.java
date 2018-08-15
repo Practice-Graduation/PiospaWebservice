@@ -14,6 +14,4 @@ import com.baobang.piospa.entities.ProductGroup;
   */
 @Repository
 public interface ProductGroupRepository extends JpaRepository<ProductGroup, Integer>{
-	@Query("select pg from ProductGroup pg where pg.productGroupCode = :productGroupCode")
-	public ProductGroup findByCode(@Param("productGroupCode") String productGroupCode);
 }

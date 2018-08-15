@@ -23,37 +23,14 @@ public class Booking implements Serializable {
 	@Column(name = "booking_id")
 	private int bookingId;
 
-	private String code;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at")
-	private Date createdAt;
-
-	@Column(name = "created_by")
-	private int createdBy;
-
 	private int discount;
 
 	private int number;
 
 	private int price;
 
-	@Column(name = "tax_id")
-	private int taxId;
-
-	
 	private int total;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_at")
-	private Date updatedAt;
-
-	@Column(name = "updated_by")
-	private int updatedBy;
-
-	@Column(name = "voucher_id")
-	private int voucherId;
-
+	
 	// bi-directional many-to-one association to Customer
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
@@ -84,29 +61,7 @@ public class Booking implements Serializable {
 		this.bookingId = bookingId;
 	}
 
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
+	
 	public int getDiscount() {
 		return this.discount;
 	}
@@ -130,15 +85,6 @@ public class Booking implements Serializable {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-
-	public int getTaxId() {
-		return this.taxId;
-	}
-
-	public void setTaxId(int taxId) {
-		this.taxId = taxId;
-	}
-
 	public int getTotal() {
 		return this.total;
 	}
@@ -146,31 +92,7 @@ public class Booking implements Serializable {
 	public void setTotal(int total) {
 		this.total = total;
 	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public int getVoucherId() {
-		return this.voucherId;
-	}
-
-	public void setVoucherId(int voucherId) {
-		this.voucherId = voucherId;
-	}
-
+	
 	public Customer getCustomer() {
 		return this.customer;
 	}

@@ -107,21 +107,10 @@ public class ServiceController {
 	public DataResult<Service> CreateService(@RequestBody Service service) {
 		DataResult<Service> result = new DataResult<>();
 
-		Service s = mServiceRepository.findByCode(service.getServiceCode());
-
-		if (s == null) {
-			Date date = new Date();
-			service.setCreatedAt(date);
-			service.setUpdatedAt(date);
-			service.setServiceCode(Utils.genarateCode());
-			s = mServiceRepository.save(service);
-			result.setMessage(MessageResponse.SUCCESSED);
-			result.setStatusCode(HttpStatus.OK.value());
-		} else {
-			result.setMessage(MessageResponse.EXITS);
-			result.setStatusCode(HttpStatus.NOT_FOUND.value());
-		}
-		result.setData(s);
+		service = mServiceRepository.save(service);
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
+		result.setData(service);
 		return result;
 	}
 
@@ -156,9 +145,6 @@ public class ServiceController {
 		temp.setImage(service.getImage());
 		temp.setDetail(service.getDetail());
 		temp.setIsActive(service.getIsActive());
-		temp.setUpdatedAt(new Date());
-		temp.setUpdatedBy(service.getUpdatedBy());
-		temp.setCreatedBy(service.getCreatedBy());
 
 		temp = mServiceRepository.save(temp);
 

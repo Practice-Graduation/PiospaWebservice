@@ -20,33 +20,13 @@ public class OrderProduct implements Serializable {
 	@Column(name="order_product_id")
 	private int orderProductId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy;
-
 	private int discount;
-
-	@Column(name="is_deleted")
-	private byte isDeleted;
 
 	private int number;
 
 	private int price;
 
 	private int total;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
-	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
-
-	@Column(name="voucher_id")
-	private int voucherId;
 
 	//bi-directional many-to-one association to Order
 	@ManyToOne
@@ -69,36 +49,12 @@ public class OrderProduct implements Serializable {
 		this.orderProductId = orderProductId;
 	}
 
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
 	public int getDiscount() {
 		return this.discount;
 	}
 
 	public void setDiscount(int discount) {
 		this.discount = discount;
-	}
-
-	public byte getIsDeleted() {
-		return this.isDeleted;
-	}
-
-	public void setIsDeleted(byte isDeleted) {
-		this.isDeleted = isDeleted;
 	}
 
 	public int getNumber() {
@@ -123,30 +79,6 @@ public class OrderProduct implements Serializable {
 
 	public void setTotal(int total) {
 		this.total = total;
-	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public int getVoucherId() {
-		return this.voucherId;
-	}
-
-	public void setVoucherId(int voucherId) {
-		this.voucherId = voucherId;
 	}
 
 	public Order getOrder() {

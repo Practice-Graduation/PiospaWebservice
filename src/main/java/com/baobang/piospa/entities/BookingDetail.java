@@ -25,13 +25,6 @@ public class BookingDetail implements Serializable {
 	@Column(name="booking_detail_id")
 	private int bookingDetailId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy;
-
 	@Column(name="date_booking")
 	private String dateBooking;
 
@@ -39,12 +32,10 @@ public class BookingDetail implements Serializable {
 	private String timeStart;
 	
 	private int number;
+	
+	@Column(name="served_status")
+	private int servedStatus = 0;
 
-	@Column(name="updated_at")
-	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
 
 	//bi-directional many-to-one association to Booking
 	@ManyToOne
@@ -60,7 +51,19 @@ public class BookingDetail implements Serializable {
 	}
 
 	
-	
+
+	public int getServedStatus() {
+		return servedStatus;
+	}
+
+
+
+	public void setServedStatus(int servedStatus) {
+		this.servedStatus = servedStatus;
+	}
+
+
+
 	public int getNumber() {
 		return number;
 	}
@@ -81,22 +84,6 @@ public class BookingDetail implements Serializable {
 		this.bookingDetailId = bookingDetailId;
 	}
 
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
 	public String getDateBooking() {
 		return this.dateBooking;
 	}
@@ -111,22 +98,6 @@ public class BookingDetail implements Serializable {
 
 	public void setTimeStart(String timeStart) {
 		this.timeStart = timeStart;
-	}
-
-	public  Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt( Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 	public Booking getBooking() {

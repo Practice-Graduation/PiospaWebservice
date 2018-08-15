@@ -15,6 +15,4 @@ import com.baobang.piospa.entities.ProductLabel;
 @Repository
 public interface ProductLabelRepository extends JpaRepository<ProductLabel, Integer> {
 
-	@Query("select pl from ProductLabel pl where pl.productLabelCode = :productLabelCode")
-	public ProductLabel findByCode(@Param("productLabelCode") String productLabelCode);
 }

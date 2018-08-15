@@ -24,13 +24,6 @@ public class Service implements Serializable {
 	@Column(name="service_id")
 	private int serviceId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy;
-
 	private String description;
 
 	private String detail;
@@ -40,18 +33,8 @@ public class Service implements Serializable {
 	@Column(name="is_active")
 	private byte isActive;
 
-	@Column(name="service_code")
-	private String serviceCode;
-
 	@Column(name="service_name")
 	private String serviceName;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
-	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
 
 	//bi-directional many-to-many association to ServicePackage
 	@JsonIgnore
@@ -82,22 +65,6 @@ public class Service implements Serializable {
 
 	public void setServiceId(int serviceId) {
 		this.serviceId = serviceId;
-	}
-
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
 	}
 
 	public String getDescription() {
@@ -132,36 +99,12 @@ public class Service implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public String getServiceCode() {
-		return this.serviceCode;
-	}
-
-	public void setServiceCode(String serviceCode) {
-		this.serviceCode = serviceCode;
-	}
-
 	public String getServiceName() {
 		return this.serviceName;
 	}
 
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
-	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 	public List<ServicePackage> getServicePackages() {

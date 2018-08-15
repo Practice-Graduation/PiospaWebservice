@@ -89,15 +89,14 @@ public class ServicePriceAdminController {
 			@RequestParam(required = true, name = "service", defaultValue = "0") int service,
 			@RequestParam(required = true, name = "servicepakage", defaultValue = "0") int servicepPkage,
 			@RequestParam(required = true, name = "serviceprice", defaultValue = "0") int servicePrice,
-			@RequestParam(required = true, name = "post_status", defaultValue = "1") int post_status) {
+			@RequestParam(required = true, name = "post_status", defaultValue = "1") int postStatus) {
 		String message = "";
 		model.addAttribute("title", "CẬP NHẬT GIÁ DỊCH VỤ");
 		ServicePrice product = mServicePriceRepository.findById(id).get();
 		if (request.getParameter("submit") != null) {
 			if (service == 0 && servicepPkage == 0) {
 				message = "Vui lòng chọn dịch vụ hoặc gói dịch vụ";
-				loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage, servicePrice,
-						post_status);
+				loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage, servicePrice, postStatus);
 			} else {
 
 				ServiceGroup sg = mServiceGroupRepository.findById(serviceGroup).get();
@@ -114,7 +113,7 @@ public class ServicePriceAdminController {
 						message = "Vui lòng chọn dịch vụ";
 						loadData(model);
 						loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage,
-								servicePrice, post_status);
+								servicePrice, postStatus);
 						model.addAttribute("message", message);
 						return "add-service-price";
 					}
@@ -126,33 +125,24 @@ public class ServicePriceAdminController {
 						message = "Vui lòng chọn gói dịch vụ";
 						loadData(model);
 						loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage,
-								servicePrice, post_status);
+								servicePrice, postStatus);
 						model.addAttribute("message", message);
 						return "add-service-price";
 					}
 				}
 
 				product.setAllPrice(servicePrice);
-				product.setRetailPrice(servicePrice);
-				product.setIsActive((byte) post_status);
-				product.setCreatedAt(new Date());
-				product.setUpdatedAt(new Date());
-				if (principal != null) {
-					User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-					Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
-					product.setUpdatedBy(staff.getStaffId());
-					product.setCreatedBy(staff.getStaffId());
-				}
+				product.setIsActive(postStatus);
+				
 
 				try {
 					mServicePriceRepository.save(product);
 					model.addAttribute("result", "create");
-					loadAttribute(model, 0, 0, 0, 0, 0, 0, 0);
+					loadAttribute(model, 0, 0, 0, 0, 0, 0, 1);
 				} catch (Exception e) {
 					message = e.getMessage();
 					loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage,
-							servicePrice, post_status);
+							servicePrice, postStatus);
 				}
 
 			}
@@ -164,7 +154,8 @@ public class ServicePriceAdminController {
 				product.getServiceType().getServiceTypeId(),
 				product.getService() == null ? 0 : product.getService().getServiceId(),
 				product.getServicePackage() == null ? 0 : product.getServicePackage().getServicePackageId(),
-				product.getAllPrice(), product.getIsActive());
+				product.getAllPrice(),
+				product.getIsActive());
 		model.addAttribute("message", message);
 		return "add-service-price";
 	}
@@ -177,14 +168,13 @@ public class ServicePriceAdminController {
 			@RequestParam(required = true, name = "service", defaultValue = "0") int service,
 			@RequestParam(required = true, name = "servicepakage", defaultValue = "0") int servicepPkage,
 			@RequestParam(required = true, name = "serviceprice", defaultValue = "0") int servicePrice,
-			@RequestParam(required = true, name = "post_status", defaultValue = "1") int post_status) {
+			@RequestParam(required = true, name = "post_status", defaultValue = "1") int postStatus) {
 		String message = "";
 		model.addAttribute("title", "THÊM GIÁ DỊCH VỤ");
 		if (request.getParameter("submit") != null) {
 			if (service == 0 && servicepPkage == 0) {
 				message = "Vui lòng chọn dịch vụ hoặc gói dịch vụ";
-				loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage, servicePrice,
-						post_status);
+				loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage, servicePrice, postStatus);
 			} else {
 				ServicePrice product;
 				product = new ServicePrice();
@@ -203,7 +193,7 @@ public class ServicePriceAdminController {
 						message = "Vui lòng chọn dịch vụ";
 						loadData(model);
 						loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage,
-								servicePrice, post_status);
+								servicePrice, postStatus);
 						model.addAttribute("message", message);
 						return "add-service-price";
 					}
@@ -215,33 +205,24 @@ public class ServicePriceAdminController {
 						message = "Vui lòng chọn gói dịch vụ";
 						loadData(model);
 						loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage,
-								servicePrice, post_status);
+								servicePrice, postStatus);
 						model.addAttribute("message", message);
 						return "add-service-price";
 					}
 				}
 
 				product.setAllPrice(servicePrice);
-				product.setRetailPrice(servicePrice);
-				product.setIsActive((byte) post_status);
-				product.setCreatedAt(new Date());
-				product.setUpdatedAt(new Date());
-				if (principal != null) {
-					User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-					Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
-					product.setUpdatedBy(staff.getStaffId());
-					product.setCreatedBy(staff.getStaffId());
-				}
+				product.setIsActive(postStatus);
+				
 
 				try {
 					mServicePriceRepository.save(product);
 					model.addAttribute("result", "create");
-					loadAttribute(model, 0, 0, 0, 0, 0, 0, 0);
+					loadAttribute(model, 0, 0, 0, 0, 0, 0, 1);
 				} catch (Exception e) {
 					message = e.getMessage();
 					loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage,
-							servicePrice, post_status);
+							servicePrice, postStatus);
 				}
 
 			}
@@ -249,21 +230,20 @@ public class ServicePriceAdminController {
 		}
 
 		loadData(model);
-		loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage, servicePrice,
-				post_status);
+		loadAttribute(model, servicePriceId, serviceGroup, serviceType, service, servicepPkage, servicePrice,postStatus);
 		model.addAttribute("message", message);
 		return "add-service-price";
 	}
 
 	private void loadAttribute(Model model, int servicePriceId, int serviceGroup, int serviceType, int service,
-			int servicepPkage, int servicePrice, int post_status) {
+			int servicepPkage, int servicePrice, int postStatus) {
 		model.addAttribute("servicepriceid", servicePriceId);
 		model.addAttribute("servicegroup", serviceGroup);
 		model.addAttribute("servicetype", serviceType);
 		model.addAttribute("service", service);
 		model.addAttribute("servicepakage", servicepPkage);
 		model.addAttribute("serviceprice", servicePrice);
-		model.addAttribute("post_status", post_status);
+		model.addAttribute("post_status", postStatus);
 
 	}
 

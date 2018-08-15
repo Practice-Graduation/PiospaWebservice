@@ -22,23 +22,7 @@ public class Staff implements Serializable {
 
 	private String account;
 
-	private String code;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="date_last_login")
-	private Date dateLastLogin;
-
 	private String fullname;
-
-	@Column(name="is_active")
-	private byte isActive;
 
 	@Column(name="is_admin")
 	private byte isAdmin;
@@ -50,16 +34,6 @@ public class Staff implements Serializable {
 	@Column(name="staff_avatar")
 	private String staffAvatar = "https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?resize=256%2C256&quality=100&ssl=1";
 
-	@Column(name="store_id")
-	private int storeId;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
-	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
-	
 	public Staff() {
 	}
 
@@ -79,37 +53,7 @@ public class Staff implements Serializable {
 		this.account = account;
 	}
 
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Date getDateLastLogin() {
-		return this.dateLastLogin;
-	}
-
-	public void setDateLastLogin(Date dateLastLogin) {
-		this.dateLastLogin = dateLastLogin;
-	}
+	
 
 	public String getFullname() {
 		return this.fullname;
@@ -118,14 +62,7 @@ public class Staff implements Serializable {
 	public void setFullname(String fullname) {
 		this.fullname = fullname;
 	}
-
-	public byte getIsActive() {
-		return this.isActive;
-	}
-
-	public void setIsActive(byte isActive) {
-		this.isActive = isActive;
-	}
+	
 
 	public byte getIsAdmin() {
 		return this.isAdmin;
@@ -157,30 +94,6 @@ public class Staff implements Serializable {
 
 	public void setStaffAvatar(String staffAvatar) {
 		this.staffAvatar = staffAvatar;
-	}
-
-	public int getStoreId() {
-		return this.storeId;
-	}
-
-	public void setStoreId(int storeId) {
-		this.storeId = storeId;
-	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 }

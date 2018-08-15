@@ -155,6 +155,22 @@
 									<textarea id="txtAreaCKEditor" name="productdescription"
 										class="form-control" rows="5" cols="">${productdescription }</textarea>
 								</div>
+								
+								<div class="form-group">
+									<label>Tình trạng</label>
+									<div class="radio">
+										<label> <input type="radio" name="post_status"
+											value="1" ${post_status eq 1 ? 'checked':'checked'}>
+											<span class="label label-success">Hoạt động</span>
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio" name="post_status"
+											value="0" ${post_status eq 0 ? 'checked':''}> <span
+											class="label label-warning">Khóa</span>
+										</label>
+									</div>
+								</div>
 
 							</div>
 							<!-- /.box-body -->

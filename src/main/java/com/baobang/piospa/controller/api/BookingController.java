@@ -5,7 +5,6 @@ package com.baobang.piospa.controller.api;
   * 
   */
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,21 +101,10 @@ public class BookingController {
 	public DataResult<Booking> createBooking(@RequestBody Booking booking) {
 		DataResult<Booking> result = new DataResult<>();
 
-		Booking temp = mBookingRepository.findByCode(booking.getCode());
-		
-		if(temp == null) {
-			Date date = new Date();
-			booking.setCreatedAt(date);
-			booking.setUpdatedAt(date);
-
-			temp = mBookingRepository.save(booking);
-			result.setMessage(MessageResponse.SUCCESSED);
-			result.setStatusCode(HttpStatus.OK.value());
-		}else {
-			result.setMessage(MessageResponse.EXITS);
-			result.setStatusCode(HttpStatus.NOT_FOUND.value());
-		}
-		result.setData(temp);
+		booking = mBookingRepository.save(booking);
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
+		result.setData(booking);
 		return result;
 	}
 
@@ -149,13 +137,8 @@ public class BookingController {
 		newBooking.setCustomer(booking.getCustomer());
 		newBooking.setPrice(booking.getPrice());
 		newBooking.setNumber(booking.getNumber());
-		newBooking.setUpdatedAt(new Date());
 		newBooking.setDiscount(booking.getDiscount());
 		newBooking.setTotal(booking.getTotal());
-		newBooking.setUpdatedAt(new Date());
-		newBooking.setUpdatedBy(booking.getUpdatedBy());
-		newBooking.setVoucherId(booking.getVoucherId());
-		newBooking.setTaxId(booking.getTaxId());
 		
 		
 		newBooking = mBookingRepository.save(newBooking);

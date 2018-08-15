@@ -24,29 +24,17 @@ public class ServicePackage implements Serializable {
 	@Column(name="service_package_id")
 	private int servicePackageId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy;
-
 	private String image;
 	
 	private int time;
+	
 
 	@Column(name="is_active")
-	private byte isActive;
+	private int isActive;
+	
 
 	@Column(name="service_package_name")
 	private String servicePackageName;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
-	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
 
 	//bi-directional many-to-many association to Service
 	@JsonIgnore
@@ -75,6 +63,20 @@ public class ServicePackage implements Serializable {
 	public ServicePackage() {
 	}
 
+	public int getIsActive() {
+		return isActive;
+	}
+
+
+
+
+	public void setIsActive(int isActive) {
+		this.isActive = isActive;
+	}
+
+
+
+
 	public int getServicePackageId() {
 		return this.servicePackageId;
 	}
@@ -83,21 +85,6 @@ public class ServicePackage implements Serializable {
 		this.servicePackageId = servicePackageId;
 	}
 
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
 	
 	public int getTime() {
 		return time;
@@ -115,14 +102,6 @@ public class ServicePackage implements Serializable {
 		this.image = image;
 	}
 
-	public byte getIsActive() {
-		return this.isActive;
-	}
-
-	public void setIsActive(byte isActive) {
-		this.isActive = isActive;
-	}
-
 	public String getServicePackageName() {
 		return this.servicePackageName;
 	}
@@ -130,23 +109,6 @@ public class ServicePackage implements Serializable {
 	public void setServicePackageName(String servicePackageName) {
 		this.servicePackageName = servicePackageName;
 	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
 	public List<Service> getServices() {
 		return this.services;
 	}

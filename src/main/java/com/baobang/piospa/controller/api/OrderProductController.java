@@ -138,8 +138,6 @@ public class OrderProductController {
 	public OrderProduct createOrderProduct(OrderProduct orderProduct) {
 		Date date = new Date();
 		orderProduct.setOrderProductId(0);
-		orderProduct.setCreatedAt(date);
-		orderProduct.setUpdatedAt(date);
 		orderProduct = mOrderProductRepository.save(orderProduct);
 		return orderProduct;
 	}
@@ -173,9 +171,6 @@ public class OrderProductController {
 		newOrderProduct.setNumber(orderProduct.getNumber());
 		newOrderProduct.setDiscount(orderProduct.getDiscount());
 		newOrderProduct.setTotal(orderProduct.getTotal());
-		newOrderProduct.setIsDeleted(orderProduct.getIsDeleted());
-		newOrderProduct.setUpdatedBy(orderProduct.getUpdatedBy());
-		newOrderProduct.setUpdatedAt(new Date());
 		
 		newOrderProduct = mOrderProductRepository.save(newOrderProduct);
 

@@ -107,9 +107,6 @@ public class ServicePackageController {
 		ServicePackage sPackage = mServicePackageRepository.findByName(servicePackage.getServicePackageName());
 		
 		if(sPackage == null) {
-			Date date = new Date();
-			servicePackage.setCreatedAt(date);
-			servicePackage.setUpdatedAt(date);
 			
 			List<Service> list = servicePackage.getServices();
 			int time = 0;
@@ -157,9 +154,6 @@ public class ServicePackageController {
 
 		Package.setServicePackageName(servicePackage.getServicePackageName());
 		Package.setIsActive(servicePackage.getIsActive());
-		Package.setUpdatedAt(new Date());
-		Package.setUpdatedBy(servicePackage.getUpdatedBy());
-		Package.setCreatedBy(servicePackage.getCreatedBy());
 
 		Package = mServicePackageRepository.save(Package);
 

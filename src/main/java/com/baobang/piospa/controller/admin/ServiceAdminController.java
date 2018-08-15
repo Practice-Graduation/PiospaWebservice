@@ -96,14 +96,7 @@ public class ServiceAdminController {
 			product.setDetail(productDescription);
 			product.setIsActive((byte) post_status);
 			product.setServiceTime(time);
-			product.setUpdatedAt(new Date());
 			
-			if(principal != null) {
-				User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-				Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
-				product.setUpdatedBy(staff.getStaffId());
-			}
 
 			try {
 				mServiceRepository.save(product);
@@ -140,22 +133,13 @@ public class ServiceAdminController {
 
 				ServiceTime time = mServiceTimeRepository.findById(timeId).get();
 
-				product.setServiceCode(Utils.genarateCode());
 				product.setServiceName(productName);
 				product.setImage(productImage);
 				product.setDescription(productDescription);
 				product.setDetail(productDescription);
 				product.setIsActive((byte) post_status);
 				product.setServiceTime(time);
-				product.setCreatedAt(new Date());
-				product.setUpdatedAt(new Date());
-				if(principal != null) {
-					User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-					Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
-					product.setUpdatedBy(staff.getStaffId());
-					product.setCreatedBy(staff.getStaffId());
-				}
+				
 
 				try {
 					mServiceRepository.save(product);

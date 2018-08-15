@@ -106,8 +106,6 @@ public class ProductOriginController {
 		if(origin == null) {
 			Date date = new Date();
 			productOrigin.setProductOriginId(0);
-			productOrigin.setCreatedAt(date);
-			productOrigin.setUpdatedAt(date);
 			productOrigin = mOriginRepository.save(productOrigin);
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
@@ -146,11 +144,7 @@ public class ProductOriginController {
 		ProductOrigin Origin = option.get();
 
 		Origin.setProductOriginName(productOrigin.getProductOriginName());
-		Origin.setProductOriginDescription(productOrigin.getProductOriginDescription());
 		Origin.setIsActive(productOrigin.getIsActive());
-		Origin.setUpdatedAt(new Date());
-		Origin.setUpdatedBy(productOrigin.getUpdatedBy());
-		Origin.setCreatedBy(productOrigin.getCreatedBy());
 
 		Origin = mOriginRepository.save(Origin);
 

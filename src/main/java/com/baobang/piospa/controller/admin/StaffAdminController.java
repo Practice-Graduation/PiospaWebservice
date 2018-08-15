@@ -73,13 +73,6 @@ public class StaffAdminController {
 				staff.setStaffAvatar(avatar);
 			}
 			
-			if(principal != null) {
-				User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-				Staff staffLogin = mStaffRepository.findByUsername(loginedUser.getUsername());
-				staff.setUpdatedBy(staffLogin.getStaffId());
-			}
-			
 			try {
 				mStaffRepository.save(staff);
 				model.addAttribute("result", true);
@@ -122,12 +115,6 @@ public class StaffAdminController {
 				String hashPassword = encoder.encode(newPassword);
 				staff.setPassword(hashPassword);
 				
-				if(principal != null) {
-					User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-					Staff staffLogin = mStaffRepository.findByUsername(loginedUser.getUsername());
-					staff.setUpdatedBy(staffLogin.getStaffId());
-				}
 				
 				mStaffRepository.save(staff);
 				model.addAttribute("result_reset_password", true);
@@ -168,22 +155,11 @@ public class StaffAdminController {
 		try {
 			account = new Staff();
 			account.setFullname(fullname);
-			account.setCode(Utils.genarateCode());
 			account.setAccount(userName);
 			account.setStaffAvatar(avatar);
-			account.setIsActive((byte)status);
 			account.setIsAdmin((byte)role);
 			account.setPassword(passwordHash);
-			account.setCreatedAt(new Date());
-			account.setUpdatedAt(new Date());
-			if(principal != null) {
-				User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-				Staff staffLogin = mStaffRepository.findByUsername(loginedUser.getUsername());
-				
-				account.setCreatedBy(staffLogin.getStaffId());
-				account.setUpdatedBy(staffLogin.getStaffId());
-			}
+			
 			
 			if(!password.equals(confirmPassword)) {
 				model.addAttribute("message", "Mật khẩu xác nhận không đúng");

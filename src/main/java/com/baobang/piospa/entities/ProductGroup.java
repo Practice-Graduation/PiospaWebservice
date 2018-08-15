@@ -24,31 +24,14 @@ public class ProductGroup implements Serializable {
 	@Column(name="product_group_id")
 	private int productGroupId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy;
 
 	@Column(name="is_active")
 	private byte isActive;
 
-	@Column(name="product_group_code")
-	private String productGroupCode;
-
-	@Column(name="product_group_description")
-	private String productGroupDescription;
 
 	@Column(name="product_group_name")
 	private String productGroupName;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
-	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
 
 	//bi-directional many-to-one association to Product
 	@JsonIgnore
@@ -66,22 +49,6 @@ public class ProductGroup implements Serializable {
 		this.productGroupId = productGroupId;
 	}
 
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
 	public byte getIsActive() {
 		return this.isActive;
 	}
@@ -90,44 +57,12 @@ public class ProductGroup implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public String getProductGroupCode() {
-		return this.productGroupCode;
-	}
-
-	public void setProductGroupCode(String productGroupCode) {
-		this.productGroupCode = productGroupCode;
-	}
-
-	public String getProductGroupDescription() {
-		return this.productGroupDescription;
-	}
-
-	public void setProductGroupDescription(String productGroupDescription) {
-		this.productGroupDescription = productGroupDescription;
-	}
-
 	public String getProductGroupName() {
 		return this.productGroupName;
 	}
 
 	public void setProductGroupName(String productGroupName) {
 		this.productGroupName = productGroupName;
-	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 	public List<Product> getProducts() {

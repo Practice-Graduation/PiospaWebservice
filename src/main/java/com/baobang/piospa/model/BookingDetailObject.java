@@ -41,6 +41,8 @@ public class BookingDetailObject {
 		}
 		dateBooking = detail.getDateBooking();
 		timeBooking = detail.getTimeStart();
+		numberCustomer = detail.getNumber();
+		price = detail.getServicePrice().getAllPrice();
 		
 	}
 	

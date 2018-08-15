@@ -29,21 +29,9 @@ public class Order implements Serializable {
 	@Column(name = "address_delivery")
 	private String addressDelivery;
 
-	private String code;
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at")
 	private Date createdAt;
-
-	@Column(name = "created_by")
-	private int createdBy;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date_delivery")
-	private Date dateDelivery;
-
-	@Column(name = "delivery_code")
-	private String deliveryCode;
 
 	@Column(name = "delivery_cost")
 	private int deliveryCost;
@@ -55,12 +43,7 @@ public class Order implements Serializable {
 	@Column(name = "full_name")
 	private String fullName;
 
-	private String note;
-
 	private String phone;
-
-	@Column(name = "staff_id")
-	private int staffId;
 
 	@Column(name = "sub_total")
 	private int subTotal;
@@ -71,11 +54,6 @@ public class Order implements Serializable {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@Column(name = "updated_by")
-	private int updatedBy;
-
-	@Column(name = "voucher_id")
-	private int voucherId;
 
 	// bi-directional many-to-one association to Booking
 
@@ -105,11 +83,6 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "order_payment_type_id")
 	private OrderPaymentType orderPaymentType;
-
-	// bi-directional many-to-one association to OrderReasonCancel
-	@ManyToOne
-	@JoinColumn(name = "order_reasion_cancel_id")
-	private OrderReasonCancel orderReasonCancel;
 
 	// bi-directional many-to-one association to OrderStatus
 	@ManyToOne
@@ -148,14 +121,6 @@ public class Order implements Serializable {
 		this.addressDelivery = addressDelivery;
 	}
 
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public Date getCreatedAt() {
 		return this.createdAt;
 	}
@@ -164,30 +129,7 @@ public class Order implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Date getDateDelivery() {
-		return this.dateDelivery;
-	}
-
-	public void setDateDelivery(Date dateDelivery) {
-		this.dateDelivery = dateDelivery;
-	}
-
-	public String getDeliveryCode() {
-		return this.deliveryCode;
-	}
-
-	public void setDeliveryCode(String deliveryCode) {
-		this.deliveryCode = deliveryCode;
-	}
-
+	
 	public int getDeliveryCost() {
 		return this.deliveryCost;
 	}
@@ -212,22 +154,7 @@ public class Order implements Serializable {
 		this.email = email;
 	}
 
-	public String getNote() {
-		return this.note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public int getStaffId() {
-		return this.staffId;
-	}
-
-	public void setStaffId(int staffId) {
-		this.staffId = staffId;
-	}
-
+	
 	public int getSubTotal() {
 		return this.subTotal;
 	}
@@ -250,22 +177,6 @@ public class Order implements Serializable {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public int getVoucherId() {
-		return this.voucherId;
-	}
-
-	public void setVoucherId(int voucherId) {
-		this.voucherId = voucherId;
 	}
 
 	public Booking getBooking() {
@@ -328,14 +239,6 @@ public class Order implements Serializable {
 
 	public void setOrderPaymentType(OrderPaymentType orderPaymentType) {
 		this.orderPaymentType = orderPaymentType;
-	}
-
-	public OrderReasonCancel getOrderReasonCancel() {
-		return this.orderReasonCancel;
-	}
-
-	public void setOrderReasonCancel(OrderReasonCancel orderReasonCancel) {
-		this.orderReasonCancel = orderReasonCancel;
 	}
 
 	public OrderStatus getOrderStatus() {

@@ -60,7 +60,7 @@ public class ProductAdminControler {
 		System.out.println("## AJAX reomve from csdl: " + productId);
 		Product product = mRepository.findById(productId).get();
 		if (product != null) {
-			if (product.getQuantity() > 0) {
+			if (product.getAmount() > 0) {
 				return "false";
 			}
 			try {
@@ -89,7 +89,8 @@ public class ProductAdminControler {
 			@RequestParam(required = true, name = "productcostprice", defaultValue = "0") int productCostPrice,
 			@RequestParam(required = true, name = "productprice", defaultValue = "0") int productPrice,
 			@RequestParam(required = true, name = "productamount", defaultValue = "0") int productAmount,
-			@RequestParam(required = true, name = "productdescription", defaultValue = "") String productDescription) {
+			@RequestParam(required = true, name = "productdescription", defaultValue = "") String productDescription,
+			@RequestParam(required = true, name = "post_status", defaultValue = "1") int postStatus) {
 
 		Product product = mRepository.findById(id).get();
 		model.addAttribute("title", "CẬP NHẬT SẢN PHẨM");
@@ -102,7 +103,6 @@ public class ProductAdminControler {
 
 			product.setProductName(productName);
 			product.setImage(productImage);
-			product.setThumbnail(productImage);
 			product.setProductGroup(group);
 			product.setProductLabel(lable);
 			product.setProductOrigin(origin);
@@ -112,18 +112,10 @@ public class ProductAdminControler {
 			product.setQuantityValue(productUnit);
 			product.setAmount(productAmount);
 			product.setDescription(productDescription);
-			product.setInfo(productDescription);
 			product.setCreatedAt(new Date());
 			product.setUpdatedAt(new Date());
+			product.setIsActive((byte)postStatus);
 
-			if (principal != null) {
-				User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-				Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
-
-				product.setUpdatedBy(staff.getStaffId());
-				product.setCreatedBy(staff.getStaffId());
-			}
 
 			try {
 				mRepository.save(product);
@@ -137,7 +129,7 @@ public class ProductAdminControler {
 		loadAttribute(model, product.getProductId(), product.getProductName(), product.getImage(),
 				product.getProductGroup().getProductGroupId(), product.getProductLabel().getProductLabelId(),
 				product.getProductOrigin().getProductOriginId(), product.getQuantity(), product.getQuantityValue(),
-				product.getCostPrice(), product.getPrice(), product.getDescription(), product.getAmount());
+				product.getCostPrice(), product.getPrice(), product.getDescription(), product.getAmount(), product.getIsActive());
 		loadData(model);
 		model.addAttribute("message", message);
 		return "add-product";
@@ -156,7 +148,8 @@ public class ProductAdminControler {
 			@RequestParam(required = true, name = "productcostprice", defaultValue = "0") int productCostPrice,
 			@RequestParam(required = true, name = "productprice", defaultValue = "0") int productPrice,
 			@RequestParam(required = true, name = "productamount", defaultValue = "0") int productAmount,
-			@RequestParam(required = true, name = "productdescription", defaultValue = "") String productDescription) {
+			@RequestParam(required = true, name = "productdescription", defaultValue = "") String productDescription,
+			@RequestParam(required = true, name = "post_status", defaultValue = "1") int postStatus) {
 
 		if (principal == null) {
 			return "login";
@@ -167,7 +160,6 @@ public class ProductAdminControler {
 		if (request.getParameter("submit") != null) {
 			Product product;
 			product = new Product();
-			product.setProductCode(Utils.genarateCode());
 
 			ProductGroup group = mProductGroupRepository.findById(productGroup).get();
 			ProductLabel lable = mProductLableRepository.findById(productLable).get();
@@ -175,7 +167,6 @@ public class ProductAdminControler {
 
 			product.setProductName(productName);
 			product.setImage(productImage);
-			product.setThumbnail(productImage);
 			product.setProductGroup(group);
 			product.setProductLabel(lable);
 			product.setProductOrigin(origin);
@@ -185,28 +176,20 @@ public class ProductAdminControler {
 			product.setQuantityValue(productUnit);
 			product.setQuantity(productQuantity);
 			product.setDescription(productDescription);
-			product.setInfo(productDescription);
 			product.setCreatedAt(new Date());
 			product.setUpdatedAt(new Date());
-
-			if (principal != null) {
-				User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-				Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
-				product.setUpdatedBy(staff.getStaffId());
-				product.setCreatedBy(staff.getStaffId());
-			}
+			product.setIsActive((byte) postStatus);
 
 			try {
 				mRepository.save(product);
 
 				model.addAttribute("result", "create");
-				loadAttribute(model, 0, "", "", 0, 0, 0, 0, "gram", 0, 0, "", 0);
+				loadAttribute(model, 0, "", "", 0, 0, 0, 0, "gram", 0, 0, "", 0, 1);
 			} catch (Exception e) {
 				message = e.getMessage();
 				loadAttribute(model, productId, productName, productImage, productGroup, productLable, productOrigin,
 						productQuantity, productUnit, productCostPrice, productPrice, productDescription,
-						productAmount);
+						productAmount, postStatus);
 			}
 
 		}
@@ -218,7 +201,7 @@ public class ProductAdminControler {
 
 	private void loadAttribute(Model model, int productId, String productName, String productImage, int productGroup,
 			int productLable, int productOrigin, int productQuantity, String quantityValue, int productCostPrice,
-			int productPrice, String productDescription, int productAmount) {
+			int productPrice, String productDescription, int productAmount, int  postStatus) {
 
 		model.addAttribute("productid", productId);
 		model.addAttribute("productname", productName);
@@ -232,6 +215,7 @@ public class ProductAdminControler {
 		model.addAttribute("productprice", productPrice);
 		model.addAttribute("productdescription", productDescription);
 		model.addAttribute("productamount", productAmount);
+		model.addAttribute("post_status", postStatus);
 	}
 
 	@Autowired

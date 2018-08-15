@@ -13,6 +13,4 @@ import com.baobang.piospa.entities.Booking;
   */
 public interface BookingRepository extends JpaRepository<Booking, Integer>{
 
-	@Query("select b from Booking b where b.code = :code")
-	public Booking findByCode(@Param("code") String code);
 }

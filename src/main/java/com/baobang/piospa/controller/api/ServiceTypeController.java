@@ -105,9 +105,6 @@ public class ServiceTypeController {
 		ServiceType sType = mServiceTypeRepository.findByName(serviceType.getServiceTypeName());
 		
 		if(sType == null) {
-			Date date = new Date();
-			serviceType.setCreatedAt(date);
-			serviceType.setUpdatedAt(date);
 			sType = mServiceTypeRepository.save(serviceType);
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
@@ -145,10 +142,6 @@ public class ServiceTypeController {
 		ServiceType Type = option.get();
 
 		Type.setServiceTypeName(serviceType.getServiceTypeName());
-		Type.setIsActive(serviceType.getIsActive());
-		Type.setUpdatedAt(new Date());
-		Type.setUpdatedBy(serviceType.getUpdatedBy());
-		Type.setCreatedBy(serviceType.getCreatedBy());
 
 		Type = mServiceTypeRepository.save(Type);
 

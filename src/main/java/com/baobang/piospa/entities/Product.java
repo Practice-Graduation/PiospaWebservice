@@ -31,23 +31,17 @@ public class Product implements Serializable {
 	@Column(name="created_at")
 	private Date createdAt;
 
-	@Column(name="created_by")
-	private int createdBy;
 
 	private String description = "";
 
 	private String image = "";
 
-	@Lob
-	private String info = "";
 
 	@Column(name="is_active")
 	private byte isActive = 1;
 
 	private int price = 0;
 
-	@Column(name="product_code")
-	private String productCode;
 
 	@Column(name="product_name")
 	private String productName;
@@ -59,16 +53,10 @@ public class Product implements Serializable {
 	@Column(name="quantity_value")
 	private String quantityValue = "gram";
 
-	private String sku = "";
-
-	private String thumbnail = "";
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
 	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
 
 	//bi-directional many-to-one association to OrderProduct
 	@JsonIgnore
@@ -119,14 +107,6 @@ public class Product implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
 	public String getDescription() {
 		return this.description;
 	}
@@ -142,15 +122,6 @@ public class Product implements Serializable {
 	public void setImage(String image) {
 		this.image = image;
 	}
-
-	public String getInfo() {
-		return this.info;
-	}
-
-	public void setInfo(String info) {
-		this.info = info;
-	}
-
 	public byte getIsActive() {
 		return this.isActive;
 	}
@@ -165,14 +136,6 @@ public class Product implements Serializable {
 
 	public void setPrice(int price) {
 		this.price = price;
-	}
-
-	public String getProductCode() {
-		return this.productCode;
-	}
-
-	public void setProductCode(String productCode) {
-		this.productCode = productCode;
 	}
 
 	public String getProductName() {
@@ -199,21 +162,6 @@ public class Product implements Serializable {
 		this.quantityValue = quantityValue;
 	}
 
-	public String getSku() {
-		return this.sku;
-	}
-
-	public void setSku(String sku) {
-		this.sku = sku;
-	}
-
-	public String getThumbnail() {
-		return this.thumbnail;
-	}
-
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
-	}
 
 	public Date getUpdatedAt() {
 		return this.updatedAt;
@@ -222,15 +170,7 @@ public class Product implements Serializable {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
+	
 	public List<OrderProduct> getOrderProducts() {
 		return this.orderProducts;
 	}

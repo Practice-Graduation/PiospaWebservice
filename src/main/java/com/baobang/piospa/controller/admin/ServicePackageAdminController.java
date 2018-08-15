@@ -88,32 +88,21 @@ public class ServicePackageAdminController {
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
 			@RequestParam(required = true, name = "productimage", defaultValue = "") String productImage,
 			@RequestParam(required = false, name = "var_ids") List<Integer> serviceIds,
-			@RequestParam(required = true, name = "post_status", defaultValue = "1") int post_status) {
+			@RequestParam(required = true, name = "post_status", defaultValue = "1") int postStatus) {
 		String message = "";
 		model.addAttribute("title", "THÊM GÓI DỊCH VỤ");
 		if (request.getParameter("submit") != null) {
 			if (productImage.trim().length() == 0) {
 				message = "Vui lòng chọn ảnh, và upload ảnh";
-				loadAttribute(model, productId, productName, productImage, serviceIds, post_status);
+				loadAttribute(model, productId, productName, productImage, serviceIds, postStatus);
 			} else {
 				ServicePackage product;
 				product = new ServicePackage();
 
 				product.setServicePackageName(productName);
 				product.setImage(productImage);
-				product.setIsActive((byte) post_status);
-				product.setCreatedAt(new Date());
-				product.setUpdatedAt(new Date());
+				product.setIsActive(postStatus);
 				
-				int staffId = 0;
-				if(principal != null) {
-					User loginedUser = (User) ((Authentication) principal).getPrincipal();
-
-					Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
-					product.setUpdatedBy(staff.getStaffId());
-					product.setCreatedBy(staff.getStaffId());
-					staffId = staff.getStaffId();
-				}
 
 				try {
 					product = mServicePackageRepository.save(product);
@@ -127,11 +116,6 @@ public class ServicePackageAdminController {
 							Service service = mServiceRepository.findById(serviceIds.get(i)).get();
 							detail.setService(service);
 							detail.setServicePackage(product);
-							detail.setIsActive((byte) 1);
-							detail.setCreatedAt(new Date());
-							detail.setUpdateAt(new Date());
-							detail.setUpdatedBy(staffId);
-							detail.setCreatedBy(staffId);
 
 							detail = mServicePackageDetailRepository.save(detail);
 							time += Integer.parseInt(service.getServiceTime().getTime());
@@ -143,16 +127,16 @@ public class ServicePackageAdminController {
 					} else {
 						message = "Vui lòng chọn dịch vụ";
 						loadData(model);
-						loadAttribute(model, productId, productName, productImage, serviceIds, post_status);
+						loadAttribute(model, productId, productName, productImage, serviceIds, postStatus);
 						model.addAttribute("message", message);
 						return "add-service-package";
 					}
 
 					model.addAttribute("result", "create");
-					loadAttribute(model, 0, "", "", new ArrayList<>(), 0);
+					loadAttribute(model, 0, "", "", new ArrayList<>(), 1);
 				} catch (Exception e) {
 					message = e.getMessage();
-					loadAttribute(model, productId, productName, productImage, serviceIds, post_status);
+					loadAttribute(model, productId, productName, productImage, serviceIds, postStatus);
 				}
 
 			}
@@ -169,7 +153,7 @@ public class ServicePackageAdminController {
 			@RequestParam(required = true, name = "productname", defaultValue = "") String productName,
 			@RequestParam(required = true, name = "productimage", defaultValue = "") String productImage,
 			@RequestParam(required = false, name = "var_ids") List<Integer> serviceIds,
-			@RequestParam(required = true, name = "post_status", defaultValue = "1") int post_status) {
+			@RequestParam(required = true, name = "post_status", defaultValue = "1") int postStatus) {
 
 		ServicePackage product = mServicePackageRepository.findById(id).get();
 		String message = "";
@@ -178,16 +162,12 @@ public class ServicePackageAdminController {
 			try {
 				product.setServicePackageName(productName);
 				product.setImage(productImage);
-				product.setIsActive((byte) post_status);
-				product.setUpdatedAt(new Date());
-				
+				product.setIsActive(postStatus);
 				int staffId = 0;
 				if(principal != null) {
 					User loginedUser = (User) ((Authentication) principal).getPrincipal();
 
 					Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
-					product.setUpdatedBy(staff.getStaffId());
-					product.setCreatedBy(staff.getStaffId());
 					staffId = staff.getStaffId();
 				}
 
@@ -205,8 +185,7 @@ public class ServicePackageAdminController {
 
 		List<Integer> arrId = getSerivceIds(product);
 
-		loadAttribute(model, product.getServicePackageId(), product.getServicePackageName(), product.getImage(), arrId,
-				product.getIsActive());
+		loadAttribute(model, product.getServicePackageId(), product.getServicePackageName(), product.getImage(), arrId, postStatus);
 
 		loadData(model);
 		model.addAttribute("message", message);
@@ -231,11 +210,6 @@ public class ServicePackageAdminController {
 				ServicePackageDetail detail = new ServicePackageDetail();
 				detail.setService(service);
 				detail.setServicePackage(product);
-				detail.setIsActive((byte) 1);
-				detail.setCreatedAt(new Date());
-				detail.setUpdateAt(new Date());
-				detail.setCreatedBy(staffId);
-				detail.setUpdatedBy(staffId);
 				
 				detail = mServicePackageDetailRepository.save(detail);
 				details.add(detail);
@@ -285,12 +259,12 @@ public class ServicePackageAdminController {
 	}
 
 	private void loadAttribute(Model model, int productId, String productName, String productImage,
-			List<Integer> serviceId, int postStaus) {
+			List<Integer> serviceId, int postStatus) {
 		model.addAttribute("productid", productId);
 		model.addAttribute("productname", productName);
 		model.addAttribute("productimage", productImage);
 		model.addAttribute("var_ids", serviceId);
-		model.addAttribute("post_status", postStaus);
+		model.addAttribute("post_status", postStatus);
 	}
 
 }

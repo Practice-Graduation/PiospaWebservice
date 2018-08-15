@@ -164,25 +164,13 @@ public class ProductGroupController {
 	@ApiOperation(value = "Create a new product group")
 	public DataResult<ProductGroup> CreateProductGroup(@RequestBody ProductGroup productGroup) {
 		DataResult<ProductGroup> result = new DataResult<>();
-		ProductGroup group = mGroupRepository.findByCode(productGroup.getProductGroupCode());
+		productGroup.setProductGroupId(0);
+		productGroup = mGroupRepository.save(productGroup);
 
-		if (group == null) {
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
 
-			Date date = new Date();
-			productGroup.setProductGroupId(0);
-			productGroup.setProductGroupCode(Utils.genarateCode());
-			productGroup.setCreatedAt(date);
-			productGroup.setUpdatedAt(date);
-			group = mGroupRepository.save(productGroup);
-
-			result.setMessage(MessageResponse.SUCCESSED);
-			result.setStatusCode(HttpStatus.OK.value());
-		} else {
-			result.setMessage(MessageResponse.EXITS);
-			result.setStatusCode(HttpStatus.NOT_FOUND.value());
-		}
-
-		result.setData(group);
+		result.setData(productGroup);
 		return result;
 	}
 
@@ -212,11 +200,7 @@ public class ProductGroupController {
 		ProductGroup group = option.get();
 
 		group.setProductGroupName(productGroup.getProductGroupName());
-		group.setProductGroupDescription(productGroup.getProductGroupDescription());
 		group.setIsActive(productGroup.getIsActive());
-		group.setUpdatedAt(new Date());
-		group.setUpdatedBy(productGroup.getUpdatedBy());
-		group.setCreatedBy(productGroup.getCreatedBy());
 
 		group = mGroupRepository.save(group);
 

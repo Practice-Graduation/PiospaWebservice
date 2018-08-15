@@ -188,6 +188,7 @@
 											<th>Giá</th>
 											<th>Ngày hẹn</th>
 											<th>Giờ hẹn</th>
+											<th>Trạng thái</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -210,6 +211,16 @@
 														value="${o.servicePrice.allPrice }" type="currency" pattern = "#,###đ" /></td>
 												<td style="text-align: center;vertical-align : middle;">${o.dateBooking}</td>
 												<td style="text-align: center;vertical-align : middle;">${o.timeStart}</td>
+												<td style="text-align: center;vertical-align : middle;">
+												
+												 <div class="btn-group btn-toggle" booking-detail-id=${o.bookingDetailId } data-toggle="buttons">
+												    <label class="btn ${o.servedStatus eq 1 ? 'btn-default' :  'btn-primary active'}">
+												      <input type="radio" id="option-0" name="options" value="0" checked="checked">Chờ phục vụ</label>
+												    <label class="btn ${o.servedStatus eq 0 ? 'btn-default' :  'btn-primary active'}">
+												      <input type="radio" id="option-1" name="options" value="1">Đã phục vụ</label>
+												  </div>
+												
+												</td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -234,5 +245,43 @@
 		<!-- /.content-wrapper -->
 
 		<jsp:include page="includes/_footer.jsp"></jsp:include>
+		
+		<script type="text/javascript">
+		$('.btn-toggle').click(function() {
+		    $(this).find('.btn').toggleClass('active');  
+		    
+		    if ($(this).find('.btn-primary').length>0) {
+		    	$(this).find('.btn').toggleClass('btn-primary');	
+		    }
+		    $(this).find('.btn').toggleClass('btn-default');
+		    
+		    var radioValue = $("input[name='options']:checked").val();
+		    if(radioValue == 1){
+		  		radioValue = 0
+		    } else{
+		    	radioValue = 1;
+		    }
+		    var id = $(this).attr('booking-detail-id');
+			 $.ajax({
+					url : "${pageContext.request.contextPath}/admin/update-booking-detail/" + id,
+					type : "get",
+					contentType : "application/json;charset=UTF-8",
+					dataType : "text",
+					data : {
+						served_status : radioValue
+					},
+					success : function(result) {
+						if (result == 'true') {
+							alert("Cập nhật thành công");
+						} else {
+							alert("Cập nhật thất bại");
+						}
+					},
+					error : function(e) {
+						alert("Có lỗi xảy ra: " + e);
+					}
+				});
+		});
+		</script>
 </body>
 </html>

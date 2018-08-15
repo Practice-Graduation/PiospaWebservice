@@ -19,7 +19,6 @@ import com.baobang.piospa.entities.Booking;
 import com.baobang.piospa.entities.BookingDetail;
 import com.baobang.piospa.entities.Order;
 import com.baobang.piospa.entities.OrderProduct;
-import com.baobang.piospa.entities.OrderReasonCancel;
 import com.baobang.piospa.entities.OrderStatus;
 import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.entities.ServicePrice;
@@ -36,7 +35,6 @@ import com.baobang.piospa.model.OrderResultResponse;
 import com.baobang.piospa.repositories.BookingDetailRepository;
 import com.baobang.piospa.repositories.BookingRepository;
 import com.baobang.piospa.repositories.OrderProductRepository;
-import com.baobang.piospa.repositories.OrderReasonCancelRepository;
 import com.baobang.piospa.repositories.OrderRepository;
 import com.baobang.piospa.repositories.OrderStatusRepository;
 import com.baobang.piospa.repositories.ProductRepository;
@@ -69,8 +67,6 @@ public class OrderController {
 	BookingDetailRepository mBookingDetailRepository;
 	@Autowired
 	ServicePriceRepository mServicePriceRepository;
-	@Autowired
-	OrderReasonCancelRepository mOrderReasonCancelRepository;
 	@Autowired
 	OrderStatusRepository mOrderStatusRepository;
 
@@ -148,11 +144,11 @@ public class OrderController {
 		result.setData(order);
 		return result;
 	}
-	
+
 	/**
 	 * @api {get} /code/{orderCode} Request Order information
 	 * @apiName getOrderByCode
-	 * @apiGroup Order 
+	 * @apiGroup Order
 	 * @apiParam {orderCode} id Order DeliveryStatus unique code.
 	 * 
 	 * @apiSuccess {Integer} the order of the response
@@ -160,27 +156,20 @@ public class OrderController {
 	 * @apiSuccess {Order} the Order was got
 	 * 
 	 */
+	// @Transactional
 	@RequestMapping(//
-			value = "/code/{orderCode}", //
+			value = "/code/{orderId}", //
 			method = RequestMethod.GET, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Get Order by id")
-	public DataResult<Order> getOrderByCode(@PathVariable(value = "orderCode") String orderCode) {
+	public DataResult<Order> getOrderByCode(@PathVariable(value = "orderId") int orderId) {
 		DataResult<Order> result = new DataResult<>();
-		Order order = mOrderRepository.findByCode(orderCode);
-		if(order == null) {
-
-			result.setMessage(MessageResponse.NOT_FOUND);
-			result.setStatusCode(HttpStatus.NOT_FOUND.value());
-		}else {
-
-			result.setMessage(MessageResponse.SUCCESSED);
-			result.setStatusCode(HttpStatus.OK.value());
-		}
+		Order order = mOrderRepository.findById(orderId).get();
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
 		result.setData(order);
 		return result;
 	}
-
 
 	/**
 	 * @api {get} /{orderId}/order-product-service-price Request Order information
@@ -240,86 +229,70 @@ public class OrderController {
 	public DataResult<Order> createOrder(@RequestBody OrderBodyRequest orderBodyRequester) {
 		DataResult<Order> result = new DataResult<>();
 
-		Order temp = mOrderRepository.findByCode(orderBodyRequester.getOrder().getCode());
 		OrderStatus orderStatus = mOrderStatusRepository.findById(AppConstants.ORDER_STATUS).get();
-		String code = Utils.genarateCode();
-		if (temp == null) {
-			Date date = new Date();
-			temp = orderBodyRequester.getOrder();
-			temp.setOrderId(0);
-			temp.setCode(code);
-			temp.getTax().setTaxId(AppConstants.TAX_ID);
-			temp.getOrderDeliveryStatus().setOrderDeliveryStatusId(AppConstants.ORDER_DELIVERY_STATUS);
-			temp.setOrderStatus(orderStatus);
-			temp.setCreatedAt(date);
-			temp.setUpdatedAt(date);
+		Order temp = new Order();
+		Date date = new Date();
+		temp = orderBodyRequester.getOrder();
+		temp.setOrderId(0);
+		temp.getTax().setTaxId(AppConstants.TAX_ID);
+		temp.getOrderDeliveryStatus().setOrderDeliveryStatusId(AppConstants.ORDER_DELIVERY_STATUS);
+		temp.setOrderStatus(orderStatus);
+		temp.setCreatedAt(date);
+		temp.setUpdatedAt(date);
 
-			// insert order and get order was inserted
-			temp = mOrderRepository.save(temp);
-			Product product;
-			for (CartItemProduct item : orderBodyRequester.getCartShopping().getCartItemProducts()) {
-				OrderProduct orderProduct = new OrderProduct();
-				product = mProductRepository.findById(item.getProductId()).get();
+		// insert order and get order was inserted
+		temp = mOrderRepository.save(temp);
+		Product product;
+		for (CartItemProduct item : orderBodyRequester.getCartShopping().getCartItemProducts()) {
+			OrderProduct orderProduct = new OrderProduct();
+			product = mProductRepository.findById(item.getProductId()).get();
 
-				orderProduct.setOrder(temp);
-				orderProduct.setProduct(product);
-				orderProduct.setNumber(item.getNumber());
-				orderProduct.setPrice(product.getPrice());
-				orderProduct.setTotal(item.getNumber() * product.getPrice());
-				orderProduct.setIsDeleted((byte) 0);
-				orderProduct.setCreatedBy(temp.getCreatedBy());
-				orderProduct.setUpdatedBy(orderProduct.getUpdatedBy());
-				orderProduct.setCreatedAt(date);
-				orderProduct.setUpdatedAt(date);
+			orderProduct.setOrder(temp);
+			orderProduct.setProduct(product);
+			orderProduct.setNumber(item.getNumber());
+			orderProduct.setPrice(product.getPrice());
+			orderProduct.setTotal(item.getNumber() * product.getPrice());
 
-				// insert order product and add to order
-				orderProduct = mOrderProductRepository.save(orderProduct);
-				temp.addOrderProduct(orderProduct);
-			}
-			if (orderBodyRequester.getCartShopping().getCartItemServices().size() > 0) {
-				Booking booking = new Booking();
-				booking.setCustomer(temp.getCustomer());
-				booking.setCode(code);
-				booking.setCreatedAt(date);
-				booking.setUpdatedAt(date);
-				booking.setOrder(temp);
-
-				booking = mBookingRepository.save(booking);
-				int price = 0, totalNumber = 0;
-
-				ServicePrice servicePrice;
-				for (CartItemService item : orderBodyRequester.getCartShopping().getCartItemServices()) {
-					BookingDetail bookingDetail = new BookingDetail();
-					totalNumber += item.getNumber();
-					servicePrice = mServicePriceRepository.findById(item.getProductId()).get();
-
-					price += item.getNumber() * servicePrice.getAllPrice();
-					bookingDetail.setBooking(booking);
-					bookingDetail.setNumber(item.getNumber());
-					bookingDetail.setServicePrice(servicePrice);
-					bookingDetail.setDateBooking(item.getDateBooking());
-					
-					bookingDetail.setTimeStart(item.getTimeBooking());
-					bookingDetail.setCreatedAt(date);
-					bookingDetail.setUpdatedAt(date);
-
-					bookingDetail = mBookingDetailRepository.save(bookingDetail);
-					booking.addBookingDetail(bookingDetail);
-				}
-				booking.setPrice(price);
-				booking.setNumber(totalNumber);
-				booking.setTotal(price - booking.getDiscount());
-				temp.setBooking(booking);
-			}
-			temp.caculate();
-			temp = mOrderRepository.save(temp);
-
-			result.setMessage(MessageResponse.SUCCESSED);
-			result.setStatusCode(HttpStatus.OK.value());
-		} else {
-			result.setMessage(MessageResponse.EXITS);
-			result.setStatusCode(HttpStatus.NOT_FOUND.value());
+			// insert order product and add to order
+			orderProduct = mOrderProductRepository.save(orderProduct);
+			temp.addOrderProduct(orderProduct);
 		}
+		if (orderBodyRequester.getCartShopping().getCartItemServices().size() > 0) {
+			Booking booking = new Booking();
+			booking.setCustomer(temp.getCustomer());
+			booking.setOrder(temp);
+
+			booking = mBookingRepository.save(booking);
+			int price = 0, totalNumber = 0;
+
+			ServicePrice servicePrice;
+			for (CartItemService item : orderBodyRequester.getCartShopping().getCartItemServices()) {
+				BookingDetail bookingDetail = new BookingDetail();
+				totalNumber += item.getNumber();
+				servicePrice = mServicePriceRepository.findById(item.getProductId()).get();
+
+				price += item.getNumber() * servicePrice.getAllPrice();
+				bookingDetail.setBooking(booking);
+				bookingDetail.setNumber(item.getNumber());
+				bookingDetail.setServicePrice(servicePrice);
+				bookingDetail.setDateBooking(item.getDateBooking());
+
+				bookingDetail.setTimeStart(item.getTimeBooking());
+
+				bookingDetail = mBookingDetailRepository.save(bookingDetail);
+				booking.addBookingDetail(bookingDetail);
+			}
+			booking.setPrice(price);
+			booking.setNumber(totalNumber);
+			booking.setTotal(price - booking.getDiscount());
+			temp.setBooking(booking);
+		}
+		temp.caculate();
+		temp = mOrderRepository.save(temp);
+
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
+
 		result.setData(temp);
 		return result;
 	}
@@ -378,9 +351,7 @@ public class OrderController {
 		newOrder.setAddress(order.getAddress());
 		newOrder.setAddressDelivery(order.getAddressDelivery());
 		newOrder.setEmail(order.getEmail());
-		newOrder.setDateDelivery(order.getDateDelivery());
 		newOrder.setOrderPaymentType(order.getOrderPaymentType());
-		newOrder.setNote(order.getNote());
 
 		if (order.getOrderStatus() != null) {
 			OrderStatus orderStatus = mOrderStatusRepository.findById(order.getOrderStatus().getOrderStatusId()).get();
@@ -388,22 +359,13 @@ public class OrderController {
 
 		}
 
-		newOrder.setStaffId(order.getStaffId());
 		newOrder.setOrderDeliveryType(order.getOrderDeliveryType());
-		newOrder.setDeliveryCode(order.getDeliveryCode());
 		newOrder.setDeliveryCost(order.getDeliveryCost());
 		newOrder.setOrderDeliveryStatus(order.getOrderDeliveryStatus());
-
-		if (order.getOrderReasonCancel() != null) {
-			OrderReasonCancel orderReasonCancel = mOrderReasonCancelRepository
-					.findById(order.getOrderReasonCancel().getOrderReasonCancelId()).get();
-			newOrder.setOrderReasonCancel(orderReasonCancel);
-		}
 
 		newOrder.setTotal(order.getTotal());
 		newOrder.setDiscount(order.getDiscount());
 		newOrder.setSubTotal(order.getSubTotal());
-		newOrder.setUpdatedBy(order.getUpdatedBy());
 		newOrder.setUpdatedAt(new Date());
 
 		newOrder = mOrderRepository.save(newOrder);
@@ -446,33 +408,22 @@ public class OrderController {
 		// TODO Auto-generated method stub
 		List<BookingDetailObject> bookingDetailObjects = new ArrayList<>();
 		Booking booking = order.getBooking();
-		if(booking != null) {
-			for(BookingDetail detail : booking.getBookingDetails()) {
+		if (booking != null) {
+			for (BookingDetail detail : booking.getBookingDetails()) {
 				bookingDetailObjects.add(new BookingDetailObject(detail));
 			}
 		}
-		
+
 		return bookingDetailObjects;
 	}
 
 	private List<OrderProductObject> getOrderProduct(Order order) {
 		// TODO Auto-generated method stub
 		List<OrderProductObject> orders = new ArrayList<>();
-		for(OrderProduct orderProduct : order.getOrderProducts()){
+		for (OrderProduct orderProduct : order.getOrderProducts()) {
 			orders.add(new OrderProductObject(orderProduct));
 		}
 		return orders;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

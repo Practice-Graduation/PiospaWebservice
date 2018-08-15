@@ -45,16 +45,16 @@
                 <li class="list-group-item">
                   <b>Tên tài khoản</b> <a class="pull-right">${a.account}</a>
                 </li>
-                <li class="list-group-item">
+               <%--  <li class="list-group-item">
                   <b>Ngày lập</b> <a class="pull-right"><fmt:formatDate pattern="dd '/' MM '/' yyyy" value="${a.createdAt}"/></a>
-                </li>
-                <li class="list-group-item">
+                </li> --%>
+               <%--  <li class="list-group-item">
                   <b>Tình trạng</b> 
                   <a class="pull-right">
                   	<c:if test="${a.isActive eq 1}"><span class="label label-success">Hoạt động</span></c:if>
 	                <c:if test="${a.isActive eq 0}"><span class="label label-warning">Đã khóa</span></c:if>
                   </a>
-                </li>
+                </li> --%>
               </ul>
               <a href="${pageContext.request.contextPath}/admin/profile/${a.staffId}" class="btn btn-primary btn-block"><b>Thông tin cá nhân</b></a>
             </div>

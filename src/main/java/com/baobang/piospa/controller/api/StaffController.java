@@ -101,25 +101,13 @@ public class StaffController {
 	@ApiOperation(value = "Create a new Staff")
 	public DataResult<Staff> CreateStaff(@RequestBody Staff staff){
 		DataResult<Staff> result = new DataResult<>();
-		Staff temp = mStaffRepository.findByCode(staff.getCode());
-		
-		if(temp == null) {
-			
-			Date date = new Date();
-			staff.setStaffId(0);
-			staff.setCreatedAt(date);
-			staff.setUpdatedAt(date);
-			temp = mStaffRepository.save(staff);
-			
+		staff.setStaffId(0);
+		staff = mStaffRepository.save(staff);
 
-			result.setMessage(MessageResponse.SUCCESSED);
-			result.setStatusCode(HttpStatus.OK.value());
-		}else {
-			result.setMessage(MessageResponse.EXITS);
-			result.setStatusCode(HttpStatus.NOT_FOUND.value());
-		}
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
 		
-		result.setData(temp);
+		result.setData(staff);
 		return result;
 	}
 	
@@ -149,12 +137,8 @@ public class StaffController {
 		newStaff.setFullname(staff.getFullname());
 		newStaff.setPhone(staff.getPhone());
 		newStaff.setStaffAvatar(staff.getStaffAvatar());
-		newStaff.setIsActive(staff.getIsActive());
-		newStaff.setUpdatedBy(staff.getUpdatedBy());
-		newStaff.setUpdatedAt(new Date());
 		newStaff.setPassword(staff.getPassword());
 		newStaff.setIsAdmin(staff.getIsAdmin());
-		newStaff.setDateLastLogin(staff.getDateLastLogin());
 	
 
 		newStaff = mStaffRepository.save(newStaff);

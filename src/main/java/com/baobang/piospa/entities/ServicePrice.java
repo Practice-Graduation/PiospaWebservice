@@ -26,26 +26,9 @@ public class ServicePrice implements Serializable {
 
 	@Column(name="all_price")
 	private int allPrice;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy;
-
+	
 	@Column(name="is_active")
-	private byte isActive;
-
-	@Column(name="retail_price")
-	private int retailPrice;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
-	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
+	private int isActive;
 
 	
 	//bi-directional many-to-one association to BookingDetail
@@ -76,6 +59,20 @@ public class ServicePrice implements Serializable {
 
 	public ServicePrice() {
 	}
+	
+	
+
+	public int getIsActive() {
+		return isActive;
+	}
+
+
+
+	public void setIsActive(int isActive) {
+		this.isActive = isActive;
+	}
+
+
 
 	public int getServicePriceId() {
 		return this.servicePriceId;
@@ -91,54 +88,6 @@ public class ServicePrice implements Serializable {
 
 	public void setAllPrice(int allPrice) {
 		this.allPrice = allPrice;
-	}
-
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public byte getIsActive() {
-		return this.isActive;
-	}
-
-	public void setIsActive(byte isActive) {
-		this.isActive = isActive;
-	}
-
-	public int getRetailPrice() {
-		return this.retailPrice;
-	}
-
-	public void setRetailPrice(int retailPrice) {
-		this.retailPrice = retailPrice;
-	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 

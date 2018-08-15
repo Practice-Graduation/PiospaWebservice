@@ -21,9 +21,6 @@ public class Province implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int provinceid;
 
-	@Column(name = "location_id")
-	private int locationId;
-
 	private String name;
 
 	private String type;
@@ -47,14 +44,6 @@ public class Province implements Serializable {
 
 	public void setProvinceid(int provinceid) {
 		this.provinceid = provinceid;
-	}
-
-	public int getLocationId() {
-		return this.locationId;
-	}
-
-	public void setLocationId(int locationId) {
-		this.locationId = locationId;
 	}
 
 	public String getName() {

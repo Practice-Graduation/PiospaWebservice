@@ -338,8 +338,8 @@
 										<li><img src="${a.staffAvatar}" alt="${a.fullname}">
 											<a class="users-list-name"
 											href="${pageContext.request.contextPath}/admin/profile/${a.staffId}">${a.fullname}</a>
-											<span class="users-list-date"><fmt:formatDate
-													pattern="dd'/'MM'/'yyyy" value="${a.createdAt}" /></span></li>
+											<%-- <span class="users-list-date"><fmt:formatDate
+													pattern="dd'/'MM'/'yyyy" value="${a.createdAt}" /></span></li> --%>
 									</c:forEach>
 								</ul>
 								<!-- /.users-list -->

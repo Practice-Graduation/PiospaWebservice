@@ -101,20 +101,10 @@ public class OrderDeliveryTypeController {
 	public DataResult<OrderDeliveryType> createOrderDeliveryType(@RequestBody OrderDeliveryType orderDeliveryType) {
 		DataResult<OrderDeliveryType> result = new DataResult<>();
 
-		OrderDeliveryType temp = mOrderDeliveryTypeRepository.findByCode(orderDeliveryType.getOrderDeliveryTypeCode());
-		
-		if(temp == null) {
-			Date date = new Date();
-			orderDeliveryType.setOrderDeliveryTypeId(0);
-			orderDeliveryType.setCreatedAt(date);
-			orderDeliveryType.setUpdatedAt(date);
-			orderDeliveryType = mOrderDeliveryTypeRepository.save(orderDeliveryType);
-			result.setMessage(MessageResponse.SUCCESSED);
-			result.setStatusCode(HttpStatus.OK.value());
-		}else {
-			result.setMessage(MessageResponse.EXITS);
-			result.setStatusCode(HttpStatus.NOT_FOUND.value());
-		}
+		orderDeliveryType.setOrderDeliveryTypeId(0);
+		orderDeliveryType = mOrderDeliveryTypeRepository.save(orderDeliveryType);
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
 		
 		
 		result.setData(orderDeliveryType);
@@ -147,10 +137,6 @@ public class OrderDeliveryTypeController {
 		OrderDeliveryType newOrderDeliveryType = option.get();
 
 		newOrderDeliveryType.setOrderDeliveryTypeName(orderDeliveryType.getOrderDeliveryTypeName());
-		newOrderDeliveryType.setIsActive(orderDeliveryType.getIsActive());
-		newOrderDeliveryType.setCreatedBy(orderDeliveryType.getCreatedBy());
-		newOrderDeliveryType.setUpdatedBy(orderDeliveryType.getUpdatedBy());
-		newOrderDeliveryType.setUpdatedAt(new Date());
 
 		newOrderDeliveryType = mOrderDeliveryTypeRepository.save(newOrderDeliveryType);
 

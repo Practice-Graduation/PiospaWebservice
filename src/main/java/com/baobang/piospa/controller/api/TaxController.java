@@ -105,9 +105,6 @@ public class TaxController {
 	public DataResult<Tax> CreateServiceTime(@RequestBody Tax tax) {
 		DataResult<Tax> result = new DataResult<>();
 
-		Date date = new Date();
-		tax.setCreatedAt(date);
-		tax.setUpdatedAt(date);
 		tax = mTaxRepository.save(tax);
 
 		result.setMessage(MessageResponse.SUCCESSED);
@@ -144,10 +141,6 @@ public class TaxController {
 		oldTax.setName(tax.getName());
 		oldTax.setValue(tax.getValue());
 		oldTax.setType(tax.getType());
-		oldTax.setIsActive(tax.getIsActive());
-		oldTax.setUpdatedAt(new Date());
-		oldTax.setUpdatedBy(tax.getUpdatedBy());
-		oldTax.setCreatedBy(tax.getCreatedBy());
 
 		oldTax = mTaxRepository.save(oldTax);
 

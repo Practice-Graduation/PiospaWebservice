@@ -18,7 +18,6 @@ import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.ProductRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
-import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -91,23 +90,16 @@ public class ProductController {
 	}
 	
 	@RequestMapping(//
-			value = "/code/{productCode}", //
+			value = "/code/{productId}", //
 			method = RequestMethod.GET, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Get product  by code")
-	public DataResult<Product> getProductByCode(@PathVariable(value = "productCode") String productCode) {
+	public DataResult<Product> getProductByCode(@PathVariable(value = "productId") int productId) {
 		DataResult<Product> result = new DataResult<>();
-		Product product  = mProductRepository.findByCode(productCode);
-		
-		if(product != null) {
-			result.setMessage(MessageResponse.SUCCESSED);
-			result.setStatusCode(HttpStatus.OK.value());
-			result.setData(product);
-		}else {
-			result.setMessage(MessageResponse.NOT_CONTENT);
-			result.setStatusCode(HttpStatus.NOT_FOUND.value());
-			result.setData(null);
-		}
+		Product product  = mProductRepository.findById(productId).get();
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
+		result.setData(product);
 		return result;
 	}
 	
@@ -132,24 +124,17 @@ public class ProductController {
 	
 		DataResult<Product> result = new DataResult<>();
 
-		Product temp = mProductRepository.findByCode(product.getProductCode());
-		if(temp == null) {
-			Date date = new Date();
-			product.setProductId(0);
-			product.setCreatedAt(date);
-			product.setUpdatedAt(date);
-			product.setProductCode(Utils.genarateCode());
-			temp = mProductRepository.save(product);
+		Date date = new Date();
+		product.setProductId(0);
+		product.setCreatedAt(date);
+		product.setUpdatedAt(date);
+		product = mProductRepository.save(product);
 
-			result.setMessage(MessageResponse.SUCCESSED);
-			result.setStatusCode(HttpStatus.OK.value());
-		}else {
-			result.setMessage(MessageResponse.EXITS);
-			result.setStatusCode(HttpStatus.NOT_FOUND.value());
-		}
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
 		
 		
-		result.setData(temp);
+		result.setData(product);
 		
 		return result;
 	}

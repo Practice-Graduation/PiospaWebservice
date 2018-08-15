@@ -21,8 +21,6 @@ public class District implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int districtid;
 
-	private String location;
-
 	private String name;
 
 	private String type;
@@ -51,14 +49,6 @@ public class District implements Serializable {
 
 	public void setDistrictid(int districtid) {
 		this.districtid = districtid;
-	}
-
-	public String getLocation() {
-		return this.location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public String getName() {

@@ -103,9 +103,6 @@ public class ServiceTimeController {
 	public DataResult<ServiceTime> CreateServiceTime(@RequestBody ServiceTime serviceTime) {
 		DataResult<ServiceTime> result = new DataResult<>();
 
-		Date date = new Date();
-		serviceTime.setCreatedAt(date);
-		serviceTime.setUpdatedAt(date);
 		serviceTime = mServiceTimeRepository.save(serviceTime);
 
 		result.setMessage(MessageResponse.SUCCESSED);
@@ -140,10 +137,6 @@ public class ServiceTimeController {
 		ServiceTime time = option.get();
 
 		time.setTime(serviceTime.getTime());
-		time.setIsActive(serviceTime.getIsActive());
-		time.setUpdatedAt(new Date());
-		time.setUpdatedBy(serviceTime.getUpdatedBy());
-		time.setCreatedBy(serviceTime.getCreatedBy());
 
 		time = mServiceTimeRepository.save(time);
 

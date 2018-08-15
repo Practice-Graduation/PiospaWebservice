@@ -107,10 +107,6 @@ public class CustomerController {
 		Customer temp  = mCustomerRepository.findByAccount(customer.getAccount());
 
 		if (temp == null) {
-			Date date = new Date();
-			customer.setCode(Utils.genarateCode());
-			customer.setCreatedAt(date);
-			customer.setUpdatedAt(date);
 			temp = mCustomerRepository.save(customer);
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
@@ -150,27 +146,14 @@ public class CustomerController {
 		temp.setGender(customer.getGender());
 		temp.setBirthday(customer.getBirthday());
 		temp.setPhone(customer.getPhone());
-		temp.setCmnd(customer.getCmnd());
 		temp.setIsActive(customer.getIsActive());
 		temp.setProvince(customer.getProvince());
 		temp.setDistrict(customer.getDistrict());
 		temp.setWard(customer.getWard());
 		temp.setEmail(customer.getEmail());
-		temp.setZalo(customer.getZalo());
-		temp.setFacebook(customer.getFacebook());
-		temp.setFacebookId(customer.getFacebookId());
 		temp.setAddress(customer.getAddress());
 		temp.setCustomerAvatar(customer.getCustomerAvatar());
-		temp.setCusomerReferId(customer.getCusomerReferId());
-		temp.setIsMember(customer.getIsMember());
-		temp.setMemberCode(customer.getMemberCode());
-		temp.setPoint(customer.getPoint());
-		temp.setPointUsed(customer.getPointUsed());
 		temp.setPassword(customer.getPassword());
-		temp.setDateLastLogin(customer.getDateLastLogin());
-		temp.setUpdatedBy(customer.getUpdatedBy());
-		temp.setUpdatedAt(new Date());
-		
 		temp = mCustomerRepository.save(temp);
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());

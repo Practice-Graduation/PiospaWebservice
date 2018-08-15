@@ -23,29 +23,12 @@ public class ProductOrigin implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="product_origin_id")
 	private int productOriginId;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy;
-
+	
 	@Column(name="is_active")
 	private byte isActive;
 
-	@Column(name="product_origin_description")
-	private String productOriginDescription;
-
 	@Column(name="product_origin_name")
 	private String productOriginName;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="updated_at")
-	private Date updatedAt;
-
-	@Column(name="updated_by")
-	private int updatedBy;
 
 	//bi-directional many-to-one association to Product
 	@JsonIgnore
@@ -63,22 +46,6 @@ public class ProductOrigin implements Serializable {
 		this.productOriginId = productOriginId;
 	}
 
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
 	public byte getIsActive() {
 		return this.isActive;
 	}
@@ -87,14 +54,7 @@ public class ProductOrigin implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public String getProductOriginDescription() {
-		return this.productOriginDescription;
-	}
-
-	public void setProductOriginDescription(String productOriginDescription) {
-		this.productOriginDescription = productOriginDescription;
-	}
-
+	
 	public String getProductOriginName() {
 		return this.productOriginName;
 	}
@@ -102,23 +62,7 @@ public class ProductOrigin implements Serializable {
 	public void setProductOriginName(String productOriginName) {
 		this.productOriginName = productOriginName;
 	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
+	
 	public List<Product> getProducts() {
 		return this.products;
 	}

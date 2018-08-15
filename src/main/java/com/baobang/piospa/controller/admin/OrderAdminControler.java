@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baobang.piospa.entities.Booking;
 import com.baobang.piospa.entities.BookingDetail;
@@ -20,6 +21,7 @@ import com.baobang.piospa.entities.Order;
 import com.baobang.piospa.entities.OrderProduct;
 import com.baobang.piospa.entities.OrderStatus;
 import com.baobang.piospa.entities.Product;
+import com.baobang.piospa.repositories.BookingDetailRepository;
 import com.baobang.piospa.repositories.OrderRepository;
 import com.baobang.piospa.repositories.OrderStatusRepository;
 import com.baobang.piospa.repositories.ProductRepository;
@@ -40,6 +42,9 @@ public class OrderAdminControler {
 	OrderStatusRepository mOrderStatusRepository;
 	@Autowired
 	ProductRepository mProductRepository;
+	
+	@Autowired
+	BookingDetailRepository mBookingDetailRepository;
 
 	@RequestMapping(value = "admin/order-list", method = RequestMethod.GET)
 	public String orderList(Model model) {
@@ -66,8 +71,7 @@ public class OrderAdminControler {
 		model.addAttribute("bookingDetails", bookingDetails);
 		return "order-detail";
 	}
-
-	@Transactional
+	
 	@RequestMapping(value = "admin/order-detail/{id}", method = RequestMethod.POST)
 	public String changeStatusOrder(Model model, @PathVariable("id") int id,
 			@RequestParam(required = true, name = "order_status", defaultValue = "0") int status) {
@@ -75,7 +79,7 @@ public class OrderAdminControler {
 		Order order = mOrderRepository.findById(id).get();
 		OrderStatus orderStatus = mOrderStatusRepository.findById(status).get();
 		String message = "";
-
+		boolean isNotify = false;
 		// DANH SACH SAN PHAM
 		List<OrderProduct> products = order.getOrderProducts();
 		// DANH SACH DICH VU
@@ -96,6 +100,7 @@ public class OrderAdminControler {
 				for (OrderProduct op : list) {
 					Product product = op.getProduct();
 					product.setAmount(product.getAmount() + op.getNumber());
+					
 					mProductRepository.save(product);
 				}
 
@@ -119,17 +124,37 @@ public class OrderAdminControler {
 					}
 				}
 			}
-
-			FCM.send_FCM_Notification(order.getCustomer().getAccount(), order.getCode());
+			isNotify = true;
 
 		}
 
 		order.setOrderStatus(orderStatus);
 		order = mOrderRepository.save(order);
-
+		if(isNotify) {
+			FCM.send_FCM_Notification(order.getCustomer().getAccount(), order.getOrderId()+"");
+		}
 		model.addAttribute("order", order);
 		model.addAttribute("products", products);
 		model.addAttribute("bookingDetails", bookingDetails);
 		return "order-detail";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "admin/update-booking-detail/{id}", method = RequestMethod.GET)
+	public String updateBookingDetail(Model model, @PathVariable("id") int id,
+			@RequestParam(required = true, name = "served_status", defaultValue = "0") int status) {
+		
+		BookingDetail bookingDetail = mBookingDetailRepository.findById(id).get();
+		
+		bookingDetail.setServedStatus(status);
+		
+		try {
+			mBookingDetailRepository.save(bookingDetail);
+			return "true";
+		}catch(Exception e) {
+			
+		}
+		return "false";
+
 	}
 }

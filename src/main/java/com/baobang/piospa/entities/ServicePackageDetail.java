@@ -20,28 +20,14 @@ public class ServicePackageDetail implements Serializable {
 	@Column(name="service_package_detail_id")
 	private int servicePackageDetailId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="created_at")
-	private Date createdAt;
-
-	@Column(name="created_by")
-	private int createdBy = 0;
-
-	@Column(name="is_active")
-	private byte isActive;
-
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="update_at")
-	private Date updateAt;
-
-	@Column(name="updated_by")
-	private int updatedBy = 0;
-
 	//bi-directional many-to-one association to ServicePackage
 	@ManyToOne
 	@JoinColumn(name="service_package_id")
 	private ServicePackage servicePackage;
+	
+	@ManyToOne
+	@JoinColumn(name="service_time_id")
+	private ServiceTime serviceTime;
 
 	
 
@@ -60,48 +46,7 @@ public class ServicePackageDetail implements Serializable {
 	public void setServicePackageDetailId(int servicePackageDetailId) {
 		this.servicePackageDetailId = servicePackageDetailId;
 	}
-
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public byte getIsActive() {
-		return this.isActive;
-	}
-
-	public void setIsActive(byte isActive) {
-		this.isActive = isActive;
-	}
-
-
-	public Date getUpdateAt() {
-		return this.updateAt;
-	}
-
-	public void setUpdateAt(Date updateAt) {
-		this.updateAt = updateAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
+	
 	public ServicePackage getServicePackage() {
 		return this.servicePackage;
 	}

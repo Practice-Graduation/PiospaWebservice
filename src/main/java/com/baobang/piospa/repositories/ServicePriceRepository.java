@@ -18,7 +18,7 @@ import com.baobang.piospa.entities.ServicePrice;
 @Repository
 public interface ServicePriceRepository extends JpaRepository<ServicePrice, Integer>{
 	
-	@Query("select sp from ServicePrice sp where sp.serviceGroup.serviceGroupId = :serviceGroupId and sp.isActive = 1")
+	@Query("select sp from ServicePrice sp where sp.serviceGroup.serviceGroupId = :serviceGroupId")
 	List<ServicePrice> getServiceByGroupId(@Param("serviceGroupId") int serviceGroupId);
 	
 	@Query(value="SELECT * FROM service_price WHERE service_group_id = ?1 and is_active = 1 LIMIT 10", nativeQuery = true)

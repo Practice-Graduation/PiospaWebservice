@@ -103,8 +103,6 @@ public class OrderPaymentTypeController {
 
 		Date date = new Date();
 		orderPaymentType.setOrderPaymentTypeId(0);
-		orderPaymentType.setCreatedAt(date);
-		orderPaymentType.setUpdatedAt(date);
 		orderPaymentType = mOrderPaymentTypeRepository.save(orderPaymentType);
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
@@ -137,12 +135,7 @@ public class OrderPaymentTypeController {
 
 		OrderPaymentType newOrderPaymentType = option.get();
 
-		newOrderPaymentType.setIsActive(orderPaymentType.getIsActive());
 		newOrderPaymentType.setOrderPaymentTypeName(orderPaymentType.getOrderPaymentTypeName());
-		newOrderPaymentType.setCreatedBy(orderPaymentType.getCreatedBy());
-		newOrderPaymentType.setOrderPaymentTypeDescription(orderPaymentType.getOrderPaymentTypeDescription());
-		newOrderPaymentType.setUpdatedBy(orderPaymentType.getUpdatedBy());
-		newOrderPaymentType.setUpdatedAt(new Date());
 
 		newOrderPaymentType = mOrderPaymentTypeRepository.save(newOrderPaymentType);
 

@@ -20,7 +20,6 @@ public class Ward implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int wardid;
 
-	private String location;
 
 	private String name;
 
@@ -45,14 +44,6 @@ public class Ward implements Serializable {
 
 	public void setWardid(int wardid) {
 		this.wardid = wardid;
-	}
-
-	public String getLocation() {
-		return this.location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public String getName() {

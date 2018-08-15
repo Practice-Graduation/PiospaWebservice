@@ -14,6 +14,4 @@ import com.baobang.piospa.entities.OrderDeliveryType;
   */
 @Repository
 public interface OrderDeliveryTypeRepository extends JpaRepository<OrderDeliveryType, Integer>{
-	@Query("select odt from OrderDeliveryType odt where odt.orderDeliveryTypeCode = :orderDeliveryTypeCode")
-	public OrderDeliveryType findByCode(@Param("orderDeliveryTypeCode") String orderDeliveryTypeCode);
 }

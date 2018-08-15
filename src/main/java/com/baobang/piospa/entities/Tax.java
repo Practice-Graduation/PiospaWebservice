@@ -22,28 +22,10 @@ public class Tax implements Serializable {
 	@Column(name = "tax_id")
 	private int taxId;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at")
-	private Date createdAt;
-
-	@Column(name = "created_by")
-	private int createdBy = 0;
-
-	private String descripton;
-
-	@Column(name = "is_active")
-	private byte isActive = 1;
 
 	private String name;
 
 	private String type;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_at")
-	private Date updatedAt;
-
-	@Column(name = "updated_by")
-	private int updatedBy = 0;
 
 	private int value;
 
@@ -63,38 +45,7 @@ public class Tax implements Serializable {
 		this.taxId = taxId;
 	}
 
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public String getDescripton() {
-		return this.descripton;
-	}
-
-	public void setDescripton(String descripton) {
-		this.descripton = descripton;
-	}
-
-	public byte getIsActive() {
-		return this.isActive;
-	}
-
-	public void setIsActive(byte isActive) {
-		this.isActive = isActive;
-	}
-
+	
 	public String getName() {
 		return this.name;
 	}
@@ -110,23 +61,7 @@ public class Tax implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
+	
 	public int getValue() {
 		return this.value;
 	}

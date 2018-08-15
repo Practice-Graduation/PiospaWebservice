@@ -137,9 +137,6 @@ public class BookingDetailController {
 	public DataResult<BookingDetail> createBookingDetail(@RequestBody BookingDetail bookingDetail) {
 		DataResult<BookingDetail> result = new DataResult<>();
 
-		Date date = new Date();
-		bookingDetail.setCreatedAt(date);
-		bookingDetail.setUpdatedAt(date);
 
 		bookingDetail = mBookingDetailRepository.save(bookingDetail);
 		result.setMessage(MessageResponse.SUCCESSED);
@@ -178,8 +175,6 @@ public class BookingDetailController {
 		newBookingDetail.setServicePrice(bookingDetail.getServicePrice());
 		newBookingDetail.setDateBooking(bookingDetail.getDateBooking());
 		newBookingDetail.setTimeStart(bookingDetail.getTimeStart());
-		newBookingDetail.setUpdatedAt(new Date());
-		newBookingDetail.setUpdatedBy(bookingDetail.getUpdatedBy());
 
 		newBookingDetail = mBookingDetailRepository.save(newBookingDetail);
 

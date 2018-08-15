@@ -32,7 +32,7 @@ public class OrderProductObject {
 		productName = orderProduct.getProduct().getProductName();
 		productImage = orderProduct.getProduct().getImage();
 		price = orderProduct.getPrice();
-		amount = orderProduct.getPrice();
+		amount = orderProduct.getNumber();
 	}
 	public int getProductId() {
 		return productId;

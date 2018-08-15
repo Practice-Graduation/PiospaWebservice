@@ -102,26 +102,13 @@ public class ProductLabelController {
 	@ApiOperation(value = "Create a new product label")
 	public DataResult<ProductLabel> CreateProductLabel(@RequestBody ProductLabel productLabel){
 		DataResult<ProductLabel> result = new DataResult<>();
-		ProductLabel label = mLabelRepository.findByCode(productLabel.getProductLabelCode());
 		
-		if(label == null) {
-			
-			Date date = new Date();
-			productLabel.setProductLabelId(0);
-			productLabel.setProductLabelCode(Utils.genarateCode());
-			productLabel.setCreatedAt(date);
-			productLabel.setUpdatedAt(date);
-			label = mLabelRepository.save(productLabel);
-			
-
-			result.setMessage(MessageResponse.SUCCESSED);
-			result.setStatusCode(HttpStatus.OK.value());
-		}else {
-			result.setMessage(MessageResponse.EXITS);
-			result.setStatusCode(HttpStatus.NOT_FOUND.value());
-		}
+		productLabel.setProductLabelId(0);
+		productLabel = mLabelRepository.save(productLabel);
+		result.setMessage(MessageResponse.SUCCESSED);
+		result.setStatusCode(HttpStatus.OK.value());
 		
-		result.setData(label);
+		result.setData(productLabel);
 		return result;
 	}
 	
@@ -150,10 +137,7 @@ public class ProductLabelController {
 		ProductLabel newProductLabel = option.get();
 		
 		newProductLabel.setIsActive(productLabel.getIsActive());
-		newProductLabel.setProductLabelDescription(productLabel.getProductLabelDescription());
 		newProductLabel.setProductLabelName(productLabel.getProductLabelName());
-		newProductLabel.setUpdatedBy(productLabel.getUpdatedBy());
-		newProductLabel.setUpdatedAt(new Date());
 
 		newProductLabel = mLabelRepository.save(newProductLabel);
 

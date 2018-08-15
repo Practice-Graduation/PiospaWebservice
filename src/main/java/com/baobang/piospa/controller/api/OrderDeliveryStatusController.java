@@ -106,8 +106,6 @@ public class OrderDeliveryStatusController {
 
 		Date date = new Date();
 		orderDeliveryStatus.setOrderDeliveryStatusId(0);
-		orderDeliveryStatus.setCreatedAt(date);
-		orderDeliveryStatus.setUpdatedAt(date);
 		orderDeliveryStatus = mOrderDeliveryStatusRepository.save(orderDeliveryStatus);
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
@@ -144,12 +142,6 @@ public class OrderDeliveryStatusController {
 		OrderDeliveryStatus newOrderDeliveryStatus = option.get();
 
 		newOrderDeliveryStatus.setOrderDeliveryStatusName(orderDeliveryStatus.getOrderDeliveryStatusName());
-		newOrderDeliveryStatus.setOrderDeliveryStatusDescription(orderDeliveryStatus.getOrderDeliveryStatusDescription());
-		newOrderDeliveryStatus.setIsActive(orderDeliveryStatus.getIsActive());
-		newOrderDeliveryStatus.setCreatedBy(orderDeliveryStatus.getCreatedBy());
-		newOrderDeliveryStatus.setUpdatedBy(orderDeliveryStatus.getUpdatedBy());
-		newOrderDeliveryStatus.setUpdatedAt(new Date());
-		newOrderDeliveryStatus.setIsDelete(orderDeliveryStatus.getIsDelete());
 
 		newOrderDeliveryStatus = mOrderDeliveryStatusRepository.save(newOrderDeliveryStatus);
 

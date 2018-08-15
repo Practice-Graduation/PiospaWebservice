@@ -31,38 +31,17 @@ public class Customer implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date birthday;
 
-	private String cmnd;
-
-	private String code;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at")
-	private Date createdAt;
-
-	@Column(name = "created_by")
-	private int createdBy;
-
-	@Column(name = "cusomer_refer_id")
-	private int cusomerReferId;
 
 	@Column(name = "customer_avatar")
 	private String customerAvatar;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date_last_login")
-	private Date dateLastLogin;
 
 	// bi-directional many-to-one association to District
 	@ManyToOne
 	@JoinColumn(name = "district_id")
 	private District district;
 	private String email;
-
-	private String facebook;
-
-	@Column(name = "facebook_id")
-	private int facebookId;
-
+	
 	private String fullname;
 
 	private String gender;
@@ -70,39 +49,20 @@ public class Customer implements Serializable {
 	@Column(name = "is_active")
 	private byte isActive;
 
-	@Column(name = "is_member")
-	private byte isMember;
-
-	@Column(name = "member_code")
-	private String memberCode;
 
 	private String password;
 
 	private String phone;
-
-	private int point;
-
-	@Column(name = "point_used")
-	private int pointUsed;
 
 	// bi-directional many-to-one association to Province
 	@ManyToOne
 	@JoinColumn(name = "provinces_id")
 	private Province province;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "updated_at")
-	private Date updatedAt;
-
-	@Column(name = "updated_by")
-	private int updatedBy;
-
 	// bi-directional many-to-one association to Ward
 	@ManyToOne
 	@JoinColumn(name = "ward_id")
 	private Ward ward;
-
-	private String zalo;
 
 	// bi-directional many-to-one association to Booking
 	@JsonIgnore
@@ -150,46 +110,7 @@ public class Customer implements Serializable {
 		this.birthday = birthday;
 	}
 
-	public String getCmnd() {
-		return this.cmnd;
-	}
-
-	public void setCmnd(String cmnd) {
-		this.cmnd = cmnd;
-	}
-
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public Date getCreatedAt() {
-		return this.createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public int getCusomerReferId() {
-		return this.cusomerReferId;
-	}
-
-	public void setCusomerReferId(int cusomerReferId) {
-		this.cusomerReferId = cusomerReferId;
-	}
-
+	
 	public String getCustomerAvatar() {
 		return this.customerAvatar;
 	}
@@ -198,14 +119,7 @@ public class Customer implements Serializable {
 		this.customerAvatar = customerAvatar;
 	}
 
-	public Date getDateLastLogin() {
-		return this.dateLastLogin;
-	}
-
-	public void setDateLastLogin(Date dateLastLogin) {
-		this.dateLastLogin = dateLastLogin;
-	}
-
+	
 	public District getDistrict() {
 		return this.district;
 	}
@@ -222,21 +136,7 @@ public class Customer implements Serializable {
 		this.email = email;
 	}
 
-	public String getFacebook() {
-		return this.facebook;
-	}
-
-	public void setFacebook(String facebook) {
-		this.facebook = facebook;
-	}
-
-	public int getFacebookId() {
-		return this.facebookId;
-	}
-
-	public void setFacebookId(int facebookId) {
-		this.facebookId = facebookId;
-	}
+	
 
 	public String getFullname() {
 		return this.fullname;
@@ -262,22 +162,7 @@ public class Customer implements Serializable {
 		this.isActive = isActive;
 	}
 
-	public byte getIsMember() {
-		return this.isMember;
-	}
-
-	public void setIsMember(byte isMember) {
-		this.isMember = isMember;
-	}
-
-	public String getMemberCode() {
-		return this.memberCode;
-	}
-
-	public void setMemberCode(String memberCode) {
-		this.memberCode = memberCode;
-	}
-
+	
 	public String getPassword() {
 		return this.password;
 	}
@@ -294,22 +179,7 @@ public class Customer implements Serializable {
 		this.phone = phone;
 	}
 
-	public int getPoint() {
-		return this.point;
-	}
-
-	public void setPoint(int point) {
-		this.point = point;
-	}
-
-	public int getPointUsed() {
-		return this.pointUsed;
-	}
-
-	public void setPointUsed(int pointUsed) {
-		this.pointUsed = pointUsed;
-	}
-
+	
 	public Province getProvince() {
 		return this.province;
 	}
@@ -317,38 +187,13 @@ public class Customer implements Serializable {
 	public void setProvince(Province province) {
 		this.province = province;
 	}
-
-	public Date getUpdatedAt() {
-		return this.updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public int getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(int updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
+	
 	public Ward getWard() {
 		return this.ward;
 	}
 
 	public void setWard(Ward ward) {
 		this.ward = ward;
-	}
-
-
-	public String getZalo() {
-		return this.zalo;
-	}
-
-	public void setZalo(String zalo) {
-		this.zalo = zalo;
 	}
 
 	public List<Booking> getBookings() {

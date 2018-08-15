@@ -14,8 +14,6 @@ import com.baobang.piospa.entities.Customer;
   */
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer>{
-	@Query("select c from Customer c where c.code = :code")
-	public Customer findByCode(@Param("code") String code);
 	@Query("select c from Customer c where c.account = :account")
 	public Customer findByAccount(@Param("account") String account);
 	@Query("select c from Customer c where c.account = :account and c.password = :password")

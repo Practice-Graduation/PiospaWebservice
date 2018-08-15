@@ -16,9 +16,6 @@ import com.baobang.piospa.entities.Order;
   */
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>{
-	@Query("select o from Order o where o.code = :code")
-	public Order findByCode(@Param("code") String code);
-	
 	@Query("select o from Order o where  o.orderStatus.orderStatusId = :orderStatusId and o.customer.customerId = :customerId")
 	public List<Order> findOrderByStatus(@Param("orderStatusId") int orderStatusId, @Param("customerId") int customerId);
 

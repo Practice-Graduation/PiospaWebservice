@@ -157,9 +157,6 @@ public class ServicePriceController {
 	public DataResult<ServicePrice> createServicePrice(@RequestBody ServicePrice servicePrice) {
 		DataResult<ServicePrice> result = new DataResult<>();
 
-		Date date = new Date();
-		servicePrice.setCreatedAt(date);
-		servicePrice.setUpdatedAt(date);
 		servicePrice = mServicePriceRepository.save(servicePrice);
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
@@ -196,12 +193,8 @@ public class ServicePriceController {
 		price.setService(servicePrice.getService());
 		price.setServiceGroup(servicePrice.getServiceGroup());
 		price.setServicePackage(servicePrice.getServicePackage());
-		price.setRetailPrice(servicePrice.getRetailPrice());
 		price.setAllPrice(servicePrice.getAllPrice());
 		price.setIsActive(servicePrice.getIsActive());
-		price.setUpdatedAt(new Date());
-		price.setUpdatedBy(servicePrice.getUpdatedBy());
-		price.setCreatedBy(servicePrice.getCreatedBy());
 
 		price = mServicePriceRepository.save(price);
 

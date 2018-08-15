@@ -106,9 +106,6 @@ public class ServiceGroupController {
 		ServiceGroup sGroup = mServiceGroupRepository.findByName(serviceGroup.getServiceGroupName());
 		
 		if(sGroup == null) {
-			Date date = new Date();
-			serviceGroup.setCreatedAt(date);
-			serviceGroup.setUpdatedAt(date);
 			sGroup = mServiceGroupRepository.save(serviceGroup);
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
@@ -146,10 +143,6 @@ public class ServiceGroupController {
 		ServiceGroup group = option.get();
 
 		group.setServiceGroupName(serviceGroup.getServiceGroupName());
-		group.setIsActive(serviceGroup.getIsActive());
-		group.setUpdatedAt(new Date());
-		group.setUpdatedBy(serviceGroup.getUpdatedBy());
-		group.setCreatedBy(serviceGroup.getCreatedBy());
 
 		group = mServiceGroupRepository.save(group);
 
