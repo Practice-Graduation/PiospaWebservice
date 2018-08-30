@@ -2,7 +2,7 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
+
 
 
 /**
@@ -46,11 +46,21 @@ public class BookingDetail implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="service_price_id")
 	private ServicePrice servicePrice;
+	
+	@ManyToOne
+	@JoinColumn(name="room_id")
+	private Room room;
 
 	public BookingDetail() {
 	}
 
-	
+	public Room getRoom() {
+		return this.room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
 
 	public int getServedStatus() {
 		return servedStatus;

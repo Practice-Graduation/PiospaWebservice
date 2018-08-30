@@ -26,8 +26,6 @@ public class Service implements Serializable {
 
 	private String description;
 
-	private String detail;
-
 	private String image;
 
 	@Column(name="is_active")
@@ -74,15 +72,7 @@ public class Service implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public String getDetail() {
-		return this.detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-
+	
 	public String getImage() {
 		return this.image;
 	}

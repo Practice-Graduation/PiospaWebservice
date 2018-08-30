@@ -93,7 +93,6 @@ public class ServiceAdminController {
 			product.setServiceName(productName);
 			product.setImage(productImage);
 			product.setDescription(productDescription);
-			product.setDetail(productDescription);
 			product.setIsActive((byte) post_status);
 			product.setServiceTime(time);
 			
@@ -136,7 +135,6 @@ public class ServiceAdminController {
 				product.setServiceName(productName);
 				product.setImage(productImage);
 				product.setDescription(productDescription);
-				product.setDetail(productDescription);
 				product.setIsActive((byte) post_status);
 				product.setServiceTime(time);
 				

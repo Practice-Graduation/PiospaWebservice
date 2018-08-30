@@ -188,7 +188,7 @@
 											<th>Giá</th>
 											<th>Ngày hẹn</th>
 											<th>Giờ hẹn</th>
-											<th>Trạng thái</th>
+											<th style="text-align: center;vertical-align : middle;width: 200px;">Trạng thái</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -206,19 +206,37 @@
 														src="${o.servicePrice.servicePackage.image}" alt="" /></td>
 													<td>${o.servicePrice.servicePackage.servicePackageName }</td>
 												</c:if>
-												<td style="text-align: center;vertical-align : middle;"">${o.number}</td>
+												<td style="text-align: center;vertical-align : middle;">${o.number}</td>
 												<td><fmt:formatNumber
 														value="${o.servicePrice.allPrice }" type="currency" pattern = "#,###đ" /></td>
 												<td style="text-align: center;vertical-align : middle;">${o.dateBooking}</td>
 												<td style="text-align: center;vertical-align : middle;">${o.timeStart}</td>
-												<td style="text-align: center;vertical-align : middle;">
+												<td style="width: 200px;text-align:left;">
 												
-												 <div class="btn-group btn-toggle" booking-detail-id=${o.bookingDetailId } data-toggle="buttons">
-												    <label class="btn ${o.servedStatus eq 1 ? 'btn-default' :  'btn-primary active'}">
-												      <input type="radio" id="option-0" name="options" value="0" checked="checked">Chờ phục vụ</label>
-												    <label class="btn ${o.servedStatus eq 0 ? 'btn-default' :  'btn-primary active'}">
-												      <input type="radio" id="option-1" name="options" value="1">Đã phục vụ</label>
-												  </div>
+											<!-- Group of default radios - option 1 -->
+													<div class="custom-control custom-radio">
+													  <input type="radio" booking-detail-id="${o.bookingDetailId}" value="0" ${o.servedStatus eq 0 ? 'checked' :  ''} class="custom-control-input" id="radioWatingServe" name="groupOfDefaultRadios">
+													  <label class="label label-warning" for="defaultGroupExample1">Chờ phục vụ</label>
+													</div>
+													
+													<!-- Group of default radios - option 2 -->
+													<div class="custom-control custom-radio">
+													  <input type="radio" booking-detail-id="${o.bookingDetailId}" value="1" ${o.servedStatus eq 1 ? 'checked' :  ''} class="custom-control-input" id="radioServing" name="groupOfDefaultRadios">
+													  <label class="label label-primary" for="defaultGroupExample2">Đang phục vụ</label>
+													</div>
+													
+													<!-- Group of default radios - option 3 -->
+													<div class="custom-control custom-radio">
+													  <input type="radio" booking-detail-id="${o.bookingDetailId}" value="2" ${o.servedStatus eq 2 ? 'checked' :  ''} class="custom-control-input" id="radioServed" name="groupOfDefaultRadios">
+													  <label class="label label-success" for="defaultGroupExample3">Đã phục vụ</label>
+													</div>
+													
+													<!-- Group of default radios - option 3 -->
+													<div class="custom-control custom-radio">
+													  <input type="radio" booking-detail-id="${o.bookingDetailId}" value="3" ${o.servedStatus eq 3 ? 'checked' :  ''} class="custom-control-input" id="radioCancle" name="groupOfDefaultRadios">
+													  <label class="label label-danger" for="defaultGroupExample3">Hủy</label>
+													</div>
+												
 												
 												</td>
 											</tr>
@@ -247,21 +265,32 @@
 		<jsp:include page="includes/_footer.jsp"></jsp:include>
 		
 		<script type="text/javascript">
-		$('.btn-toggle').click(function() {
-		    $(this).find('.btn').toggleClass('active');  
-		    
-		    if ($(this).find('.btn-primary').length>0) {
-		    	$(this).find('.btn').toggleClass('btn-primary');	
-		    }
-		    $(this).find('.btn').toggleClass('btn-default');
-		    
-		    var radioValue = $("input[name='options']:checked").val();
-		    if(radioValue == 1){
-		  		radioValue = 0
-		    } else{
-		    	radioValue = 1;
-		    }
-		    var id = $(this).attr('booking-detail-id');
+		
+		$('#radioWatingServe').click(function(){
+			var id = $(this).attr('booking-detail-id');
+			var radioValue = $(this).attr('value');
+			send(id, radioValue);
+		});
+		
+		$('#radioServing').click(function(){
+			var id = $(this).attr('booking-detail-id');
+			var radioValue = $(this).attr('value');
+			send(id, radioValue);
+		});
+		
+		$('#radioServed').click(function(){
+			var id = $(this).attr('booking-detail-id');
+			var radioValue = $(this).attr('value');
+			send(id, radioValue);
+		});
+		
+		$('#radioCancle').click(function(){
+			var id = $(this).attr('booking-detail-id');
+			var radioValue = $(this).attr('value');
+			send(id, radioValue);
+		});
+		
+		function send(id, radioValue){
 			 $.ajax({
 					url : "${pageContext.request.contextPath}/admin/update-booking-detail/" + id,
 					type : "get",
@@ -281,7 +310,8 @@
 						alert("Có lỗi xảy ra: " + e);
 					}
 				});
-		});
+		}
+		
 		</script>
 </body>
 </html>

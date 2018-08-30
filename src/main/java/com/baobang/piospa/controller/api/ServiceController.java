@@ -143,7 +143,6 @@ public class ServiceController {
 		temp.setServiceTime(service.getServiceTime());
 		temp.setDescription(service.getDescription());
 		temp.setImage(service.getImage());
-		temp.setDetail(service.getDetail());
 		temp.setIsActive(service.getIsActive());
 
 		temp = mServiceRepository.save(temp);

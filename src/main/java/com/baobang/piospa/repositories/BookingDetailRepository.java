@@ -19,4 +19,7 @@ public interface BookingDetailRepository extends JpaRepository<BookingDetail, In
 
 	@Query(value = "SELECT * FROM booking_detail WHERE date_booking = :dateBooking", nativeQuery = true)
 	public List<BookingDetail> getBookingDetailByDateBooking(@Param("dateBooking")String dateBooking);
+	
+	@Query(value = "SELECT b from BookingDetail b where b.dateBooking = :date and b.room.roomId = :roomId and b.servedStatus = 0 or b.servedStatus = 1")
+	public List<BookingDetail> findByDateAndRoom(@Param("roomId") int roomId, @Param("date") String date);
 }

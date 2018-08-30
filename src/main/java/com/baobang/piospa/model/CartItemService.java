@@ -1,5 +1,6 @@
 package com.baobang.piospa.model;
 
+import com.baobang.piospa.entities.Room;
 
 /**
   * @author BaoBang
@@ -11,6 +12,7 @@ public class CartItemService {
 	private int number;
 	private String dateBooking;
 	private String timeBooking;
+	private Room room;
 	public CartItemService(int productId, int number, String dateBooking, String timeBooking) {
 		super();
 		this.productId = productId;
@@ -18,6 +20,28 @@ public class CartItemService {
 		this.dateBooking = dateBooking;
 		this.timeBooking = timeBooking;
 	}
+	
+	
+	public CartItemService(int productId, int number, String dateBooking, String timeBooking, Room room) {
+		super();
+		this.productId = productId;
+		this.number = number;
+		this.dateBooking = dateBooking;
+		this.timeBooking = timeBooking;
+		this.room = room;
+	}
+
+
+	public Room getRoom() {
+		return room;
+	}
+
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
+
 	public CartItemService() {
 		super();
 	}

@@ -25,10 +25,6 @@ public class ServicePackageDetail implements Serializable {
 	@JoinColumn(name="service_package_id")
 	private ServicePackage servicePackage;
 	
-	@ManyToOne
-	@JoinColumn(name="service_time_id")
-	private ServiceTime serviceTime;
-
 	
 
 	//bi-directional many-to-one association to Service

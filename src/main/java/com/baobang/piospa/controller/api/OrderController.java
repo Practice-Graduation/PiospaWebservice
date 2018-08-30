@@ -1,7 +1,9 @@
 package com.baobang.piospa.controller.api;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ArrayList;
 import javax.transaction.Transactional;
@@ -21,6 +23,7 @@ import com.baobang.piospa.entities.Order;
 import com.baobang.piospa.entities.OrderProduct;
 import com.baobang.piospa.entities.OrderStatus;
 import com.baobang.piospa.entities.Product;
+import com.baobang.piospa.entities.Room;
 import com.baobang.piospa.entities.ServicePrice;
 import com.baobang.piospa.model.BookingDetailObject;
 import com.baobang.piospa.model.CancelOrderBody;
@@ -38,8 +41,10 @@ import com.baobang.piospa.repositories.OrderProductRepository;
 import com.baobang.piospa.repositories.OrderRepository;
 import com.baobang.piospa.repositories.OrderStatusRepository;
 import com.baobang.piospa.repositories.ProductRepository;
+import com.baobang.piospa.repositories.RoomRepository;
 import com.baobang.piospa.repositories.ServicePriceRepository;
 import com.baobang.piospa.utils.AppConstants;
+import com.baobang.piospa.utils.DateTimeUtils;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
 import com.baobang.piospa.utils.Utils;
@@ -69,6 +74,8 @@ public class OrderController {
 	ServicePriceRepository mServicePriceRepository;
 	@Autowired
 	OrderStatusRepository mOrderStatusRepository;
+	@Autowired
+	RoomRepository mRoomRepository;
 
 	/**
 	 * @api {get} / Request Order information
@@ -209,6 +216,7 @@ public class OrderController {
 	}
 
 	/**
+	 * @throws Exception
 	 * @api {post} / Create a new Order
 	 * @apiName createOrder
 	 * @apiGroup Order
@@ -226,7 +234,7 @@ public class OrderController {
 			method = RequestMethod.POST, //
 			produces = { MediaType.APPLICATION_JSON_VALUE })
 	@ApiOperation(value = "Create a new Order")
-	public DataResult<Order> createOrder(@RequestBody OrderBodyRequest orderBodyRequester) {
+	public DataResult<Order> createOrder(@RequestBody OrderBodyRequest orderBodyRequester) throws Exception {
 		DataResult<Order> result = new DataResult<>();
 
 		OrderStatus orderStatus = mOrderStatusRepository.findById(AppConstants.ORDER_STATUS).get();
@@ -265,6 +273,13 @@ public class OrderController {
 			booking = mBookingRepository.save(booking);
 			int price = 0, totalNumber = 0;
 
+			if (!checkCanBooking(orderBodyRequester.getCartShopping().getCartItemServices())) {
+				result.setMessage("Không thể đặt phòng");
+				result.setStatusCode(HttpStatus.NOT_FOUND.value());
+				result.setData(null);
+				return result;
+			}
+
 			ServicePrice servicePrice;
 			for (CartItemService item : orderBodyRequester.getCartShopping().getCartItemServices()) {
 				BookingDetail bookingDetail = new BookingDetail();
@@ -279,6 +294,7 @@ public class OrderController {
 
 				bookingDetail.setTimeStart(item.getTimeBooking());
 
+				bookingDetail.setRoom(item.getRoom());
 				bookingDetail = mBookingDetailRepository.save(bookingDetail);
 				booking.addBookingDetail(bookingDetail);
 			}
@@ -295,6 +311,90 @@ public class OrderController {
 
 		result.setData(temp);
 		return result;
+	}
+
+	private boolean checkCanBooking(List<CartItemService> cartItemServices) {
+
+		Map<String, List<BookingDetail>> map = new HashMap<>();
+
+		for (CartItemService itemService : cartItemServices) {
+			List<BookingDetail> details = mBookingDetailRepository.findByDateAndRoom(itemService.getRoom().getRoomId(),
+					itemService.getDateBooking());
+			if (details == null) {
+				details = new ArrayList<>();
+			}
+			map.put(itemService.getDateBooking(), details);
+
+		}
+
+		for (CartItemService itemService : cartItemServices) {
+			if (!checkCanAddToBookingDetail(map, itemService)) {
+				return false;
+			} else {
+				List<BookingDetail> details = map.get(itemService.getDateBooking());
+				BookingDetail bd = new BookingDetail();
+				bd.setDateBooking(itemService.getDateBooking());
+				bd.setTimeStart(itemService.getTimeBooking());
+				bd.setRoom(itemService.getRoom());
+				bd.setNumber(itemService.getNumber());
+				ServicePrice servicePrice = mServicePriceRepository.findById(itemService.getProductId()).get();
+
+				bd.setServicePrice(servicePrice);
+				details.add(bd);
+				map.put(itemService.getDateBooking(), details);
+				System.out.println(map.get(itemService.getDateBooking()).size() + "");
+			}
+
+		}
+
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	private boolean checkCanAddToBookingDetail(Map<String, List<BookingDetail>> map, CartItemService itemService) {
+		List<BookingDetail> details = map.get(itemService.getDateBooking());
+		int count = 0;
+		Date dateBooking = DateTimeUtils.getDate(itemService.getDateBooking(), itemService.getTimeBooking());
+		for (BookingDetail detail : details) {
+			Date start = DateTimeUtils.getDate(detail.getDateBooking(), detail.getTimeStart());
+
+			Date end = new Date(start.getTime());
+			int time = getTime(detail.getServicePrice());
+			end = DateTimeUtils.addMinute(end, time);
+			if (isValidDate(dateBooking, start, end)) {
+				count += detail.getNumber();
+			}
+		}
+		
+		if (itemService.getNumber() > itemService.getRoom().getRoomLimit()||count >= itemService.getRoom().getRoomLimit()) {
+
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isValidDate(Date dateBooking, Date start, Date end) {
+		long timeBooking = dateBooking.getTime();
+		long timeStart = start.getTime();
+		long timeend = end.getTime();
+
+		if (timeBooking >= timeStart && timeBooking <= timeend) {
+			return true;
+		}
+		return false;
+
+	}
+
+	private int getTime(ServicePrice servicePrice) {
+		int time = 0;
+
+		if (servicePrice.getService() != null) {
+			time = Integer.parseInt(servicePrice.getService().getServiceTime().getTime());
+		} else {
+			time = servicePrice.getServicePackage().getTime();
+		}
+
+		return time;
 	}
 
 	@RequestMapping(//
