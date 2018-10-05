@@ -1,10 +1,8 @@
 
 package com.baobang.piospa.controller.api;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.entities.ProductGroup;
 import com.baobang.piospa.model.DataResult;
@@ -21,7 +18,6 @@ import com.baobang.piospa.repositories.ProductGroupRepository;
 import com.baobang.piospa.repositories.ProductRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
-import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 

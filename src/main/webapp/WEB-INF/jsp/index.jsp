@@ -31,7 +31,7 @@
 			<!-- Main content -->
 			<section class="content"> <!-- Small boxes (Stat box) -->
 			<div class="row">
-				<div class="col-lg-3 col-xs-6">
+				<div class="col-lg-4 col-xs-8">
 					<!-- small box -->
 					<div class="small-box bg-aqua">
 						<div class="inner">
@@ -47,24 +47,7 @@
 							class="fa fa-arrow-circle-right"></i></a>
 					</div>
 				</div>
-				<!-- ./col -->
-				<div class="col-lg-3 col-xs-6">
-					<!-- small box -->
-					<div class="small-box bg-red">
-						<div class="inner">
-							<h3>${totalService}</h3>
-							<p>DỊCH VỤ</p>
-						</div>
-						<div class="icon" style="padding: 15px;">
-							<!-- <i class="ion ion-compose"></i> -->
-							<i class="fa fa-newspaper-o"></i>
-						</div>
-						<a href="${pageContext.request.contextPath}/admin/posts"
-							class="small-box-footer">Chi tiết <i
-							class="fa fa-arrow-circle-right"></i></a>
-					</div>
-				</div>
-				<div class="col-lg-3 col-xs-6">
+				<div class="col-lg-4 col-xs-8">
 					<!-- small box -->
 					<div class="small-box bg-green">
 						<div class="inner">
@@ -80,7 +63,7 @@
 					</div>
 				</div>
 				<!-- ./col -->
-				<div class="col-lg-3 col-xs-6">
+				<div class="col-lg-4 col-xs-8">
 					<!-- small box -->
 					<div class="small-box bg-yellow">
 						<div class="inner">
@@ -134,7 +117,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-6">
+					<div class="col-md-8">
 						<!-- PRODUCT LIST -->
 						<div class="box box-info">
 							<div class="box-header with-border">
@@ -187,14 +170,15 @@
 						</div>
 						<!-- /.box -->
 					</div>
-
-					<div class="col-md-6">
-						<!-- PRODUCT LIST -->
-						<div class="box box-danger">
+					
+					<div class="col-md-4">
+						<!-- USERS LIST -->
+						<div class="box box-warning">
 							<div class="box-header with-border">
-								<h3 class="box-title">Các dịch vụ mới thêm gần đây</h3>
+								<h3 class="box-title">Thành viên mới</h3>
 
 								<div class="box-tools pull-right">
+									<!-- <span class="label label-danger">8 New Members</span> -->
 									<button type="button" class="btn btn-box-tool"
 										data-widget="collapse">
 										<i class="fa fa-minus"></i>
@@ -206,41 +190,30 @@
 								</div>
 							</div>
 							<!-- /.box-header -->
-							<div class="box-body">
-								<ul class="products-list product-list-in-box">
-									<c:forEach var="p" items="${serviceList}">
-										<li class="item">
-											<div class="product-img">
-												<img src="${p.image}" alt="${p.serviceName}">
-											</div>
-											<div class="product-info">
-												<a
-													href="${pageContext.request.contextPath}/admin/edit-post/${p.serviceId}"
-													class="product-title">${p.serviceName} <c:if
-														test="${p.isActive eq 1}">
-														<span class="label label-success pull-right">Hiện</span>
-													</c:if> <c:if test="${p.isActive eq 0}">
-														<span class="label label-warning pull-right">Ẩn</span>
-													</c:if>
-												</a> <span class="product-description"> ${p.description}
-												</span>
-											</div>
-										</li>
-										<!-- /.item -->
+							<div class="box-body no-padding">
+								<ul class="users-list clearfix">
+									<c:forEach var="a" items="${accountList}">
+										<li><img src="${a.staffAvatar}" alt="${a.fullname}">
+											<a class="users-list-name"
+											href="${pageContext.request.contextPath}/admin/profile/${a.staffId}">${a.fullname}</a>
+											<%-- <span class="users-list-date"><fmt:formatDate
+													pattern="dd'/'MM'/'yyyy" value="${a.createdAt}" /></span></li> --%>
 									</c:forEach>
 								</ul>
+								<!-- /.users-list -->
 							</div>
 							<!-- /.box-body -->
 							<div class="box-footer text-center">
-								<a href="${pageContext.request.contextPath}/admin/service"
+								<a href="${pageContext.request.contextPath}/admin/members"
 									class="uppercase">Xem tất cả</a>
 							</div>
 							<!-- /.box-footer -->
 						</div>
-						<!-- /.box -->
+						<!--/.box -->
 					</div>
+					<!-- /.col -->
 
-					<div class="col-md-8">
+					<div class="col-md-12">
 						<!-- TABLE: LATEST ORDERS -->
 						<div class="box box-success">
 							<div class="box-header with-border">
@@ -312,50 +285,6 @@
 						<!-- /.box -->
 					</div>
 					<!-- /.col -->
-
-					<div class="col-md-4">
-						<!-- USERS LIST -->
-						<div class="box box-warning">
-							<div class="box-header with-border">
-								<h3 class="box-title">Thành viên mới</h3>
-
-								<div class="box-tools pull-right">
-									<!-- <span class="label label-danger">8 New Members</span> -->
-									<button type="button" class="btn btn-box-tool"
-										data-widget="collapse">
-										<i class="fa fa-minus"></i>
-									</button>
-									<button type="button" class="btn btn-box-tool"
-										data-widget="remove">
-										<i class="fa fa-times"></i>
-									</button>
-								</div>
-							</div>
-							<!-- /.box-header -->
-							<div class="box-body no-padding">
-								<ul class="users-list clearfix">
-									<c:forEach var="a" items="${accountList}">
-										<li><img src="${a.staffAvatar}" alt="${a.fullname}">
-											<a class="users-list-name"
-											href="${pageContext.request.contextPath}/admin/profile/${a.staffId}">${a.fullname}</a>
-											<%-- <span class="users-list-date"><fmt:formatDate
-													pattern="dd'/'MM'/'yyyy" value="${a.createdAt}" /></span></li> --%>
-									</c:forEach>
-								</ul>
-								<!-- /.users-list -->
-							</div>
-							<!-- /.box-body -->
-							<div class="box-footer text-center">
-								<a href="${pageContext.request.contextPath}/admin/members"
-									class="uppercase">Xem tất cả</a>
-							</div>
-							<!-- /.box-footer -->
-						</div>
-						<!--/.box -->
-					</div>
-					<!-- /.col -->
-
-
 
 
 				</div>

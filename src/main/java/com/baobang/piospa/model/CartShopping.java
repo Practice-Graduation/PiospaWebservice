@@ -10,23 +10,16 @@ import java.util.List;
 public class CartShopping {
 
 	private List<CartItemProduct> cartItemProducts;
-	private List<CartItemService> cartItemServices;
 	public List<CartItemProduct> getCartItemProducts() {
 		return cartItemProducts;
 	}
 	public void setCartItemProducts(List<CartItemProduct> cartItemProducts) {
 		this.cartItemProducts = cartItemProducts;
 	}
-	public List<CartItemService> getCartItemServices() {
-		return cartItemServices;
-	}
-	public void setCartItemServices(List<CartItemService> cartItemServices) {
-		this.cartItemServices = cartItemServices;
-	}
-	public CartShopping(List<CartItemProduct> cartItemProducts, List<CartItemService> cartItemServices) {
+	
+	public CartShopping(List<CartItemProduct> cartItemProducts) {
 		super();
 		this.cartItemProducts = cartItemProducts;
-		this.cartItemServices = cartItemServices;
 	}
 	public CartShopping() {
 		super();

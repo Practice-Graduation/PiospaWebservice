@@ -35,11 +35,6 @@ public class Customer implements Serializable {
 	@Column(name = "customer_avatar")
 	private String customerAvatar;
 
-
-	// bi-directional many-to-one association to District
-	@ManyToOne
-	@JoinColumn(name = "district_id")
-	private District district;
 	private String email;
 	
 	private String fullname;
@@ -54,21 +49,11 @@ public class Customer implements Serializable {
 
 	private String phone;
 
-	// bi-directional many-to-one association to Province
-	@ManyToOne
-	@JoinColumn(name = "provinces_id")
-	private Province province;
 
 	// bi-directional many-to-one association to Ward
 	@ManyToOne
 	@JoinColumn(name = "ward_id")
 	private Ward ward;
-
-	// bi-directional many-to-one association to Booking
-	@JsonIgnore
-	@OneToMany(mappedBy = "customer")
-	private List<Booking> bookings;
-
 
 	// bi-directional many-to-one association to Order
 	@JsonIgnore
@@ -117,15 +102,6 @@ public class Customer implements Serializable {
 
 	public void setCustomerAvatar(String customerAvatar) {
 		this.customerAvatar = customerAvatar;
-	}
-
-	
-	public District getDistrict() {
-		return this.district;
-	}
-
-	public void setDistrict(District district) {
-		this.district = district;
 	}
 
 	public String getEmail() {
@@ -179,43 +155,12 @@ public class Customer implements Serializable {
 		this.phone = phone;
 	}
 
-	
-	public Province getProvince() {
-		return this.province;
-	}
-
-	public void setProvince(Province province) {
-		this.province = province;
-	}
-	
 	public Ward getWard() {
 		return this.ward;
 	}
 
 	public void setWard(Ward ward) {
 		this.ward = ward;
-	}
-
-	public List<Booking> getBookings() {
-		return this.bookings;
-	}
-
-	public void setBookings(List<Booking> bookings) {
-		this.bookings = bookings;
-	}
-
-	public Booking addBooking(Booking booking) {
-		getBookings().add(booking);
-		booking.setCustomer(this);
-
-		return booking;
-	}
-
-	public Booking removeBooking(Booking booking) {
-		getBookings().remove(booking);
-		booking.setCustomer(null);
-
-		return booking;
 	}
 
 	public List<Order> getOrders() {

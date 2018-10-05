@@ -30,10 +30,6 @@ public class Province implements Serializable {
 	@OneToMany(mappedBy = "province")
 	private List<District> districts;
 
-	// bi-directional many-to-one association to Customer
-	@JsonIgnore
-	@OneToMany(mappedBy = "province")
-	private List<Customer> customers;
 
 	public Province() {
 	}
@@ -82,28 +78,6 @@ public class Province implements Serializable {
 		district.setProvince(null);
 
 		return district;
-	}
-	
-	public List<Customer> getCustomers() {
-		return this.customers;
-	}
-
-	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
-	}
-
-	public Customer addCustomer(Customer customer) {
-		getCustomers().add(customer);
-		customer.setProvince(this);
-
-		return customer;
-	}
-
-	public Customer removeCustomer(Customer customer) {
-		getCustomers().remove(customer);
-		customer.setProvince(null);
-
-		return customer;
 	}
 
 }

@@ -8,8 +8,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -18,18 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.baobang.piospa.entities.Product;
 import com.baobang.piospa.entities.ProductGroup;
 import com.baobang.piospa.entities.ProductLabel;
 import com.baobang.piospa.entities.ProductOrigin;
-import com.baobang.piospa.entities.Staff;
 import com.baobang.piospa.repositories.ProductGroupRepository;
 import com.baobang.piospa.repositories.ProductLabelRepository;
 import com.baobang.piospa.repositories.ProductOriginRepository;
 import com.baobang.piospa.repositories.ProductRepository;
 import com.baobang.piospa.repositories.StaffRepository;
-import com.baobang.piospa.utils.Utils;
 
 /**
  * @author BaoBang

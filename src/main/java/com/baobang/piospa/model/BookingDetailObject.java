@@ -1,6 +1,5 @@
 package com.baobang.piospa.model;
 
-import com.baobang.piospa.entities.BookingDetail;
 
 /**
   * @author BaoBang
@@ -29,21 +28,6 @@ public class BookingDetailObject {
 	}
 	public BookingDetailObject() {
 		super();
-	}
-	public BookingDetailObject(BookingDetail detail) {
-		// TODO Auto-generated constructor stub
-		if(detail.getServicePrice().getService() != null) {
-			serviceName = detail.getServicePrice().getService().getServiceName();
-			serviceImage = detail.getServicePrice().getService().getImage();
-		}else if (detail.getServicePrice().getServicePackage() != null) {
-			serviceName = detail.getServicePrice().getServicePackage().getServicePackageName();
-			serviceImage = detail.getServicePrice().getServicePackage().getImage();
-		}
-		dateBooking = detail.getDateBooking();
-		timeBooking = detail.getTimeStart();
-		numberCustomer = detail.getNumber();
-		price = detail.getServicePrice().getAllPrice();
-		
 	}
 	
 	public String getServiceName() {

@@ -30,35 +30,6 @@
           </ul>
         </li>
         
-        <li class="treeview ${currentPageParent eq 'pageService' ? 'active':''}">
-          <a href="#">
-           <i class="fa fa-bed" aria-hidden="true"></i>
-            <span>Dịch vụ</span>
-             <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-            <li class="${currentPage eq 'pageAddNewService' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/add-service"><i class="fa fa-circle-o"></i>Thêm dịch vụ</a></li>
-             <li class="${currentPage eq 'pageAddNewServicePackage' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/add-service-package"><i class="fa fa-circle-o"></i>Thêm gói dịch vụ</a></li>
-            <li class="${currentPage eq 'pageServiceList' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/service"><i class="fa fa-circle-o"></i>Danh sách dịch vụ</a></li>
-            <li class="${currentPage eq 'pageServicePackageList' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/service-package"><i class="fa fa-circle-o"></i>Danh sách gói dịch vụ</a></li>
-          </ul>
-        </li>
-        
-        
-        <li class="treeview ${currentPageParent eq 'pageServicePrice' ? 'active':''}">
-          <a href="#">
-           <i class="fa fa-usd" aria-hidden="true"></i>
-            <span>Giá dịch vụ</span>
-             <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-            <li class="${currentPage eq 'pageAddNewServicePrice' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/add-service-price"><i class="fa fa-circle-o"></i>Thêm giá dịch vụ</a></li>
-            <li class="${currentPage eq 'pageServicePriceList' ? 'active':''}"><a href="${pageContext.request.contextPath }/admin/service-price"><i class="fa fa-circle-o"></i>Danh sách giá dịch vụ</a></li>
-            
-          </ul>
-        </li>
-        
-      
        <li class="treeview ${currentPageParent eq 'pageOrder' ? 'active':''}">
           <a href="${pageContext.request.contextPath }/admin/order-list">
             <i class="fa fa-shopping-cart"></i>

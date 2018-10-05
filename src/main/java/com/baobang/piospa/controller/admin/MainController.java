@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.baobang.piospa.entities.Order;
 import com.baobang.piospa.entities.Product;
-import com.baobang.piospa.entities.Service;
 import com.baobang.piospa.entities.Staff;
 import com.baobang.piospa.repositories.OrderRepository;
 import com.baobang.piospa.repositories.ProductRepository;
-import com.baobang.piospa.repositories.ServiceRepository;
 import com.baobang.piospa.repositories.StaffRepository;
 
 import org.springframework.security.core.Authentication;
@@ -38,8 +36,6 @@ public class MainController {
 	ProductRepository mProductRepository;
 	@Autowired
 	OrderRepository mOrderRepository;
-	@Autowired
-	ServiceRepository mServiceRepository;
 
 	@RequestMapping(value = { "", "/", "/admin" }, method = RequestMethod.GET)
 	public String adminPage(Model model, Principal principal, HttpSession session) {
@@ -51,17 +47,14 @@ public class MainController {
 		List<Product> products = mProductRepository.findAll();
 		List<Order> orders = mOrderRepository.findAll();
 		List<Staff> staffs = mStaffRepository.findAll();
-		List<Service> services = mServiceRepository.findAll();
 
 		model.addAttribute("totalProduct", products.size());
 		model.addAttribute("totalOrder", orders.size());
 		model.addAttribute("totalAccount", staffs.size());
-		model.addAttribute("totalService", services.size());
 
 		List<Product> newProducts = new ArrayList<>();
 		List<Order> newOrders = new ArrayList<>();
 		List<Staff> newStaffs = new ArrayList<>();
-		List<Service> newServices = new ArrayList<>();
 		for (int i = 0; i < 5; i++) {
 			if (products.size() > 0) {
 				newProducts.add(products.get(products.size() - 1));
@@ -75,15 +68,10 @@ public class MainController {
 				newStaffs.add(staffs.get(staffs.size() - 1));
 				staffs.remove(staffs.size() - 1);
 			}
-			if (services.size() > 0) {
-				newServices.add(services.get(services.size() - 1));
-				services.remove(services.size() - 1);
-			}
 		}
 		model.addAttribute("productList", newProducts);
 		model.addAttribute("orderList", newOrders);
 		model.addAttribute("accountList", newStaffs);
-		model.addAttribute("serviceList", newServices);
 		User loginedUser = (User) ((Authentication) principal).getPrincipal();
 		Staff staff = mStaffRepository.findByUsername(loginedUser.getUsername());
 		session.setAttribute("user", staff);

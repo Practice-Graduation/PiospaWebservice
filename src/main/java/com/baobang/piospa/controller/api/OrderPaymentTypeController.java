@@ -1,9 +1,7 @@
 package com.baobang.piospa.controller.api;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,13 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.baobang.piospa.entities.OrderPaymentType;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.repositories.OrderPaymentTypeRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
-
 import io.swagger.annotations.ApiOperation;
 
 /**
@@ -101,7 +97,6 @@ public class OrderPaymentTypeController {
 	public DataResult<OrderPaymentType> createOrderPaymentType(@RequestBody OrderPaymentType orderPaymentType) {
 		DataResult<OrderPaymentType> result = new DataResult<>();
 
-		Date date = new Date();
 		orderPaymentType.setOrderPaymentTypeId(0);
 		orderPaymentType = mOrderPaymentTypeRepository.save(orderPaymentType);
 		result.setMessage(MessageResponse.SUCCESSED);

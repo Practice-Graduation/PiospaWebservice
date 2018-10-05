@@ -2,11 +2,7 @@ package com.baobang.piospa.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-
-import java.util.Date;
 import java.util.List;
 
 

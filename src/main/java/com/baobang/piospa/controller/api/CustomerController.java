@@ -5,9 +5,7 @@ package com.baobang.piospa.controller.api;
   * 
   */
 
-import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,14 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.baobang.piospa.entities.Customer;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.model.LoginForm;
 import com.baobang.piospa.repositories.CustomerRepository;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
-import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -147,8 +143,6 @@ public class CustomerController {
 		temp.setBirthday(customer.getBirthday());
 		temp.setPhone(customer.getPhone());
 		temp.setIsActive(customer.getIsActive());
-		temp.setProvince(customer.getProvince());
-		temp.setDistrict(customer.getDistrict());
 		temp.setWard(customer.getWard());
 		temp.setEmail(customer.getEmail());
 		temp.setAddress(customer.getAddress());

@@ -1,9 +1,7 @@
 package com.baobang.piospa.controller.api;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.ArrayList;
 import javax.transaction.Transactional;
@@ -17,37 +15,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baobang.piospa.entities.Booking;
-import com.baobang.piospa.entities.BookingDetail;
 import com.baobang.piospa.entities.Order;
 import com.baobang.piospa.entities.OrderProduct;
 import com.baobang.piospa.entities.OrderStatus;
 import com.baobang.piospa.entities.Product;
-import com.baobang.piospa.entities.Room;
-import com.baobang.piospa.entities.ServicePrice;
-import com.baobang.piospa.model.BookingDetailObject;
 import com.baobang.piospa.model.CancelOrderBody;
 import com.baobang.piospa.model.CartItemProduct;
-import com.baobang.piospa.model.CartItemService;
 import com.baobang.piospa.model.DataResult;
 import com.baobang.piospa.model.OrderBodyRequest;
 import com.baobang.piospa.model.OrderCustomerStatusBodyRequest;
 import com.baobang.piospa.model.OrderObject;
 import com.baobang.piospa.model.OrderProductObject;
 import com.baobang.piospa.model.OrderResultResponse;
-import com.baobang.piospa.repositories.BookingDetailRepository;
-import com.baobang.piospa.repositories.BookingRepository;
 import com.baobang.piospa.repositories.OrderProductRepository;
 import com.baobang.piospa.repositories.OrderRepository;
 import com.baobang.piospa.repositories.OrderStatusRepository;
 import com.baobang.piospa.repositories.ProductRepository;
-import com.baobang.piospa.repositories.RoomRepository;
-import com.baobang.piospa.repositories.ServicePriceRepository;
 import com.baobang.piospa.utils.AppConstants;
-import com.baobang.piospa.utils.DateTimeUtils;
 import com.baobang.piospa.utils.MessageResponse;
 import com.baobang.piospa.utils.RequestPath;
-import com.baobang.piospa.utils.Utils;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -67,15 +53,7 @@ public class OrderController {
 	@Autowired
 	OrderProductRepository mOrderProductRepository;
 	@Autowired
-	BookingRepository mBookingRepository;
-	@Autowired
-	BookingDetailRepository mBookingDetailRepository;
-	@Autowired
-	ServicePriceRepository mServicePriceRepository;
-	@Autowired
 	OrderStatusRepository mOrderStatusRepository;
-	@Autowired
-	RoomRepository mRoomRepository;
 
 	/**
 	 * @api {get} / Request Order information
@@ -202,12 +180,7 @@ public class OrderController {
 
 		OrderResultResponse response = new OrderResultResponse();
 		response.setOrderProducts(order.getOrderProducts());
-		Booking booking = order.getBooking();
-		if (booking != null) {
-			response.setBookingDetails(order.getBooking().getBookingDetails());
-		} else {
-			response.setBookingDetails(new ArrayList<>());
-		}
+		
 
 		result.setMessage(MessageResponse.SUCCESSED);
 		result.setStatusCode(HttpStatus.OK.value());
@@ -265,44 +238,6 @@ public class OrderController {
 			orderProduct = mOrderProductRepository.save(orderProduct);
 			temp.addOrderProduct(orderProduct);
 		}
-		if (orderBodyRequester.getCartShopping().getCartItemServices().size() > 0) {
-			Booking booking = new Booking();
-			booking.setCustomer(temp.getCustomer());
-			booking.setOrder(temp);
-
-			booking = mBookingRepository.save(booking);
-			int price = 0, totalNumber = 0;
-
-			if (!checkCanBooking(orderBodyRequester.getCartShopping().getCartItemServices())) {
-				result.setMessage("Không thể đặt phòng");
-				result.setStatusCode(HttpStatus.NOT_FOUND.value());
-				result.setData(null);
-				return result;
-			}
-
-			ServicePrice servicePrice;
-			for (CartItemService item : orderBodyRequester.getCartShopping().getCartItemServices()) {
-				BookingDetail bookingDetail = new BookingDetail();
-				totalNumber += item.getNumber();
-				servicePrice = mServicePriceRepository.findById(item.getProductId()).get();
-
-				price += item.getNumber() * servicePrice.getAllPrice();
-				bookingDetail.setBooking(booking);
-				bookingDetail.setNumber(item.getNumber());
-				bookingDetail.setServicePrice(servicePrice);
-				bookingDetail.setDateBooking(item.getDateBooking());
-
-				bookingDetail.setTimeStart(item.getTimeBooking());
-
-				bookingDetail.setRoom(item.getRoom());
-				bookingDetail = mBookingDetailRepository.save(bookingDetail);
-				booking.addBookingDetail(bookingDetail);
-			}
-			booking.setPrice(price);
-			booking.setNumber(totalNumber);
-			booking.setTotal(price - booking.getDiscount());
-			temp.setBooking(booking);
-		}
 		temp.caculate();
 		temp = mOrderRepository.save(temp);
 
@@ -311,90 +246,6 @@ public class OrderController {
 
 		result.setData(temp);
 		return result;
-	}
-
-	private boolean checkCanBooking(List<CartItemService> cartItemServices) {
-
-		Map<String, List<BookingDetail>> map = new HashMap<>();
-
-		for (CartItemService itemService : cartItemServices) {
-			List<BookingDetail> details = mBookingDetailRepository.findByDateAndRoom(itemService.getRoom().getRoomId(),
-					itemService.getDateBooking());
-			if (details == null) {
-				details = new ArrayList<>();
-			}
-			map.put(itemService.getDateBooking(), details);
-
-		}
-
-		for (CartItemService itemService : cartItemServices) {
-			if (!checkCanAddToBookingDetail(map, itemService)) {
-				return false;
-			} else {
-				List<BookingDetail> details = map.get(itemService.getDateBooking());
-				BookingDetail bd = new BookingDetail();
-				bd.setDateBooking(itemService.getDateBooking());
-				bd.setTimeStart(itemService.getTimeBooking());
-				bd.setRoom(itemService.getRoom());
-				bd.setNumber(itemService.getNumber());
-				ServicePrice servicePrice = mServicePriceRepository.findById(itemService.getProductId()).get();
-
-				bd.setServicePrice(servicePrice);
-				details.add(bd);
-				map.put(itemService.getDateBooking(), details);
-				System.out.println(map.get(itemService.getDateBooking()).size() + "");
-			}
-
-		}
-
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	private boolean checkCanAddToBookingDetail(Map<String, List<BookingDetail>> map, CartItemService itemService) {
-		List<BookingDetail> details = map.get(itemService.getDateBooking());
-		int count = 0;
-		Date dateBooking = DateTimeUtils.getDate(itemService.getDateBooking(), itemService.getTimeBooking());
-		for (BookingDetail detail : details) {
-			Date start = DateTimeUtils.getDate(detail.getDateBooking(), detail.getTimeStart());
-
-			Date end = new Date(start.getTime());
-			int time = getTime(detail.getServicePrice());
-			end = DateTimeUtils.addMinute(end, time);
-			if (isValidDate(dateBooking, start, end)) {
-				count += detail.getNumber();
-			}
-		}
-		
-		if (itemService.getNumber() > itemService.getRoom().getRoomLimit()||count >= itemService.getRoom().getRoomLimit()) {
-
-			return false;
-		}
-		return true;
-	}
-
-	private boolean isValidDate(Date dateBooking, Date start, Date end) {
-		long timeBooking = dateBooking.getTime();
-		long timeStart = start.getTime();
-		long timeend = end.getTime();
-
-		if (timeBooking >= timeStart && timeBooking <= timeend) {
-			return true;
-		}
-		return false;
-
-	}
-
-	private int getTime(ServicePrice servicePrice) {
-		int time = 0;
-
-		if (servicePrice.getService() != null) {
-			time = Integer.parseInt(servicePrice.getService().getServiceTime().getTime());
-		} else {
-			time = servicePrice.getServicePackage().getTime();
-		}
-
-		return time;
 	}
 
 	@RequestMapping(//
@@ -498,25 +349,10 @@ public class OrderController {
 		List<OrderObject> list = new ArrayList<>();
 		for (Order order : orders) {
 			List<OrderProductObject> orderProductObjects = getOrderProduct(order);
-			List<BookingDetailObject> bookingDetailObjects = getBookingDetail(order);
-			list.add(new OrderObject(order, orderProductObjects, bookingDetailObjects));
+			list.add(new OrderObject(order, orderProductObjects, new ArrayList<>()));
 		}
 		return new DataResult<List<OrderObject>>(HttpStatus.OK.value(), MessageResponse.SUCCESSED, list);
 	}
-
-	private List<BookingDetailObject> getBookingDetail(Order order) {
-		// TODO Auto-generated method stub
-		List<BookingDetailObject> bookingDetailObjects = new ArrayList<>();
-		Booking booking = order.getBooking();
-		if (booking != null) {
-			for (BookingDetail detail : booking.getBookingDetails()) {
-				bookingDetailObjects.add(new BookingDetailObject(detail));
-			}
-		}
-
-		return bookingDetailObjects;
-	}
-
 	private List<OrderProductObject> getOrderProduct(Order order) {
 		// TODO Auto-generated method stub
 		List<OrderProductObject> orders = new ArrayList<>();

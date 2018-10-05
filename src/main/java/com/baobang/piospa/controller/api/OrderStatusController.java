@@ -1,9 +1,7 @@
 package com.baobang.piospa.controller.api;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -102,7 +100,6 @@ public class OrderStatusController {
 	public DataResult<OrderStatus> createOrderStatus(@RequestBody OrderStatus orderStatus) {
 		DataResult<OrderStatus> result = new DataResult<>();
 
-		Date date = new Date();
 		orderStatus.setOrderStatusId(0);
 		orderStatus = mOrderStatusRepository.save(orderStatus);
 		result.setMessage(MessageResponse.SUCCESSED);

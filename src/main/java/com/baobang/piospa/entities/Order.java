@@ -54,11 +54,6 @@ public class Order implements Serializable {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-
-	// bi-directional many-to-one association to Booking
-
-	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-	private Booking booking;
 	// bi-directional many-to-one association to OrderProduct
 	@JsonIgnore
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
@@ -129,7 +124,6 @@ public class Order implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	
 	public int getDeliveryCost() {
 		return this.deliveryCost;
 	}
@@ -154,7 +148,6 @@ public class Order implements Serializable {
 		this.email = email;
 	}
 
-	
 	public int getSubTotal() {
 		return this.subTotal;
 	}
@@ -177,14 +170,6 @@ public class Order implements Serializable {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	public Booking getBooking() {
-		return this.booking;
-	}
-
-	public void setBooking(Booking booking) {
-		this.booking = booking;
 	}
 
 	public List<OrderProduct> getOrderProducts() {
@@ -254,20 +239,17 @@ public class Order implements Serializable {
 		for (OrderProduct orderProduct : orderProducts) {
 			total += orderProduct.getTotal();
 		}
-		if (booking != null) {
-			total += booking.getTotal();
-		}
-		 
+
 		int taxCost = 0;
 
-		if(tax != null) {
-			if(tax.getType().equals("percent")) {
+		if (tax != null) {
+			if (tax.getType().equals("percent")) {
 				taxCost = total * tax.getValue() / 100;
-			}else if(tax.getType().equals("money")) {
+			} else if (tax.getType().equals("money")) {
 				taxCost = tax.getValue();
 			}
 		}
-		
+
 		subTotal = total + deliveryCost - discount + taxCost;
 	}
 
@@ -286,7 +268,7 @@ public class Order implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	public Tax getTax() {
 		return this.tax;
 	}

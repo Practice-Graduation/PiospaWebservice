@@ -25,11 +25,6 @@ public class District implements Serializable {
 
 	private String type;
 
-	// bi-directional many-to-one association to Customer
-	@JsonIgnore
-	@OneToMany(mappedBy = "district")
-	private List<Customer> customers;
-
 	// bi-directional many-to-one association to Province
 	@ManyToOne
 	@JoinColumn(name = "provinceid")
@@ -96,27 +91,4 @@ public class District implements Serializable {
 
 		return ward;
 	}
-
-	public List<Customer> getCustomers() {
-		return this.customers;
-	}
-
-	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
-	}
-
-	public Customer addCustomer(Customer customer) {
-		getCustomers().add(customer);
-		customer.setDistrict(this);
-
-		return customer;
-	}
-
-	public Customer removeCustomer(Customer customer) {
-		getCustomers().remove(customer);
-		customer.setDistrict(null);
-
-		return customer;
-	}
-
 }

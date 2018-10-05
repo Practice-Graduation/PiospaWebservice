@@ -1,9 +1,7 @@
 package com.baobang.piospa.controller.api;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -136,7 +134,6 @@ public class OrderProductController {
 		return result;
 	}
 	public OrderProduct createOrderProduct(OrderProduct orderProduct) {
-		Date date = new Date();
 		orderProduct.setOrderProductId(0);
 		orderProduct = mOrderProductRepository.save(orderProduct);
 		return orderProduct;
