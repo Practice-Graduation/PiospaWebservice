@@ -107,6 +107,7 @@ public class CustomerController {
 			result.setMessage(MessageResponse.SUCCESSED);
 			result.setStatusCode(HttpStatus.OK.value());
 		} else {
+			temp = null;
 			result.setMessage(MessageResponse.ACCOUNT_EXSIT);
 			result.setStatusCode(HttpStatus.NOT_FOUND.value());
 		}
